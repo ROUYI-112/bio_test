@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>生物複習・白話詳解</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Gaegu:wght@400;700&family=Noto+Sans+TC:wght@400;500;700;900&display=swap');
+
+  :root{
+    --paper:#fbf6ec;
+    --paper-2:#f4ead6;
+    --ink:#3a3027;
+    --ink-soft:#6f6354;
+    --line:#e3d6bd;
+    --yes:#2f8f5b;
+    --no:#cf5b4e;
+    --accent:#e8915f;
+    --accent-deep:#c96a3a;
+    --shadow:rgba(120,90,50,.16);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:'Noto Sans TC',system-ui,sans-serif;
+    background:var(--paper);
+    background-image:
+      radial-gradient(circle at 12% 18%, rgba(232,145,95,.05), transparent 38%),
+      radial-gradient(circle at 88% 72%, rgba(47,143,91,.05), transparent 40%);
+    color:var(--ink);
+    line-height:1.75;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  /* ===== Header ===== */
+  header{
+    position:relative;
+    padding:46px 20px 30px;
+    text-align:center;
+    overflow:hidden;
+  }
+  .eyebrow{
+    font-family:'Gaegu',cursive;
+    font-size:1.15rem;
+    color:var(--accent-deep);
+    letter-spacing:.18em;
+    margin-bottom:6px;
+  }
+  header h1{
+    font-size:clamp(1.9rem,6vw,3rem);
+    font-weight:900;
+    letter-spacing:.02em;
+    line-height:1.15;
+  }
+  header h1 .squig{
+    display:inline-block;
+    color:var(--accent-deep);
+    position:relative;
+  }
+  .subtitle{
+    margin-top:12px;
+    color:var(--ink-soft);
+    font-size:1rem;
+  }
+  .counter{
+    display:inline-flex;gap:18px;margin-top:18px;flex-wrap:wrap;justify-content:center;
+  }
+  .counter span{
+    font-family:'Gaegu',cursive;
+    font-size:1.05rem;
+    background:#fff;
+    border:2px solid var(--line);
+    border-radius:30px;
+    padding:4px 16px;
+    box-shadow:0 3px 0 var(--shadow);
+  }
+  .counter b{color:var(--accent-deep);font-size:1.25rem;}
+
+  /* ===== Tips banner ===== */
+  .tips{
+    max-width:880px;margin:8px auto 0;padding:0 20px;
+  }
+  .tips-card{
+    background:linear-gradient(180deg,#fff,#fffdf8);
+    border:2px dashed var(--accent);
+    border-radius:18px;
+    padding:18px 20px;
+    box-shadow:0 4px 0 var(--shadow);
+  }
+  .tips-card h3{
+    font-family:'Gaegu',cursive;font-size:1.4rem;color:var(--accent-deep);
+    margin-bottom:8px;display:flex;align-items:center;gap:8px;
+  }
+  .tips-card ul{list-style:none;display:grid;gap:7px;}
+  .tips-card li{
+    padding-left:26px;position:relative;font-size:.96rem;color:var(--ink);
+  }
+  .tips-card li::before{
+    content:'★';position:absolute;left:0;top:0;color:var(--accent);font-size:.9rem;
+  }
+
+  /* ===== Controls ===== */
+  .controls{
+    position:sticky;top:0;z-index:50;
+    background:rgba(251,246,236,.92);
+    backdrop-filter:blur(8px);
+    border-bottom:2px solid var(--line);
+    padding:14px 20px;
+    margin-top:26px;
+  }
+  .controls-inner{max-width:1000px;margin:0 auto;display:flex;flex-direction:column;gap:12px;}
+  .search-row{display:flex;gap:10px;align-items:center;}
+  .search-box{
+    flex:1;display:flex;align-items:center;gap:8px;
+    background:#fff;border:2px solid var(--line);border-radius:30px;
+    padding:8px 16px;box-shadow:inset 0 1px 3px rgba(0,0,0,.04);
+  }
+  .search-box:focus-within{border-color:var(--accent);}
+  .search-box input{
+    flex:1;border:none;outline:none;background:transparent;
+    font-family:'Noto Sans TC';font-size:1rem;color:var(--ink);
+  }
+  .search-box svg{flex-shrink:0;opacity:.5;}
+  .clear-btn{
+    border:none;background:var(--paper-2);color:var(--ink-soft);
+    border-radius:20px;padding:4px 12px;cursor:pointer;font-size:.85rem;font-family:inherit;
+  }
+  .clear-btn:hover{background:var(--line);}
+  .chips{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;-webkit-overflow-scrolling:touch;}
+  .chips::-webkit-scrollbar{height:5px;}
+  .chips::-webkit-scrollbar-thumb{background:var(--line);border-radius:10px;}
+  .chip{
+    flex-shrink:0;border:2px solid var(--line);background:#fff;
+    border-radius:30px;padding:6px 15px;cursor:pointer;
+    font-family:'Noto Sans TC';font-size:.88rem;font-weight:500;color:var(--ink-soft);
+    transition:all .15s;white-space:nowrap;
+  }
+  .chip:hover{border-color:var(--accent);color:var(--accent-deep);}
+  .chip.active{background:var(--accent);border-color:var(--accent);color:#fff;box-shadow:0 3px 0 var(--shadow);}
+
+  /* ===== Main ===== */
+  main{max-width:1000px;margin:0 auto;padding:28px 20px 80px;}
+  .unit{margin-bottom:42px;scroll-margin-top:160px;}
+  .unit-head{
+    display:flex;align-items:baseline;gap:12px;margin-bottom:18px;
+    padding-bottom:10px;border-bottom:3px solid var(--ink);
+  }
+  .unit-head .dot{
+    width:14px;height:14px;border-radius:50%;flex-shrink:0;align-self:center;
+  }
+  .unit-head h2{font-size:1.45rem;font-weight:900;letter-spacing:.01em;}
+  .unit-head .qn{
+    font-family:'Gaegu',cursive;font-size:1rem;color:var(--ink-soft);margin-left:auto;flex-shrink:0;
+  }
+  .intro{
+    background:var(--paper-2);border-radius:14px;padding:12px 16px;margin-bottom:18px;
+    font-size:.92rem;color:var(--ink-soft);border-left:5px solid var(--accent);
+  }
+
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;}
+
+  /* ===== Card ===== */
+  .card{
+    background:#fff;border:2px solid var(--line);border-radius:18px;
+    overflow:hidden;box-shadow:0 4px 0 var(--shadow);
+    transition:transform .12s, box-shadow .12s;
+    display:flex;flex-direction:column;
+  }
+  .card:hover{transform:translateY(-2px);box-shadow:0 6px 0 var(--shadow);}
+  .card-top{
+    padding:14px 16px 12px;cursor:pointer;position:relative;
+  }
+  .card-top:hover{background:#fffdf7;}
+  .qmeta{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+  .qbadge{
+    font-family:'Gaegu',cursive;font-weight:700;font-size:.95rem;
+    background:var(--ink);color:#fff;border-radius:8px;padding:1px 9px;
+  }
+  .qtoggle{
+    margin-left:auto;font-size:.78rem;color:var(--accent-deep);
+    display:flex;align-items:center;gap:4px;font-weight:700;
+  }
+  .qtoggle .arr{transition:transform .25s;display:inline-block;}
+  .card.open .qtoggle .arr{transform:rotate(90deg);}
+  .qtext{font-size:1rem;font-weight:700;color:var(--ink);}
+
+  .answer-peek{
+    display:flex;align-items:center;gap:8px;margin-top:10px;
+    font-size:.86rem;color:var(--ink-soft);
+  }
+  .ans-pill{
+    background:var(--yes);color:#fff;font-weight:700;border-radius:20px;
+    padding:2px 12px;font-size:.9rem;font-family:'Gaegu',cursive;letter-spacing:.05em;
+    filter:blur(5px);transition:filter .25s;user-select:none;
+  }
+  .card.open .ans-pill{filter:blur(0);}
+  .ans-hint{font-size:.75rem;opacity:.7;}
+  .card.open .ans-hint{display:none;}
+
+  .card-body{
+    max-height:0;overflow:hidden;
+    transition:max-height .35s ease;
+    background:linear-gradient(180deg,#fffdf8,#fff);
+  }
+  .card.open .card-body{max-height:1400px;}
+  .card-body-inner{
+    padding:4px 16px 18px;border-top:2px dashed var(--line);margin:0 16px;
+    padding-left:0;padding-right:0;
+  }
+  .kid{font-size:.95rem;color:var(--ink);line-height:1.85;padding-top:12px;}
+  .kid b{color:var(--accent-deep);}
+  .kid code{
+    font-family:'Gaegu',monospace;background:var(--paper-2);
+    padding:1px 6px;border-radius:6px;font-size:.92em;letter-spacing:.03em;
+  }
+
+  /* ===== empty state ===== */
+  .empty{
+    text-align:center;padding:60px 20px;color:var(--ink-soft);
+  }
+  .empty .big{font-family:'Gaegu',cursive;font-size:1.8rem;color:var(--accent-deep);margin-bottom:6px;}
+
+  /* ===== back to top ===== */
+  .totop{
+    position:fixed;right:20px;bottom:20px;z-index:60;
+    width:50px;height:50px;border-radius:50%;border:2px solid var(--accent);
+    background:#fff;color:var(--accent-deep);cursor:pointer;
+    font-size:1.3rem;box-shadow:0 4px 0 var(--shadow);
+    opacity:0;pointer-events:none;transition:opacity .2s;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .totop.show{opacity:1;pointer-events:auto;}
+  .totop:hover{background:var(--accent);color:#fff;}
+
+  footer{
+    text-align:center;padding:30px 20px 50px;color:var(--ink-soft);font-size:.85rem;
+  }
+  footer .heart{color:var(--accent);}
+
+  @media(max-width:560px){
+    .grid{grid-template-columns:1fr;}
+    .unit-head h2{font-size:1.2rem;}
+    header{padding:34px 16px 22px;}
+  }
+
+  .color-rose{--c:#e0728a;} .color-amber{--c:#e0a13c;}
+  .color-sky{--c:#5aa8d6;} .color-violet{--c:#a779c9;}
+  .color-emerald{--c:#3fa86a;} .color-teal{--c:#3aa79a;}
+  .color-lime{--c:#8aab3e;} .color-cyan{--c:#42a7b8;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="eyebrow">高中生物・段考複習</div>
+  <h1>把生物<span class="squig">學會</span></h1>
+  <p class="subtitle">每一題都先看題目,想一想,再點開看超白話詳解</p>
+  <div class="counter">
+    <span><b id="cUnits">0</b> 個主題</span>
+    <span><b id="cQs">0</b> 道題目</span>
+    <span>點卡片 <b>翻開答案</b></span>
+  </div>
+</header>
+
+<div class="tips">
+  <div class="tips-card">
+    <h3>🔑 萬用口訣(先記這幾條)</h3>
+    <ul id="tipsList"></ul>
+  </div>
+</div>
+
+<div class="controls">
+  <div class="controls-inner">
+    <div class="search-row">
+      <div class="search-box">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+        <input id="search" type="text" placeholder="搜尋關鍵字…例如:抗藥性、限制酶、DNA、達爾文">
+      </div>
+      <button class="clear-btn" id="clearBtn">清除</button>
+    </div>
+    <div class="chips" id="chips"></div>
+  </div>
+</div>
+
+<main id="main"></main>
+
+<button class="totop" id="totop" aria-label="回到頂端">↑</button>
+
+<footer>
+  做給你複習用的 · 看不懂的題目把題號告訴我,我換個比喻再講一次 <span class="heart">♥</span>
+</footer>
+
+<script>
+// 所有題目資料。每題:章節、題號、答案、題目、白話詳解(HTML)
+const DATA = [
+  {
+    unit: "卷5 遺傳物質", uid: "u5", color: "rose",
+    questions: [
+      { no: "1", ans: "A", q: "真核生物用什麼當「遺傳訊息」?",
+        kid: `想像生物身體裡有一本「使用說明書」,告訴身體要怎麼長。這本說明書是用 <b>DNA(去氧核糖核酸)</b> 做的。<br>• (B)RNA 是「影印本」,不是正本<br>• (C)(D)核苷酸是做說明書的「一個字母」,單獨看不懂<br>• (E)含氮鹼基是字母的「一小部分」,更看不懂<br>所以正本說明書 = <b>DNA</b>。` },
+      { no: "2", ans: "C", q: "為什麼生命世界要用 DNA 當遺傳訊息?",
+        kid: `因為 DNA 會「複製」(自己印出一份一模一樣的)。爸媽把說明書印給小孩,小孩就會長得像爸媽。<br>• (A)DNA 不會當酵素工作 ❌<br>• (B)DNA 還是會突變(會寫錯字)❌<br>• (D)DNA 不只在細胞核,粒線體、葉綠體也有 ❌<br>• (E)DNA 是雙股,一條有很多基因 ❌<br>正確:複製出來的兩份幾乎一樣 → 後代有相同特徵。` },
+      { no: "3", ans: "B", q: "把核酸拆到最小,會找到哪些東西?",
+        kid: `核酸有 DNA 和 RNA。拆開來數零件:<br>🧩 <b>核苷酸(整顆積木)</b>:DNA 4 種 + RNA 4 種 = <b>8 種</b><br>🧩 <b>含氮鹼基(積木的頭)</b>:A、T、G、C、U = <b>5 種</b><br>🧩 <b>五碳糖(身體)</b>:去氧核糖 + 核糖 = <b>2 種</b><br>🧩 <b>磷酸(腳)</b>:大家一樣 = <b>1 種</b><br>所以 8、5、2、1。` },
+      { no: "4", ans: "C", q: "基因表現的過程,跟哪個東西最沒關係?",
+        kid: `「基因表現」= 把說明書唸出來做出東西。需要:轉錄、轉譯、RNA 聚合酶、核糖體。<br>而 <b>DNA 聚合酶</b> 只在「DNA 複製」時上工(印說明書時才來),跟「唸說明書做東西」沒關係。` },
+      { no: "5", ans: "A", q: "從北方墨點法的圖,胰臟癌細胞和正常細胞差在哪?",
+        kid: `北方墨點法可以看 RNA 多不多,<b>顏色愈深 = RNA 愈多</b>。<br>癌細胞那排 EGF 顏色比較深 → 癌細胞的 <b>EGF RNA 比較多</b>。<br>(7S 那排是對照用的,兩邊差不多,證明實驗有做對。)` },
+      { no: "6", ans: "D", q: "關於這個實驗設計,哪個說法對?",
+        kid: `• <b>操縱變因</b>(故意改的)= 細胞癌化與否<br>• <b>應變變因</b>(去測的)= EGF RNA 的量<br>• <b>控制變因</b>(要一樣的)= 放進去的總 RNA 量<br>(D)說 7S RNA 代表放入的總 RNA 量類似 → 確認兩邊放的量一樣多才公平 ✅` },
+    ]
+  },
+  {
+    unit: "卷6 基因轉殖", uid: "u6", color: "amber",
+    intro: "🖼️ 圖:甲乙丙是三種酵素(剪刀和膠水),丁己是 DNA。把目標基因剪下來,黏進圓圈圈(載體)變成「丁」(重組DNA),再送進大腸桿菌(戊)裡。",
+    questions: [
+      { no: "1", ans: "A", q: "關於甲、乙、丙三個酵素的敘述,哪個對?",
+        kid: `甲和乙都在「剪 DNA」,丙在「黏 DNA」。<br>• (A)甲和乙是相同酵素 ✅(都是剪刀)<br>• (B)乙能連接 DNA ❌(乙是剪刀不是膠水)<br>• (C)丙能辨認序列切割 ❌(丙是膠水)<br>• (D)只能在細菌裡用 ❌(試管也能)<br>• (E)人類細胞也有 ❌(這是細菌的工具)` },
+      { no: "2", ans: "B", q: "丁被叫做什麼?",
+        kid: `丁 = 把「目標基因」黏進「圓圈圈(載體)」之後的新繩子。把兩段繩子黏在一起變成新的一條 → <b>重組DNA</b>。` },
+      { no: "3", ans: "C", q: "丁和己比較,哪個對?",
+        kid: `丁=重組DNA(要送進去的繩子),己=染色體(細菌本來的繩子)。<br>• (A)丁比己大 ❌(丁小己大)<br>• (B)丁要插入己才能表現 ❌<br>• (C)丁利用細胞裡的酵素和核糖體做表現 ✅<br>• (D)丁進去後己會消失 ❌<br>• (E)丁環狀己線狀 ❌(兩個都環狀)` },
+      { no: "4", ans: "C", q: "關於戊細胞(大腸桿菌),哪個對?",
+        kid: `• (A)每個戊都拿到丁 ❌<br>• (B)抗生素分解基因可把戊殺死 ❌(相反,是讓戊不怕)<br>• (C)戊是原核,丁也可轉殖到真核生物 ✅<br>• (D)需高基氏體修飾的蛋白適合用戊 ❌(細菌沒高基氏體)<br>• (E)轉殖後可隨便丟 ❌` },
+      { no: "5", ans: "D", q: "為什麼基因搬到 B 生物,B 還能做出正確產物?",
+        kid: `因為<b>所有生物都用同一套規則</b>(中心法則:DNA→RNA→蛋白質)。像全世界都用同一種食譜步驟煮菜,給別人也能煮出一樣的菜。<br>• (A)都有細胞核 ❌(細菌沒有)<br>• (B)都用蛋白質記錄遺傳 ❌(用 DNA)<br>• (D)都執行中心法則 ✅` },
+      { no: "6", ans: "A", q: "想讓作物有「抗蟲」能力,要轉殖哪種蛋白?",
+        kid: `• (A)蘇力菌的毒蛋白 ✅(只毒蟲蟲)<br>• (B)胡蘿蔔素 ❌(增加營養)<br>• (C)水母螢光 ❌(讓作物發光)<br>• (D)抗殺草劑 ❌(不怕除草劑)<br>• (E)人類凝血因子 ❌(做藥用)` },
+      { no: "7", ans: "C", q: "承上題,這種抗蟲作物可能造成什麼壞處?",
+        kid: `• (A)人吃了腸道崩解 ❌(只毒蟲蟲)<br>• (B)減少農藥 ❌(這是好處)<br>• (C)花粉飄到別的植物,讓吃那株的蟲也受影響 ✅<br>• (D)讓作物長更快 ❌<br>• (E)不會有壞處 ❌` },
+      { no: "8", ans: "E", q: "基因轉殖生物的貢獻,「不包含」哪個?",
+        kid: `好處有:動物長快長肉多、微生物做胰島素、農作物不易腐壞、減少病蟲害。<br>• (E)保存原生物種遺傳多樣性、增加物種多樣性 ❌ → 基改生物跟原本同一種,<b>不會增加物種多樣性</b>。題目問「不包含」,選 (E)。` },
+      { no: "9", ans: "E", q: "創造「有人類凝血因子基因的山羊—寶鈺」,經過哪個過程?",
+        kid: `寶鈺是身上有「人類凝血因子基因」的羊。所以是把 <b>人類的凝血因子 DNA</b> 放進寶鈺的 DNA 裡。要放的是 DNA(不是 RNA、不是蛋白質),方向:人類 → 寶鈺。` },
+      { no: "10", ans: "B", q: "關於基因轉殖鮭魚的文章,哪個對?",
+        kid: `基改鮭魚有「太平洋帝王鮭生長激素基因」+「大洋鱈魚啟動子」,全年無休長大。<br>• (B)會產生太平洋帝王鮭的生長激素 ✅<br>• (C)野生鮭魚有鱈魚啟動子 ❌(是基改才有)<br>• (D)生長期有季節性 ❌(全年都長)<br>• (E)FDA 是研發者 ❌(只負責核准)` },
+      { no: "11", ans: "D", q: "看「基改 vs 正常鮭魚」生長比較圖,哪個對?",
+        kid: `🖼️ 基改鮭魚(實線)前面長較快,後來正常的追上來。<br>• (A)出生就較大 ❌(第0年差不多)<br>• (B)一生都較大 ❌(約3.5年後反而較小)<br>• (C)正常養兩年達販售大小 ❌(要約2.5年)<br>• (D)基改到販售大小時間較短 ✅<br>• (E)長最快是0~1.5年 ❌(是1.5~2.5年)` },
+      { no: "12", ans: "C", q: "關於這個生長比較實驗,哪個對?",
+        kid: `操縱變因=是否基因轉殖;應變變因=重量;控制變因=水質、食物來源等。<br>• (A)操縱變因為重量 ❌<br>• (B)應變變因為年齡 ❌<br>• (C)控制變因為水質及食物來源 ✅<br>• (D)基改為對照組 ❌(正常才是)<br>• (E)各養一隻就夠 ❌(要重複至少三次)` },
+    ]
+  },
+  {
+    unit: "DNA複製・核酸(多選)", uid: "udup", color: "rose",
+    questions: [
+      { no: "1", ans: "A、D", q: "關於 DNA 複製,哪些對?(選2項)",
+        kid: `DNA 複製是<b>半保留</b>:雙股拉開成兩條,<b>每條舊繩子各配一條新繩子</b>。新雙股=一舊+一新。<br>• (A)半保留,用舊的一股合成新的 ✅<br>• (D)知道一股就能推出另一股 ✅(A配T、G配C)<br>• (B)全保留 ❌ (C)散置 ❌ (E)自己配自己 ❌` },
+      { no: "2", ans: "B、D", q: "DNA 和 RNA 比較,哪些對?(選2項)",
+        kid: `DNA:去氧核糖、雙股、ATGC。RNA:核糖、單股、A<b>U</b>GC(沒有T,改用U)。<br>• (B)核糖+磷酸骨架,通常不含 T ✅<br>• (D)DNA 訊息要先轉錄成 RNA,才能轉譯成蛋白質 ✅<br>• (A)講的是 DNA ❌ (C)DNA 聚合酶只能做 DNA ❌ (E)大部分用 DNA ❌` },
+    ]
+  },
+  {
+    unit: "DNA萃取・梅舍生實驗", uid: "uext", color: "rose",
+    questions: [
+      { no: "7", ans: "C", q: "用奇異果做 DNA 粗萃取,正確順序?",
+        kid: `1.<b>丙</b>加水磨碎(打成泥)→ 2.<b>丁</b>加清潔劑(溶外套)→ 3.<b>乙</b>加嫩精/木瓜酵素(拆蛋白質)→ 4.<b>甲</b>加高濃度食鹽水(讓DNA溶出)→ 5.<b>戊</b>加冰95%酒精(DNA結成白團跑出來)。順序:丙丁乙甲戊。` },
+      { no: "8", ans: "B", q: "各步驟的原理,哪個對?",
+        kid: `• (A)甲使DNA脫水凝集 ❌(食鹽水是溶解)<br>• (B)乙分解蛋白質 ✅<br>• (C)丙搗碎膜狀胞器 ❌(磨碎是打破細胞壁)<br>• (D)丁去除細胞壁脂質 ❌(清潔劑破壞細胞膜核膜)<br>• (E)戊使蛋白質變性沉澱 ❌(酒精讓DNA凝結)` },
+      { no: "9", ans: "B", q: "梅舍生—史塔爾實驗,第一次分裂後 DNA 離心結果?",
+        kid: `細菌先養在重氮(¹⁵N)→DNA變重。換到輕氮(¹⁴N)分裂一次。半保留複製:雙股拉開各配一條新的(新的用¹⁴N)。所以每條=一半重+一半輕=<b>中間帶</b>。圖上乙=中間位置。` },
+      { no: "10", ans: "E", q: "細線=¹⁵N(重)、粗線=¹⁴N(輕),第一代雙股長怎樣?",
+        kid: `第一代:舊股是細線(¹⁵N重),新股是粗線(¹⁴N輕)。所以每條雙股螺旋 = <b>一條細線 + 一條粗線</b> 纏在一起。` },
+    ]
+  },
+  {
+    unit: "基因轉殖(多選)", uid: "ugmo", color: "amber",
+    questions: [
+      { no: "1", ans: "A、B、D", q: "關於商業化基因轉殖生物的配對,哪些對?(選3項)",
+        kid: `• (A)細菌清除海上漏油 ✅<br>• (B)抗殺草劑玉米不被除草劑殺死 ✅<br>• (C)黃金米轉殖葉黃素呈黃 ❌(是胡蘿蔔素相關基因)<br>• (D)生長激素鮭魚長快 ✅<br>• (E)組織培養蘭花 ❌(是無性生殖,非基因轉殖)` },
+      { no: "2", ans: "A、E", q: "能做出人類要的蛋白質,是因為哪些條件?(選2項)",
+        kid: `• (A)也遵守中心法則 ✅<br>• (E)轉譯時 RNA 對應的胺基酸與人類相同 ✅(同一套翻譯表)<br>• (B)直接把DNA用於轉譯 ❌(要先變RNA)<br>• (C)必為真核細胞 ❌(原核也行)<br>• (D)配對方式不同 ❌(要相同才對)` },
+      { no: "3", ans: "B、D、E", q: "關於載體的敘述,哪些對?(選3項)",
+        kid: `載體=載運目標基因進細胞的工具(快遞車)。<br>• (A)又稱質體 ❌(質體只是其中一種,載體≠質體)<br>• (B)病毒基因體可作載體 ✅<br>• (C)成分為蛋白質 ❌(是DNA或RNA)<br>• (D)可攜帶目標基因 ✅<br>• (E)常攜帶可供選殖的基因 ✅` },
+    ]
+  },
+  {
+    unit: "限制酶", uid: "ure", color: "amber",
+    intro: "🖼️ 限制酶=細菌做的「剪刀」,專剪特定 DNA 序列。命名:前三字母=來源細菌、後字母=菌株、羅馬數字=第幾個被發現。例 EcoRI=大腸桿菌 E.coli RY13 菌株。",
+    questions: [
+      { no: "4", ans: "B、E", q: "關於本文敘述,哪些對?(選2項)",
+        kid: `• (A)一種限制酶辨識多種序列 ❌(只認一種)<br>• (B)可用在遺傳工程 ✅<br>• (C)細菌DNA上不會出現辨認序列 ❌(會,靠甲基化保護)<br>• (D)細菌DNA也會被切斷 ❌(有甲基化保護)<br>• (E)切割位置有甲基化 ✅` },
+      { no: "5", ans: "C、E", q: "EcoRI 辨認 GAATTC 從 G/A 間切,露出序列?幾個鹼基?",
+        kid: `原本:<code>...GAATTC...</code> / <code>...CTTAAG...</code>。從 G|A 之間切開後,中間露出 <b>AATT</b>,一邊露出 <b>4 個</b>鹼基。序列選(C)AATT、數量選(E)4個。` },
+      { no: "6", ans: "A、C、E", q: "限制酶 BamHI,根據命名規則哪些對?(選3項)",
+        kid: `拆解 BamHI:<b>Bam</b>=澱粉芽孢桿菌、<b>H</b>=H菌株、<b>I</b>=第一個被發現。<br>• (A)來自澱粉芽孢桿菌 ✅<br>• (C)來自H菌株 ✅<br>• (E)此菌株第一個被發現的限制酶 ✅<br>• (B)來自大腸桿菌 ❌(那要叫Eco)<br>• (D)來自HI菌株 ❌(I是第一個的意思)` },
+    ]
+  },
+  {
+    unit: "DNA放大(PCR)素養題", uid: "upcr", color: "sky",
+    intro: "🖼️ DNA放大(PCR)像影印機,把一小段特定 DNA 印超多份。要用:目標DNA、引子(書籤,標出範圍)、4種核苷酸(墨水)、Taq聚合酶(影印機)。每循環變2倍,30次=2³⁰份。",
+    questions: [
+      { no: "1", ans: "C", q: "能把 DNA「特定片段」放大的主要原因?",
+        kid: `因為<b>引子是專門設計的</b>,只貼在你要的那段兩端,把中間框起來。<br>• (C)引子設計的專一性 ✅(像書籤精準標範圍)<br>• (A)半保留複製 ❌ (B)鹼基配對 → 有關但非關鍵 (D)帶負電 ❌ (E)RNA轉錄 ❌` },
+      { no: "2", ans: "A、C、E", q: "引子專一性的「直接應用」有哪些?(選3項)",
+        kid: `引子能精準認出某段 DNA → 拿來「檢查有沒有那段」。<br>• (A)檢查農產品有沒有混基改 ✅<br>• (C)放大兩人DNA確認親緣 ✅<br>• (E)檢查盜獵肉裡有沒有保育類動物 ✅<br>• (B)切下目標基因 ❌(引子不是剪刀)<br>• (D)合成蛋白質 ❌` },
+      { no: "3", ans: "B、C", q: "這技術對「重組DNA」有什麼幫助?(選2項)",
+        kid: `• (B)把目標基因變多,增加重組成功率 ✅<br>• (C)確認轉殖細菌有沒有成功帶重組DNA ✅<br>• (A)載體變多 ❌ (D)繁殖細菌 ❌(要培養) (E)萃取蛋白質 ❌(PCR處理DNA)` },
+      { no: "4", ans: "450 個", q: "電泳圖右邊未知 DNA 的鹼基對大約幾個?",
+        kid: `電泳像賽跑:<b>DNA越小跑越快(跑越遠)</b>。跟旁邊標準品比一比。右側未知落在 <b>500 和 400 之間</b> → 大約 <b>450 個鹼基對</b>。` },
+      { no: "5", ans: "D", q: "關於這個電泳圖,哪個對?",
+        kid: `• (A)右側是單股 ❌(PCR放大是雙股)<br>• (B)可判斷序列 ❌(只能看長度)<br>• (C)可判斷雙股螺旋 ❌<br>• (D)上方接負極、下方接正極 ✅(DNA帶負電,從負極往正極跑)<br>• (E)約含112個腺嘌呤 ❌(圖看不出有幾個A)` },
+    ]
+  },
+  {
+    unit: "DNA結構・中心法則素養題", uid: "ucentral", color: "violet",
+    questions: [
+      { no: "圖1-10", ans: "A、B", q: "右圖 DNA 結構,哪些對?(選2項)",
+        kid: `DNA像扭扭的梯子。甲=去氧核糖+磷酸(柱子),中間鹼基是踏板。<br>• (A)甲由去氧核糖和磷酸組成 ✅<br>• (B)乙為腺嘌呤A ✅(對面配T)<br>• (C)丙為共價鍵 ❌(是氫鍵)<br>• (D)分開時打斷丁 ❌(打斷丙=氫鍵)<br>• (E)戊為胞嘧啶 ❌(是鳥糞嘌呤G)` },
+      { no: "題組1", ans: "UAAGGCAUUGCCUGG", q: "DNA: ATTCCGTAACGGACC 轉錄出的 RNA?",
+        kid: `轉錄規則:A配U、T配A、C配G、G配C。<br><code>DNA:  A T T C C G T A A C G G A C C</code><br><code>RNA:  U A A G G C A U U G C C U G G</code>` },
+      { no: "題組2", ans: "B (5個)", q: "這 RNA 最多能轉譯出幾個胺基酸的多肽?",
+        kid: `規則:<b>連續3個鹼基=1個胺基酸</b>。RNA 共 15 個鹼基 → 15÷3 = <b>5 個胺基酸</b>。` },
+      { no: "CRISPR-3", ans: "D、E", q: "關於 CRISPR/Cas9 文章內容,哪些對?(選2項)",
+        kid: `細菌把感染過的病毒DNA記在CRISPR上,Cas9是剪刀酵素,跟CRISPR抄出的RNA合作剪斷入侵者。<br>• (D)Cas9須跟特定RNA結合才能切 ✅<br>• (E)人類基因編輯工具是細菌後天免疫的應用 ✅<br>• (A)單一實驗完成 ❌ (B)被自身噬菌體消滅 ❌ (C)最多只有一種 ❌` },
+      { no: "CRISPR-4", ans: "DNA / 蛋白質", q: "(1)CRISPR (2)Cas9 的組成成分?",
+        kid: `• <b>(1) CRISPR:DNA</b>(它「記錄」病毒片段,記錄用DNA)<br>• <b>(2) Cas9:蛋白質</b>(它是酵素,酵素由多肽組成)` },
+    ]
+  },
+  {
+    unit: "基因表現(多選)", uid: "ugexp", color: "violet",
+    questions: [
+      { no: "4", ans: "B、D", q: "中心法則 反應/模版/產物 配對,哪些對?(選2項)",
+        kid: `複製:DNA→DNA;轉錄:DNA→RNA;轉譯:RNA→蛋白質。<br>• (B)複製/DNA/DNA ✅<br>• (D)轉錄/DNA/RNA ✅<br>• (A)模版寫核苷酸 ❌ (C)產物寫核糖核苷酸 ❌(應是RNA) (E)轉譯模版應是RNA ❌` },
+      { no: "5", ans: "B、D、E", q: "關於真核細胞轉錄過程,哪些對?(選3項)",
+        kid: `• (A)把RNA訊息轉到DNA ❌(反了,DNA→RNA)<br>• (B)需要RNA聚合酶 ✅<br>• (C)兩股都當模版各產一條RNA ❌(只有一股)<br>• (D)只根據一股DNA合成單股RNA ✅<br>• (E)主要發生在細胞核內 ✅` },
+      { no: "6", ans: "C、D", q: "右圖基因表現某過程,哪些對?(選2項)",
+        kid: `🖼️ 甲=長帶子(RNA),乙=大球(核糖體),丙=珠珠串(多肽)→ 這是「轉譯」。<br>• (C)丙為多肽 ✅<br>• (D)發生在細胞質 ✅<br>• (A)甲為DNA ❌(是RNA) (B)乙為粒線體 ❌(是核糖體) (E)稱為轉錄 ❌(是轉譯)` },
+      { no: "7", ans: "A、D、E", q: "比較同人的胰腺細胞和口腔皮膜細胞,哪些對?(選3項)",
+        kid: `重點:同一個人每個細胞 <b>DNA 都一樣</b>,但「唸哪幾頁」不同,所以RNA、蛋白質、功能不同。<br>• (A)兩細胞DNA相同 ✅<br>• (D)功能不同 ✅<br>• (E)外型不同 ✅<br>• (B)RNA相同 ❌ (C)蛋白質相同 ❌` },
+      { no: "8", ans: "B、C、D", q: "單股DNA共500核苷酸:150A、120T、150G,哪些對?(選3項)",
+        kid: `先算C:500−150−120−150 = <b>80個C</b>。<br>• (A)150個胞嘧啶 ❌(是80)<br>• (B)共500個磷酸基 ✅(500核苷酸=500磷酸)<br>• (C)轉錄的RNA有150個尿嘧啶U ✅(對著150個A)<br>• (D)互補成雙股共270個A ✅(120+150)<br>• (E)A和G數量相同代表可互補 ❌(數量同≠能互補)` },
+    ]
+  },
+  {
+    unit: "卷7 演化觀念的發展", uid: "u7", color: "emerald",
+    questions: [
+      { no: "1", ans: "C", q: "下列何者「不符合」創造論?",
+        kid: `創造論:生物被造物主一次造好,<b>不會再演化</b>。<br>• (C)演化讓生物由簡單變複雜 ❌(這是演化論,不符合創造論)<br>題目問「不符合」,選 (C)。其他都符合創造論。` },
+      { no: "2", ans: "D", q: "達爾文雀鳥喙比值30年一直在變,怎麼解釋?",
+        kid: `環境(食物)一直變,<b>不同鳥喙形狀的鳥存活率不同</b>,族群平均比值跟著變。<br>• (D)環境變動使不同鳥喙個體存活率不同 ✅<br>• (A)換鳥喙 ❌ (B)遷徙 ❌ (C)雜交 ❌ (E)採樣誤差 ❌` },
+      { no: "3", ans: "E", q: "關於拉馬克的敘述,哪個對?",
+        kid: `拉馬克:用進廢退,<b>後天特徵可傳給下一代</b>(伸脖子→脖子變長→生出長脖子小孩)。<br>• (E)改變來自環境,獲得特徵可延續給下一代 ✅<br>• (A)依造物者規則 ❌ (B)透過天擇 ❌(那是達爾文) (C)沒貢獻 ❌ (D)當時廣受認同 ❌` },
+      { no: "4", ans: "A", q: "拉馬克 vs 達爾文比較表,哪個對?",
+        kid: `(A)兩人都認為「生物會演化」✅<br>• (B)共祖是達爾文才有 ❌<br>• (C)(E)兩人描述寫反了 ❌<br>• (D)拉馬克認為生物不滅絕,而是演化成現代生物 ❌` },
+      { no: "5", ans: "B", q: "下列何者與達爾文提出演化論「無關」?",
+        kid: `有關的:萊爾均變說、馬爾薩斯人口論、小獵犬號、華萊士。<br>• (B)居維業對創造論的堅持 ❌ → 達爾文不接受創造論,跟他提演化論「無關」。題目問無關,選(B)。` },
+      { no: "6", ans: "A", q: "哪種狀況適合用抗生素?",
+        kid: `抗生素只對「細菌感染」有效。<br>• (A)被細菌感染的鼻竇炎 ✅<br>• (B)新冠 ❌ (C)B肝 ❌ (E)流感 ❌ → 都是病毒<br>• (D)殺癌細胞 ❌(癌細胞是自己的真核細胞)` },
+      { no: "7", ans: "C", q: "抗藥性出現的原因,哪個對?",
+        kid: `重點:<b>抗藥性本來就有少數細菌帶著</b>(不是被刺激才出現)。抗生素來時,沒抗藥性的被殺,有抗藥性的活下來繁殖→變多。<br>• (C)原本就有,經抗生素篩選留下有抗藥性的 ✅` },
+      { no: "8", ans: "D", q: "關於達爾文天擇說,哪個對?",
+        kid: `• (D)天擇說重點在解釋環境的選擇造成演化結果 ✅<br>• (A)清楚交代變異遺傳方式 ❌(當時無法解釋)<br>• (B)(C)來自生物意願/努力就獲得新構造 ❌(拉馬克的)<br>• (E)無差異也會演化 ❌(要先有差異)` },
+      { no: "9", ans: "E", q: "曼徹斯特樺尺蠖深色蛾→1895占98%,如何用天擇解釋?",
+        kid: `工業污染讓樹幹變黑 → 深色蛾躲黑樹幹不易被發現,淺色蛾顯眼易被吃 → 深色蛾活下來變多。<br>• (E)淺色蛾易被捕食,造成存活率差異,深色蛾比例變高 ✅<br>其他:物種競爭/顯隱性/採樣誤差/食物決定 → 都非天擇 ❌` },
+    ]
+  },
+  {
+    unit: "卷7 多選題", uid: "u7m", color: "emerald",
+    questions: [
+      { no: "1", ans: "A、C", q: "達爾文天擇說可解釋哪些問題?(選2項)",
+        kid: `• (A)為何不同環境生物有這麼多差異 ✅<br>• (C)人與黑猩猩為何有較近代共同祖先 ✅<br>• (B)為何沒有共同祖先 ❌(天擇認為有) (D)未來方向 ❌ (E)為何突變 ❌` },
+      { no: "2", ans: "A、B、E", q: "用拉馬克/達爾文解釋指猴(手指細長),哪些對?(選3項)",
+        kid: `格式「拉馬克/達爾文」。<br>• (A)指頭沒這麼長/原始狐猴以蟲為食 ✅<br>• (B)為獲更多食物後代愈細/有些細有些粗 ✅<br>• (E)代代相傳都很細/優勢造成數量差異 ✅<br>• (C)拉馬克沒認知後代多樣性 ❌ (D)拉馬克認為獲得性可遺傳 ❌` },
+      { no: "3", ans: "C、E", q: "用孟德爾理論補足天擇說遺傳變異來源,哪些對?(選2項)",
+        kid: `• (C)較適應環境的等位基因在族群中比例較高 ✅<br>• (E)受環境影響後代表現型比例會偏離孟德爾理論值 ✅<br>• (A)突變僅產生不利基因 ❌(中性,好壞都可能) (B)都需很久 ❌ (D)較適應=顯性 ❌` },
+      { no: "4", ans: "B、D", q: "達爾文寫《物種起源》想法歷程,哪些對?(選2項)",
+        kid: `• (B)小獵犬號後已有天擇雛形,知道會被攻擊所以持續收集證據 ✅<br>• (D)了解個體差異,選擇未發生時差異大的個體仍可同時存在 ✅<br>• (A)只知天擇 ❌(已知人擇性擇) (C)與孟德爾熟稔 ❌(沒聯繫上) (E)在世就證實 ❌` },
+      { no: "5", ans: "B、D", q: "相信天擇說,觀察長頸鹿哪些推論對?(選2項)",
+        kid: `• (B)關鍵在自然環境的選擇機制 ✅<br>• (D)變異隨機且緩慢,長時間累積,同世代個體間有大差異 ✅<br>• (A)努力使脖子變長 ❌(拉馬克) (C)短時間演化出差異極大物種 ❌ (E)遇災難才改變 ❌(災變說)` },
+      { no: "6", ans: "D、E", q: "馬爾薩斯人口論圖,哪些對?(選2項)",
+        kid: `🖼️ 甲線往上衝(人口),乙線平緩(食物)。人口成長會超過糧食。<br>• (D)即「資源有限,生存競爭」概念 ✅<br>• (E)食物不足,適應力較強者才存活 ✅<br>• (A)甲乙寫反了 ❌ (B)糧食大於人口才爭奪 ❌ (C)跟性狀變異無關 ❌` },
+    ]
+  },
+  {
+    unit: "卷8 演化與分類", uid: "u8", color: "teal",
+    questions: [
+      { no: "1", ans: "E", q: "林奈用形態分類,為何後人還要重建分類階層?",
+        kid: `林奈只看「長得像不像」,不一定反映真正的親緣關係。<br>• (E)形態分類學沒遵守物種間的親緣關係 ✅(長得像不代表是親戚)` },
+      { no: "2", ans: "B", q: "判斷親緣關係,哪個證據「無法」證明?",
+        kid: `可用:同源構造、痕跡構造、RNA序列、胚胎發育。<br>• (B)同功構造 ❌ → 是「住同環境造成的結果」(鳥翅膀vs蜻蜓翅膀,功能像但來源不同)。題目問無法證明,選(B)。` },
+      { no: "3", ans: "B", q: "關於化石提供的演化證據,哪個「錯誤」?",
+        kid: `• (B)對化石的知識與詮釋不會改變 ❌ → 會隨時代改變(如偷蛋龍,後來發現是孵自己的蛋)。題目問錯誤,選(B)。其他都對。` },
+      { no: "4", ans: "A", q: "確認親緣關係,哪種物質「無法」當分子生物學證據?",
+        kid: `• (A)葡萄糖 ❌ → 所有生物的葡萄糖都一樣,無法比較誰跟誰是親戚。其他(RNA、DNA、蛋白質、血紅素)都因生物不同而有差異。` },
+      { no: "5", ans: "C", q: "比較核糖體蛋白質序列,哪種生物跟人類最近?",
+        kid: `親緣由遠到近:始祖鳥→針鼴→大樹鼩→狐猴→<b>大猩猩</b>。大猩猩離人類最近,選(C)。` },
+      { no: "6", ans: "D", q: "關於病毒致病及傳染方式,哪個「錯誤」?",
+        kid: `• (D)可獨立生存在自然環境,不須寄生 ❌ → 病毒離開宿主就無法表現任何生命現象。題目問錯誤,選(D)。其他都對。` },
+      { no: "7", ans: "E", q: "關於病毒的構造與組成,哪個對?",
+        kid: `• (E)套膜外的醣蛋白可幫助病毒進入細胞 ✅<br>• (A)具酵素系統 ❌ (B)都有雙層磷脂套膜 ❌(有些有有些沒) (C)可傷害所有生物 ❌(有專一性) (D)光學顯微鏡可觀察 ❌(要電顯)` },
+      { no: "8", ans: "D", q: "1990三域系統(核糖體RNA)親緣圖,哪個對?",
+        kid: `🖼️ 重點:古細菌和真核生物「比較親」,古細菌和真細菌「比較遠」。所以真細菌先分出去,古細菌與真核生物同一邊,選(D)。` },
+      { no: "9", ans: "B", q: "關於生物多樣性的敘述,哪個對?",
+        kid: `• (B)熱帶雨林物種多樣性高 ✅<br>• (A)組織培養遺傳多樣性高 ❌(無性生殖,低) (C)台灣本島比小琉球低 ❌(高) (D)很多種慈鯛=遺傳多樣性 ❌(是物種) (E)森林低於沙漠 ❌(高於)` },
+    ]
+  },
+  {
+    unit: "卷8 多選題", uid: "u8m", color: "teal",
+    questions: [
+      { no: "1", ans: "A、B、C", q: "哪些證據支持恐龍後代演化成鳥類?(選3項)",
+        kid: `• (A)始祖鳥、近鳥龍等有羽毛恐龍化石 ✅<br>• (B)恐龍腿骨發現與鳥類相似的蛋白質 ✅<br>• (C)恐爪龍發現與鳥類相似的叉骨 ✅<br>• (D)心臟差異過大 ❌ (E)體溫調節不同 ❌` },
+      { no: "2", ans: "B、C、E", q: "用胚胎學證據,哪些生物親緣跟鳥類較近?(選3項)",
+        kid: `胚胎學證據支持「脊椎動物」較近。選脊椎動物:<br>• (B)青蛙 ✅ (C)蛇 ✅ (E)猴 ✅<br>• (A)渦蟲 ❌ (D)昆蟲 ❌(非脊椎動物)` },
+      { no: "3", ans: "A、E", q: "關於分類系統的敘述,哪些對?(選2項)",
+        kid: `• (A)二界=動物界+植物界 ✅<br>• (E)三域(核糖體RNA差異)=古細菌、真細菌、真核生物 ✅<br>• (B)不具細胞構造歸原核界 ❌(如病毒不算生物) (C)具細胞壁且自營都歸植物界 ❌ (D)六界以粒線體分 ❌(用核糖體RNA)` },
+    ]
+  },
+  {
+    unit: "演化素養題(陸龜・湖泊魚・原型論)", uid: "uevo1", color: "lime",
+    questions: [
+      { no: "歐文-1", ans: "A", q: "歐文的「原型論」支持哪種論述?",
+        kid: `歐文認為「身體藍圖只存在上帝腦裡,上帝用它創造複雜形態」→ <b>創造論</b>,選(A)。` },
+      { no: "歐文-2", ans: "B、D", q: "從上文可發現生物學進展可能發生哪些現象?(選2項)",
+        kid: `• (B)證據支持哪一論點,端看詮釋的角度 ✅(同證據不同解讀)<br>• (D)天擇說是一個觀念,可解釋很多觀察證據 ✅<br>• (A)一個觀察就推翻 ❌ (C)相反的人一定錯 ❌ (E)同源構造在天擇後才發展 ❌` },
+      { no: "歐文-3", ans: "否;有共同祖先", q: "人類是不是由黑猩猩演化來的?為何相似?",
+        kid: `<b>不是</b>。人和黑猩猩很像,是因為<b>有「共同祖先」</b>(像表兄弟有共同的爺爺,不是表弟生出表哥)。` },
+      { no: "陸龜-7", ans: "A、C", q: "造成遺傳變異的原因有哪些?(選2項)",
+        kid: `• (A)有性生殖 ✅(基因重組產生變異)<br>• (C)突變 ✅(產生新變異)<br>• (B)無性生殖 ❌ (D)獲得性遺傳 ❌(拉馬克) (E)適者生存 ❌(是篩選,非製造變異)` },
+      { no: "陸龜-8", ans: "A、B", q: "加拉巴哥三種陸龜與演化,哪些對?(選2項)",
+        kid: `• (A)可能有共同祖先 ✅<br>• (B)取食食物類型不同,累積變異形成不同種 ✅<br>• (C)人類特意挑選 ❌(自然形成) (D)證明遺傳變異 ❌(是演化結果) (E)各自不同祖先 ❌(共同)` },
+      { no: "湖泊-4", ans: "丙 / 甲", q: "掠食大型魚的是哪湖?掠食小型魚的是哪湖?",
+        kid: `🖼️ 甲線往上、丙線往下。<br>• 掠食<b>大型魚</b>→<b>丙</b>(大魚被吃光,剩小魚,平均體重變小,丙往下)<br>• 掠食<b>小型魚</b>→<b>甲</b>(小魚被吃光,剩大魚,平均體重變大,甲往上)` },
+      { no: "湖泊-5", ans: "甲 > 乙 > 丙", q: "平均體重由大到小排列?",
+        kid: `看圖趨勢:甲最高、乙中間、丙最低 → <b>甲 > 乙 > 丙</b>。` },
+      { no: "湖泊-6", ans: "C", q: "影響此魚大小的演化原因是哪種演化力?",
+        kid: `掠食者「吃掉某種大小的魚」=自然環境在篩選=<b>天擇</b>,選(C)。` },
+    ]
+  },
+  {
+    unit: "演化素養題(新環境・分類・病毒)", uid: "uevo2", color: "lime",
+    questions: [
+      { no: "4", ans: "A、D、E", q: "哪些案例符合「踏入新環境快速演化出不同形態」?(選3項)",
+        kid: `• (A)加拉巴哥鸚鳥演化出特殊嘴喙(同祖先不同物種)✅<br>• (D)新幾內亞演化出爬樹的樹袋鼠 ✅<br>• (E)熊演化出懶熊、貓熊、北極熊等 ✅<br>• (B)蟑螂擴散 ❌(無新物種) (C)沙漠植物變多肉 ❌(趨同演化)` },
+      { no: "5", ans: "B、E", q: "哪些生物屬於古細菌?(選2項)",
+        kid: `古細菌喜歡住「極端環境」。<br>• (B)極端嗜熱菌 ✅ (E)甲烷菌 ✅<br>• (A)大腸桿菌 ❌ (C)根瘤菌 ❌ (D)藍綠菌 ❌` },
+      { no: "6", ans: "B、C", q: "哪些屬於「同源構造」?(選2項)",
+        kid: `同源=來源相同、骨頭結構相同(功能可能不同)。<br>• (B)人的手和鯨的前肢 ✅ (C)蝙蝠和貓的前肢 ✅<br>• (A)鯨鰭vs吳郭魚鰭 ❌ (D)蛾翅vs鳥翅 ❌ (E)蜻蜓複眼vs人單眼 ❌` },
+      { no: "7", ans: "A、B、D", q: "關於痕跡構造,哪些對?(選3項)",
+        kid: `痕跡構造=退化、用不太到的構造。<br>• (A)突變和環境篩選使少用構造退化 ✅<br>• (B)鯨豚後肢骨是痕跡構造 ✅<br>• (D)屬解剖學證據 ✅<br>• (C)所有動物盲腸都是痕跡 ❌(草食動物有用) (E)不可作證據 ❌` },
+      { no: "8", ans: "A、C、E", q: "哪些支持「病毒不屬於生物」?(選3項)",
+        kid: `生物定義:①有生命現象 ②由細胞組成。病毒都不符合。<br>• (A)不具細胞構造 ✅ (C)缺完整酵素系統,宿主外無法代謝 ✅ (E)離開宿主無法繁殖 ✅<br>• (B)不具細胞核 ❌ (D)感染有專一性 ❌` },
+      { no: "9", ans: "C、D、E", q: "關於「大滅絕」,哪些對?(選3項)",
+        kid: `• (C)中生代末大滅絕造成恐龍消失 ✅<br>• (D)人類因素可能導致大滅絕 ✅<br>• (E)保育能減緩生態系崩解 ✅<br>• (A)直接導致多樣性提高 ❌(降低) (B)恢復後和之前相同 ❌` },
+      { no: "10", ans: "C、E", q: "符合2030保護30%目標的方式?(選2項)",
+        kid: `• (C)設立國家公園及保護區 ✅<br>• (E)生態工法適度開發,減少影響 ✅<br>• (A)引入外來種 ❌ (B)增加開發 ❌ (D)製造基改生物 ❌` },
+    ]
+  },
+  {
+    unit: "演化素養題(HIV・親緣關係樹)", uid: "uevo3", color: "cyan",
+    intro: "🖼️ 黑死病(鼠疫桿菌)有些人天生免疫。鼠疫桿菌和HIV都靠「辨認輔助T細胞的受體」入侵人體。",
+    questions: [
+      { no: "HIV-1", ans: "沒有受體", q: "為何有些人不會被 HIV 感染?",
+        kid: `有些人天生<b>輔助T細胞上沒有那個受體(門把)</b>,HIV找不到門把就進不去,所以不會被感染。` },
+      { no: "HIV-2", ans: "A", q: "右圖 HIV,哪個是辨認受體的「醣蛋白」?",
+        kid: `🖼️ 甲在病毒最外面突出的部分。HIV靠最外面突出的醣蛋白去認受體(像鑰匙),選(A)甲。` },
+      { no: "HIV-3", ans: "B", q: "關於文中演化結果,哪個對?",
+        kid: `• (B)現在人類也在演化,可能出現其他較不易感染HIV的基因變異 ✅<br>• (A)只出現在北歐 ❌ (C)鼠疫刺激突變產生 ❌ (D)複製到所有人 ❌ (E)剛好同時發生 ❌(是同一個受體)` },
+      { no: "樹-4", ans: "甲盲鰻 乙鯊魚 丙金魚 丁鯨魚", q: "親緣關係樹甲~丁填什麼?",
+        kid: `依演化先後(早到晚):文昌魚最早分出去 → 甲=<b>盲鰻</b>(無上下顎,最原始) → 乙=<b>鯊魚</b>(軟骨魚) → 丙=<b>金魚</b>(硬骨魚) → 丁=<b>鯨魚</b>(哺乳動物,最晚)。` },
+      { no: "樹-5", ans: "B、E", q: "關於完成的親緣關係樹,哪些對?(選2項)",
+        kid: `• (B)愈早期演化出的類群,類群內遺傳多樣性通常愈高 ✅<br>• (E)每條線每個點都可能有新種,新分支不一定延續到現在 ✅<br>• (A)由現生文昌魚依序演化 ❌ (C)之後不再演變 ❌ (D)只有下方才有新分支 ❌` },
+    ]
+  },
+];
+
+// 萬用口訣
+const TIPS = [
+  "DNA = 正本說明書,RNA = 影印本,蛋白質 = 做出來的成品",
+  "A配T、G配C(DNA);RNA 把 T 換成 U",
+  "演化沒有「目的」,也不是「努力就能改變」(那是拉馬克的錯誤想法)",
+  "抗藥性、深色蛾:本來就有少數帶著,環境篩選後活下來變多(這才是天擇)",
+  "同源構造看「骨頭結構」、同功構造看「功能」",
+];
+
+</script>
+<script>
+  const main = document.getElementById('main');
+  const chipsBox = document.getElementById('chips');
+  const searchInput = document.getElementById('search');
+  const tipsList = document.getElementById('tipsList');
+  let activeUnit = 'all';
+  let keyword = '';
+
+  // counters
+  document.getElementById('cUnits').textContent = DATA.length;
+  document.getElementById('cQs').textContent = DATA.reduce((s,u)=>s+u.questions.length,0);
+
+  // tips
+  TIPS.forEach(t=>{ const li=document.createElement('li'); li.textContent=t; tipsList.appendChild(li); });
+
+  // chips
+  function buildChips(){
+    const allChip = chip('全部', 'all');
+    chipsBox.appendChild(allChip);
+    DATA.forEach(u=>chipsBox.appendChild(chip(u.unit, u.uid)));
+  }
+  function chip(label, id){
+    const b=document.createElement('button');
+    b.className='chip'+(id==='all'?' active':'');
+    b.textContent=label; b.dataset.id=id;
+    b.onclick=()=>{
+      activeUnit=id;
+      document.querySelectorAll('.chip').forEach(c=>c.classList.toggle('active', c.dataset.id===id));
+      render();
+      if(id!=='all'){ const el=document.getElementById('unit-'+id); if(el) el.scrollIntoView({behavior:'smooth',block:'start'}); }
+      else window.scrollTo({top:0,behavior:'smooth'});
+    };
+    return b;
+  }
+
+  function highlight(text, kw){
+    if(!kw) return text;
+    try{
+      const re=new RegExp('('+kw.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')','gi');
+      return text.replace(re,'<mark style="background:#ffe08a;border-radius:3px;padding:0 2px;">$1</mark>');
+    }catch(e){return text;}
+  }
+
+  function matches(q, u){
+    if(!keyword) return true;
+    const hay=(u.unit+' '+q.no+' '+q.ans+' '+q.q+' '+q.kid).toLowerCase();
+    return hay.includes(keyword.toLowerCase());
+  }
+
+  function render(){
+    main.innerHTML='';
+    let shown=0;
+    const units = activeUnit==='all' ? DATA : DATA.filter(u=>u.uid===activeUnit);
+
+    units.forEach(u=>{
+      const qs=u.questions.filter(q=>matches(q,u));
+      if(qs.length===0) return;
+      shown+=qs.length;
+
+      const sec=document.createElement('section');
+      sec.className='unit color-'+u.color;
+      sec.id='unit-'+u.uid;
+
+      const head=document.createElement('div');
+      head.className='unit-head';
+      head.innerHTML='<span class="dot" style="background:var(--c)"></span>'+
+        '<h2>'+u.unit+'</h2><span class="qn">'+qs.length+' 題</span>';
+      sec.appendChild(head);
+
+      if(u.intro){
+        const intro=document.createElement('div');
+        intro.className='intro';
+        intro.style.borderLeftColor='var(--c)';
+        intro.innerHTML=u.intro;
+        sec.appendChild(intro);
+      }
+
+      const grid=document.createElement('div');
+      grid.className='grid';
+      qs.forEach(q=>grid.appendChild(card(q,u)));
+      sec.appendChild(grid);
+      main.appendChild(sec);
+    });
+
+    if(shown===0){
+      main.innerHTML='<div class="empty"><div class="big">找不到「'+keyword+'」</div><p>換個關鍵字試試,或點上面「全部」</p></div>';
+    }
+  }
+
+  function card(q,u){
+    const c=document.createElement('div');
+    c.className='card';
+    const ansShort = q.ans.length>14 ? q.ans : q.ans;
+    c.innerHTML=
+      '<div class="card-top">'+
+        '<div class="qmeta">'+
+          '<span class="qbadge">'+q.no+'</span>'+
+          '<span class="qtoggle"><span class="arr">▶</span> 翻開</span>'+
+        '</div>'+
+        '<div class="qtext">'+highlight(q.q,keyword)+'</div>'+
+        '<div class="answer-peek"><span style="font-size:.8rem;">答案</span>'+
+          '<span class="ans-pill">'+q.ans+'</span>'+
+          '<span class="ans-hint">(點卡片看)</span>'+
+        '</div>'+
+      '</div>'+
+      '<div class="card-body"><div class="card-body-inner"><div class="kid">'+q.kid+'</div></div></div>';
+    c.querySelector('.card-top').onclick=()=>c.classList.toggle('open');
+    return c;
+  }
+
+  // search
+  let t;
+  searchInput.addEventListener('input',e=>{
+    clearTimeout(t);
+    t=setTimeout(()=>{ keyword=e.target.value.trim(); render(); },180);
+  });
+  document.getElementById('clearBtn').onclick=()=>{
+    searchInput.value=''; keyword=''; render(); searchInput.focus();
+  };
+
+  // back to top
+  const totop=document.getElementById('totop');
+  window.addEventListener('scroll',()=>{
+    totop.classList.toggle('show', window.scrollY>500);
+  });
+  totop.onclick=()=>window.scrollTo({top:0,behavior:'smooth'});
+
+  buildChips();
+  render();
+</script>
+</body>
+</html>
