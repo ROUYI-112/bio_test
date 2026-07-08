@@ -103,6 +103,29 @@
   .bar{height:6px;border-radius:6px;background:var(--line);overflow:hidden;width:100%;margin-top:6px}
   .bar > i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--ink),var(--green));transition:.35s}
 
+  /* ---- 倒數計時器 ---- */
+  .timer{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-top:10px;
+    padding:9px 12px;border-radius:14px;background:var(--paper-2);
+    border:1px solid var(--line);box-shadow:var(--shadow)}
+  .clock{font-variant-numeric:tabular-nums;font-weight:800;font-size:27px;letter-spacing:1px;color:var(--ink);min-width:82px}
+  .clock.warn{color:#E08A00}
+  .clock.danger{color:var(--red);animation:tpulse 1s infinite}
+  @keyframes tpulse{0%,100%{opacity:1}50%{opacity:.5}}
+  .pace{font-size:12.5px;font-weight:800;padding:4px 9px;border-radius:8px;white-space:nowrap}
+  .pace.ahead{color:#fff;background:var(--green)}
+  .pace.ok{color:#fff;background:var(--ink)}
+  .pace.behind{color:#fff;background:var(--red)}
+  .tcount{font-size:12.5px;font-weight:700;color:var(--ink-faint);white-space:nowrap}
+  .tsp{flex:1}
+  .tbtn{border:1px solid var(--line);background:var(--paper);border-radius:9px;
+    padding:6px 9px;font-weight:700;font-size:12.5px;cursor:pointer;color:var(--ink);white-space:nowrap}
+  .tbtn.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+  .tbar{height:6px;border-radius:6px;background:var(--line);overflow:hidden;width:100%;margin-top:1px}
+  .tbar > i{display:block;height:100%;transition:width 1s linear,background .4s}
+  .startbig{border:none;background:var(--red);color:#fff;font-weight:800;font-size:14.5px;
+    border-radius:10px;padding:9px 16px;cursor:pointer;box-shadow:0 2px 8px rgba(198,40,40,.3)}
+  .thint{font-size:11.5px;color:var(--ink-faint);font-weight:600;white-space:nowrap}
+
   /* section heading */
   .sec{
     font-size:13px;font-weight:800;color:var(--ink);letter-spacing:1px;
@@ -218,12 +241,17 @@
       <h1><span class="r">紅</span><span class="b">藍</span>筆生物</h1>
       <span class="sub">中山女中 · 114-2 高一生物</span>
     </div>
+    <div class="tabs" id="tabs"></div>
+    <div id="timerWrap"></div>
+  </div>
+</header>
+
+<div class="wrap">
     <div class="legend">
       <span><u class="ur">紅線</u>＝題目在問什麼</span>
       <span><u class="ub">藍線</u>＝關鍵字</span>
       <span class="lg-r">🔴 點膠片翻答案</span>
     </div>
-    <div class="tabs" id="tabs"></div>
     <div class="controls">
       <div class="film-toggle" id="filmToggle" title="蓋上/掀開全部答案">
         <span class="switch"></span><span id="filmLabel">紅膠片：蓋著</span>
@@ -238,8 +266,7 @@
       </div>
       <div class="bar"><i id="prog"></i></div>
     </div>
-  </div>
-</header>
+</div>
 
 <main class="wrap" id="main"></main>
 <footer>紅藍筆讀題法：<u class="ur">紅底線</u>看清楚題目在問什麼、<u class="ub">藍底線</u>抓關鍵字，先自己想，再點紅膠片對答案 ✏️<br>底線由系統自動標記，資料整理自三份段考詳解，如有出入以老師公布答案為準。</footer>
@@ -419,7 +446,7 @@ Object.keys(EXAMS).forEach(k=>{
   const b=document.createElement('button');
   b.className='tab'+(k===current?' on':'');
   b.innerHTML=`${EXAMS[k].name}<small>${EXAMS[k].sub}</small>`;
-  b.onclick=()=>{ current=k; filter='all'; syncFilterBtns(); render(); document.querySelectorAll('.tab').forEach((t,i)=>t.classList.toggle('on',Object.keys(EXAMS)[i]===k)); window.scrollTo({top:0,behavior:'smooth'}); };
+  b.onclick=()=>{ current=k; filter='all'; syncFilterBtns(); render(); document.querySelectorAll('.tab').forEach((t,i)=>t.classList.toggle('on',Object.keys(EXAMS)[i]===k)); startTimer(timer.mode); window.scrollTo({top:0,behavior:'smooth'}); };
   tabsEl.appendChild(b);
 });
 
@@ -487,6 +514,7 @@ function render(){
   }
   updateScore();
   syncFilterBtns();
+  renderTimer();
 }
 
 function card(q){
@@ -569,6 +597,99 @@ function updateScore(){
   });
   document.getElementById('score').innerHTML = `作答 ${done}/${qs.length}　答對 <b>${got}</b>　待複習 <span class="w">${miss}</span>`;
   document.getElementById('prog').style.width = (done/qs.length*100)+'%';
+}
+
+/* ============ 倒數計時器 ============ */
+const SECQ={relax:90,std:65,rush:42};              // 每題秒數
+let timer={mode:"std",examKey:null,total:0,remaining:0,running:false,finished:false,done:false,started:false,interval:null};
+let actx=null;
+function dur(k,m){return EXAMS[k].questions.length*SECQ[m];}
+function fmt(s){const m=Math.floor(s/60),ss=s%60;return m+":"+String(ss).padStart(2,"0");}
+function doneCount(k){let d=0;EXAMS[k].questions.forEach(q=>{const st=state[k][q.no];if(st.mark==='got'||st.mark==='miss'||st.graded)d++;});return d;}
+
+function beep(f,t,d,v){try{const o=actx.createOscillator(),g=actx.createGain();o.type="sine";o.frequency.value=f;o.connect(g);g.connect(actx.destination);g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(v,t+.02);g.gain.linearRampToValueAtTime(0,t+d);o.start(t);o.stop(t+d);}catch(e){}}
+function chime(kind){try{actx=actx||new(window.AudioContext||window.webkitAudioContext)();const t=actx.currentTime;
+  if(kind==='win'){beep(660,t,.14,.14);beep(880,t+.14,.22,.14);}
+  else if(kind==='up'){beep(392,t,.2,.14);beep(294,t+.2,.34,.14);}
+  else {beep(720,t,.12,.10);} }catch(e){}}
+
+function startTimer(m){
+  timer.mode=m||timer.mode||"std";
+  timer.examKey=current;
+  timer.total=dur(current,timer.mode);
+  timer.remaining=timer.total;
+  timer.running=true;timer.finished=false;timer.done=false;timer.started=true;
+  try{actx=actx||new(window.AudioContext||window.webkitAudioContext)();if(actx.resume)actx.resume();}catch(e){}
+  clearInterval(timer.interval);timer.interval=setInterval(tick,1000);
+  renderTimer();
+}
+function tick(){
+  if(!timer.running)return;
+  timer.remaining--;
+  if(timer.remaining===60||timer.remaining===10)chime('tick');
+  if(timer.remaining<=0){timer.remaining=0;timer.running=false;timer.finished=true;clearInterval(timer.interval);chime('up');}
+  renderTimer();
+}
+
+function renderTimer(){
+  const wrap=document.getElementById('timerWrap');
+  if(!wrap)return;
+  if(!(timer.started&&timer.examKey===current)){
+    const mins=Math.round(dur(current,timer.mode)/60);
+    wrap.innerHTML=`<div class="timer">
+      <button class="startbig" id="tGo">▶ 開始倒數</button>
+      <button class="tbtn ${timer.mode==='relax'?'on':''}" data-sel="relax">🐢 寬鬆</button>
+      <button class="tbtn ${timer.mode==='std'?'on':''}" data-sel="std">⏱ 標準</button>
+      <button class="tbtn ${timer.mode==='rush'?'on':''}" data-sel="rush">🔥 衝刺</button>
+      <span class="tsp"></span>
+      <span class="thint">${EXAMS[current].name}・${EXAMS[current].questions.length}題・約 ${mins} 分</span>
+    </div>`;
+    wrap.querySelector('#tGo').onclick=()=>startTimer(timer.mode);
+    wrap.querySelectorAll('[data-sel]').forEach(b=>b.onclick=()=>{timer.mode=b.dataset.sel;renderTimer();});
+    return;
+  }
+  const total=EXAMS[current].questions.length, done=doneCount(current);
+  if(!timer.finished&&!timer.done&&done>=total){timer.done=true;timer.running=false;clearInterval(timer.interval);chime('win');}
+  const frac=timer.total?timer.remaining/timer.total:0;
+  let clk='clock',barc='var(--green)';
+  if(frac<=0.1){clk='clock danger';barc='var(--red)';}
+  else if(frac<=0.25){clk='clock warn';barc='#E08A00';}
+  else if(frac<=0.5){barc='#C9A227';}
+  const timeFrac=(timer.total-timer.remaining)/timer.total, doneFrac=total?done/total:0;
+  let pc='ok',pt='👌 剛好';
+  if(doneFrac>=timeFrac+0.05){pc='ahead';pt='🚀 超前';}
+  else if(doneFrac>=timeFrac-0.05){pc='ok';pt='👌 剛好';}
+  else {pc='behind';pt='⚡ 加緊';}
+
+  let html;
+  if(timer.finished){
+    html=`<div class="timer"><span class="clock danger">0:00</span>
+      <span class="pace behind">⏰ 時間到</span>
+      <span class="tcount">做完 ${done}/${total} 題</span>
+      <span class="tsp"></span>
+      <button class="tbtn" id="tRe">↺ 再一次</button>
+      <button class="tbtn" id="tMode">⚙ 模式</button></div>`;
+  }else if(timer.done){
+    html=`<div class="timer"><span class="clock" style="color:var(--green)">${fmt(timer.remaining)}</span>
+      <span class="pace ahead">🎉 整張完成</span>
+      <span class="tcount" style="color:var(--green)">剩 ${fmt(timer.remaining)} 過關！</span>
+      <span class="tsp"></span>
+      <button class="tbtn" id="tRe">↺ 再一次</button></div>`;
+  }else{
+    html=`<div class="timer">
+      <span class="${clk}">${fmt(timer.remaining)}</span>
+      <span class="pace ${pc}">${pt}</span>
+      <span class="tcount">${done}/${total} 題</span>
+      <span class="tsp"></span>
+      <button class="tbtn" id="tPause">${timer.running?'⏸ 暫停':'▶ 繼續'}</button>
+      <button class="tbtn" id="tMode">⚙</button>
+      <div class="tbar"><i style="width:${frac*100}%;background:${barc}"></i></div>
+    </div>`;
+  }
+  wrap.innerHTML=html;
+  const p=wrap.querySelector('#tPause'); if(p)p.onclick=()=>{timer.running=!timer.running;renderTimer();};
+  const r=wrap.querySelector('#tRe');    if(r)r.onclick=()=>startTimer(timer.mode);
+  const mo=wrap.querySelector('#tMode'); if(mo)mo.onclick=()=>{timer.running=false;timer.started=false;clearInterval(timer.interval);renderTimer();};
 }
 
 render();
