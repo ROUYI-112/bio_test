@@ -1,201 +1,577 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>生物複習・白話詳解</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>紅藍筆 · 高一生物複習</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Gaegu:wght@400;700&family=Noto+Sans+TC:wght@400;500;700;900&display=swap');
   :root{
-    --paper:#fbf6ec; --paper-2:#f4ead6; --ink:#3a3027; --ink-soft:#6f6354;
-    --line:#e3d6bd; --yes:#2f8f5b; --no:#cf5b4e; --accent:#e8915f; --accent-deep:#c96a3a;
-    --shadow:rgba(120,90,50,.16); --key-bg:#fff6e6; --key-line:#d9952f;
+    --paper:#F6F3EB;
+    --paper-2:#FBF9F3;
+    --ink:#1F4E8C;         /* 藍筆：題目 */
+    --ink-deep:#16305C;
+    --ink-faint:#5B6B84;
+    --red:#C62828;         /* 紅筆：答案 */
+    --red-soft:#E0574F;
+    --film:rgba(214,55,48,.90);
+    --hl:#FFE86B;          /* 螢光筆 */
+    --green:#2E7D5B;
+    --rule:rgba(31,78,140,.10);
+    --line:rgba(31,78,140,.16);
+    --shadow:0 1px 2px rgba(22,48,92,.06),0 6px 18px rgba(22,48,92,.07);
   }
-  *{box-sizing:border-box;margin:0;padding:0;}
-  html{scroll-behavior:smooth;}
-  body{font-family:'Noto Sans TC',system-ui,sans-serif;background:var(--paper);
-    background-image:radial-gradient(circle at 12% 18%, rgba(232,145,95,.05), transparent 38%),radial-gradient(circle at 88% 72%, rgba(47,143,91,.05), transparent 40%);
-    color:var(--ink);line-height:1.75;-webkit-font-smoothing:antialiased;}
-  header{padding:46px 20px 28px;text-align:center;}
-  .eyebrow{font-family:'Gaegu',cursive;font-size:1.15rem;color:var(--accent-deep);letter-spacing:.18em;margin-bottom:6px;}
-  header h1{font-size:clamp(1.9rem,6vw,3rem);font-weight:900;letter-spacing:.02em;line-height:1.15;}
-  header h1 .squig{color:var(--accent-deep);}
-  .subtitle{margin-top:12px;color:var(--ink-soft);font-size:1rem;}
-  .counter{display:inline-flex;gap:14px;margin-top:18px;flex-wrap:wrap;justify-content:center;}
-  .counter span{font-family:'Gaegu',cursive;font-size:1.05rem;background:#fff;border:2px solid var(--line);border-radius:30px;padding:4px 16px;box-shadow:0 3px 0 var(--shadow);}
-  .counter b{color:var(--accent-deep);font-size:1.25rem;}
-  .tips{max-width:880px;margin:8px auto 0;padding:0 20px;}
-  .tips-card{background:linear-gradient(180deg,#fff,#fffdf8);border:2px dashed var(--accent);border-radius:18px;padding:18px 20px;box-shadow:0 4px 0 var(--shadow);}
-  .tips-card h3{font-family:'Gaegu',cursive;font-size:1.4rem;color:var(--accent-deep);margin-bottom:8px;}
-  .tips-card ul{list-style:none;display:grid;gap:7px;}
-  .tips-card li{padding-left:26px;position:relative;font-size:.96rem;}
-  .tips-card li::before{content:'★';position:absolute;left:0;top:0;color:var(--accent);font-size:.9rem;}
-  .controls{position:sticky;top:0;z-index:50;background:rgba(251,246,236,.92);backdrop-filter:blur(8px);border-bottom:2px solid var(--line);padding:14px 20px;margin-top:26px;}
-  .controls-inner{max-width:1000px;margin:0 auto;display:flex;flex-direction:column;gap:12px;}
-  .search-row{display:flex;gap:10px;align-items:center;}
-  .search-box{flex:1;display:flex;align-items:center;gap:8px;background:#fff;border:2px solid var(--line);border-radius:30px;padding:8px 16px;}
-  .search-box:focus-within{border-color:var(--accent);}
-  .search-box input{flex:1;border:none;outline:none;background:transparent;font-family:'Noto Sans TC';font-size:1rem;color:var(--ink);}
-  .search-box svg{flex-shrink:0;opacity:.5;}
-  .clear-btn{border:none;background:var(--paper-2);color:var(--ink-soft);border-radius:20px;padding:6px 14px;cursor:pointer;font-size:.85rem;font-family:inherit;}
-  .clear-btn:hover{background:var(--line);}
-  .toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
-  .toolbar .spacer{flex:1;}
-  .mini-btn{border:2px solid var(--line);background:#fff;border-radius:20px;padding:5px 13px;cursor:pointer;font-family:'Noto Sans TC';font-size:.83rem;font-weight:500;color:var(--ink-soft);}
-  .mini-btn:hover{border-color:var(--accent);color:var(--accent-deep);}
-  .chips{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;}
-  .chips::-webkit-scrollbar{height:5px;}
-  .chips::-webkit-scrollbar-thumb{background:var(--line);border-radius:10px;}
-  .chip{flex-shrink:0;border:2px solid var(--line);background:#fff;border-radius:30px;padding:6px 15px;cursor:pointer;font-family:'Noto Sans TC';font-size:.88rem;font-weight:500;color:var(--ink-soft);transition:all .15s;white-space:nowrap;}
-  .chip:hover{border-color:var(--accent);color:var(--accent-deep);}
-  .chip.active{background:var(--accent);border-color:var(--accent);color:#fff;box-shadow:0 3px 0 var(--shadow);}
-  main{max-width:1000px;margin:0 auto;padding:28px 20px 80px;}
-  .unit{margin-bottom:42px;scroll-margin-top:170px;}
-  .unit-head{display:flex;align-items:center;gap:12px;margin-bottom:18px;padding-bottom:10px;border-bottom:3px solid var(--ink);}
-  .unit-head .dot{width:14px;height:14px;border-radius:50%;flex-shrink:0;background:var(--c);}
-  .unit-head h2{font-size:1.4rem;font-weight:900;}
-  .unit-head .qn{font-family:'Gaegu',cursive;font-size:1rem;color:var(--ink-soft);margin-left:auto;}
-  .intro{background:var(--paper-2);border-radius:14px;padding:12px 16px;margin-bottom:18px;font-size:.92rem;color:var(--ink-soft);border-left:5px solid var(--c);}
-  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:18px;}
-  .card{background:#fff;border:2px solid var(--line);border-radius:18px;box-shadow:0 4px 0 var(--shadow);overflow:hidden;display:flex;flex-direction:column;transition:transform .12s,box-shadow .12s;}
-  .card:hover{transform:translateY(-2px);box-shadow:0 6px 0 var(--shadow);}
-  .qhead{padding:15px 17px 13px;}
-  .qmeta{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
-  .qbadge{font-family:'Gaegu',cursive;font-weight:700;background:var(--ink);color:#fff;border-radius:8px;padding:1px 11px;font-size:.95rem;}
-  .multi-tag{font-size:.72rem;background:var(--paper-2);color:var(--accent-deep);border-radius:12px;padding:2px 9px;font-weight:700;}
-  .stem{font-size:1rem;font-weight:700;line-height:1.7;}
-  .opts{list-style:none;margin-top:12px;display:grid;gap:7px;}
-  .opts li{background:var(--paper);border:1.5px solid var(--line);border-radius:10px;padding:7px 12px;font-size:.92rem;color:var(--ink-soft);line-height:1.55;}
-  .reveal-btn{width:100%;border:none;border-top:2px dashed var(--line);background:#fffdf7;cursor:pointer;padding:12px;font-family:'Noto Sans TC';font-weight:700;color:var(--accent-deep);font-size:.95rem;display:flex;align-items:center;justify-content:center;gap:6px;}
-  .reveal-btn:hover{background:#fff4e8;}
-  .reveal-btn .arr{transition:transform .25s;}
-  .card.open .reveal-btn .arr{transform:rotate(90deg);}
-  .card.open .reveal-btn .txt::after{content:"收合";}
-  .card:not(.open) .reveal-btn .txt::after{content:"看重點 + 詳解";}
-  .body{max-height:0;overflow:hidden;transition:max-height .4s ease;}
-  .card.open .body{max-height:1600px;}
-  .body-in{padding:16px 17px 20px;}
-  .ans-row{display:flex;align-items:center;gap:8px;margin-bottom:14px;}
-  .ans-row .lbl{font-size:.85rem;color:var(--ink-soft);}
-  .ans-pill{background:var(--yes);color:#fff;font-weight:700;font-family:'Gaegu',cursive;letter-spacing:.05em;border-radius:20px;padding:2px 14px;font-size:1rem;}
-  .block{margin-bottom:14px;}
-  .block:last-child{margin-bottom:0;}
-  .block-title{display:inline-flex;align-items:center;gap:6px;font-weight:900;font-size:.88rem;border-radius:8px;padding:3px 12px;margin-bottom:8px;}
-  .key .block-title{background:var(--key-bg);color:var(--key-line);border:1.5px solid var(--key-line);}
-  .key .block-body{background:var(--key-bg);border-left:5px solid var(--key-line);border-radius:8px;padding:10px 14px;font-size:.96rem;font-weight:500;line-height:1.7;}
-  .detail .block-title{background:#eef6f0;color:var(--yes);border:1.5px solid var(--yes);}
-  .detail .block-body{font-size:.93rem;line-height:1.85;padding-left:2px;}
-  .detail .block-body b{color:var(--accent-deep);}
-  .body-in code{font-family:'Gaegu',monospace;background:var(--paper-2);padding:1px 6px;border-radius:6px;font-size:.92em;letter-spacing:.03em;}
-  .empty{text-align:center;padding:60px 20px;color:var(--ink-soft);}
-  .empty .big{font-family:'Gaegu',cursive;font-size:1.8rem;color:var(--accent-deep);margin-bottom:6px;}
-  .totop{position:fixed;right:20px;bottom:20px;z-index:60;width:50px;height:50px;border-radius:50%;border:2px solid var(--accent);background:#fff;color:var(--accent-deep);cursor:pointer;font-size:1.3rem;box-shadow:0 4px 0 var(--shadow);opacity:0;pointer-events:none;transition:opacity .2s;display:flex;align-items:center;justify-content:center;}
-  .totop.show{opacity:1;pointer-events:auto;}
-  .totop:hover{background:var(--accent);color:#fff;}
-  footer{text-align:center;padding:30px 20px 50px;color:var(--ink-soft);font-size:.85rem;}
-  footer .heart{color:var(--accent);}
-  mark{background:#ffe08a;border-radius:3px;padding:0 2px;}
-  @media(max-width:560px){.grid{grid-template-columns:1fr;}.unit-head h2{font-size:1.15rem;}header{padding:34px 16px 22px;}}
-  .color-rose{--c:#e0728a;} .color-amber{--c:#e0a13c;} .color-sky{--c:#5aa8d6;} .color-violet{--c:#a779c9;}
-  .color-emerald{--c:#3fa86a;} .color-teal{--c:#3aa79a;} .color-lime{--c:#8aab3e;} .color-cyan{--c:#42a7b8;}
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0}
+  body{
+    background:var(--paper);
+    color:var(--ink-deep);
+    font-family:"PingFang TC","Heiti TC","Microsoft JhengHei","Noto Sans TC",system-ui,sans-serif;
+    font-size:16px;line-height:1.6;
+    /* faint ruled paper */
+    background-image:linear-gradient(var(--rule) 1px,transparent 1px);
+    background-size:100% 30px;
+    background-attachment:fixed;
+    padding-bottom:60px;
+  }
+  .wrap{max-width:760px;margin:0 auto;padding:0 14px}
+
+  /* ---- header ---- */
+  header{
+    position:sticky;top:0;z-index:30;
+    background:linear-gradient(180deg,var(--paper) 72%,rgba(246,243,235,.0));
+    padding-top:max(10px,env(safe-area-inset-top));
+    backdrop-filter:blur(2px);
+  }
+  .brand{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;padding:6px 0 10px}
+  .brand h1{
+    font-size:22px;margin:0;letter-spacing:.5px;font-weight:800;
+    color:var(--ink-deep);
+  }
+  .brand h1 .b{color:var(--ink)}
+  .brand h1 .r{color:var(--red)}
+  .brand .sub{font-size:12.5px;color:var(--ink-faint);font-weight:500}
+
+  /* exam tabs */
+  .tabs{display:flex;gap:8px}
+  .tab{
+    flex:1;border:1.5px solid var(--line);background:var(--paper-2);
+    color:var(--ink-faint);border-radius:12px 12px 4px 4px;
+    padding:9px 6px 8px;font-size:14.5px;font-weight:700;cursor:pointer;
+    display:flex;flex-direction:column;align-items:center;gap:2px;line-height:1.25;
+    transition:.15s;
+  }
+  .tab small{font-size:10.5px;font-weight:600;opacity:.75}
+  .tab.on{
+    background:var(--ink);color:#fff;border-color:var(--ink);
+    box-shadow:var(--shadow);
+  }
+  .tab.on small{color:#dCe6f5;opacity:1}
+
+  /* control bar */
+  .controls{
+    display:flex;align-items:center;gap:8px;flex-wrap:wrap;
+    margin:12px 0 4px;padding:10px 12px;
+    background:var(--paper-2);border:1px solid var(--line);border-radius:14px;
+    box-shadow:var(--shadow);
+  }
+  .film-toggle{
+    display:inline-flex;align-items:center;gap:8px;cursor:pointer;user-select:none;
+    font-weight:700;font-size:13.5px;color:var(--red);
+  }
+  .switch{
+    width:44px;height:25px;border-radius:20px;background:var(--red);
+    position:relative;transition:.2s;flex:none;box-shadow:inset 0 0 0 1px rgba(0,0,0,.06);
+  }
+  .switch::after{content:"";position:absolute;top:2.5px;left:2.5px;width:20px;height:20px;
+    border-radius:50%;background:#fff;transition:.2s;box-shadow:0 1px 3px rgba(0,0,0,.25)}
+  .film-toggle.off .switch{background:#C3CBD8}
+  .film-toggle.off .switch::after{left:21.5px}
+  .film-toggle.off{color:var(--ink-faint)}
+  .spacer{flex:1}
+  .score{font-size:13px;color:var(--ink-faint);font-weight:600;white-space:nowrap}
+  .score b{color:var(--green);font-size:15px}
+  .score .w{color:var(--red)}
+  .mini{
+    border:1px solid var(--line);background:var(--paper);border-radius:9px;
+    padding:6px 10px;font-size:12.5px;font-weight:700;color:var(--ink);cursor:pointer;
+  }
+  .mini.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+  .filters{display:flex;gap:6px;width:100%;margin-top:2px}
+  .filters .mini{flex:1;text-align:center}
+
+  /* progress bar */
+  .bar{height:6px;border-radius:6px;background:var(--line);overflow:hidden;width:100%;margin-top:6px}
+  .bar > i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--ink),var(--green));transition:.35s}
+
+  /* section heading */
+  .sec{
+    font-size:13px;font-weight:800;color:var(--ink);letter-spacing:1px;
+    margin:22px 4px 8px;display:flex;align-items:center;gap:8px;
+  }
+  .sec::before{content:"";width:6px;height:16px;border-radius:2px;background:var(--red)}
+  .passage{
+    background:var(--paper-2);border:1px dashed var(--line);border-left:4px solid var(--ink);
+    border-radius:10px;padding:10px 13px;margin:0 0 12px;font-size:13.5px;color:var(--ink-faint);
+    line-height:1.65;
+  }
+  .passage b{color:var(--ink-deep)}
+
+  /* ---- question card ---- */
+  .q{
+    background:var(--paper-2);border:1px solid var(--line);border-radius:14px;
+    padding:14px 15px 15px;margin:0 0 14px;box-shadow:var(--shadow);position:relative;
+  }
+  .q.hide{display:none}
+  .q .no{
+    display:inline-flex;align-items:center;justify-content:center;min-width:26px;height:26px;
+    padding:0 7px;border-radius:8px;background:var(--ink);color:#fff;font-weight:800;font-size:13px;
+    margin-right:8px;vertical-align:2px;
+  }
+  .q .tag{
+    font-size:10.5px;font-weight:700;color:var(--ink-faint);border:1px solid var(--line);
+    border-radius:6px;padding:1px 6px;margin-left:6px;vertical-align:2px;background:var(--paper)
+  }
+  .q .tag.multi{color:var(--red);border-color:rgba(198,40,40,.35)}
+  .stem{font-size:15.5px;color:var(--ink-deep);font-weight:500}
+  /* 紅藍筆底線 */
+  u.ur,u.ub{text-decoration:none;padding-bottom:1px;font-weight:600}
+  u.ur{border-bottom:2.5px solid var(--red)}
+  u.ub{border-bottom:2.5px solid var(--ink)}
+  .legend{display:flex;gap:12px;flex-wrap:wrap;font-size:11.5px;color:var(--ink-faint);
+    padding:2px 2px 10px;font-weight:600;align-items:center}
+  .legend u{font-weight:700}
+  .legend .lg-r{color:var(--red)}
+
+  .opts{margin:11px 0 0;display:flex;flex-direction:column;gap:7px}
+  .opt{
+    display:flex;gap:9px;align-items:flex-start;text-align:left;
+    border:1.5px solid var(--line);background:var(--paper);border-radius:10px;
+    padding:9px 11px;font-size:14.5px;color:var(--ink-deep);cursor:pointer;transition:.12s;font-family:inherit;line-height:1.5;
+  }
+  .opt .k{font-weight:800;flex:none;color:var(--ink-faint)}
+  .opt:active{transform:scale(.995)}
+  .opt.pick{border-color:var(--ink);background:rgba(31,78,140,.07);color:var(--ink-deep)}
+  .opt.pick .k{color:var(--ink)}
+  /* graded */
+  .opt.correct{border-color:var(--green);background:rgba(46,125,91,.12)}
+  .opt.correct .k{color:var(--green)}
+  .opt.correct::after{content:"✓";margin-left:auto;color:var(--green);font-weight:800}
+  .opt.badpick{border-color:var(--red);background:rgba(198,40,40,.10)}
+  .opt.badpick .k{color:var(--red)}
+  .opt.badpick::after{content:"✕";margin-left:auto;color:var(--red);font-weight:800}
+  .graded .opt{cursor:default}
+
+  .qbtns{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+  .reveal{
+    border:none;background:var(--red);color:#fff;font-weight:800;font-size:14px;
+    border-radius:10px;padding:9px 16px;cursor:pointer;font-family:inherit;
+    box-shadow:0 2px 8px rgba(198,40,40,.28);
+  }
+  .reveal.small{background:var(--ink);box-shadow:0 2px 8px rgba(31,78,140,.22)}
+  .reveal:active{transform:translateY(1px)}
+
+  /* ---- answer under the red film ---- */
+  .ans{margin-top:12px;border-radius:11px;overflow:hidden;position:relative}
+  .film{
+    background:
+      repeating-linear-gradient(45deg,rgba(255,255,255,.10) 0 10px,transparent 10px 20px),
+      var(--film);
+    color:#fff;font-weight:800;font-size:14px;letter-spacing:1px;
+    padding:16px;text-align:center;cursor:pointer;border-radius:11px;
+    display:flex;align-items:center;justify-content:center;gap:8px;
+    box-shadow:inset 0 0 0 1px rgba(255,255,255,.25);
+  }
+  .film small{font-weight:600;opacity:.85;letter-spacing:0}
+  .ans.open .film{display:none}
+  .ans-body{display:none;padding:13px 14px;background:rgba(198,40,40,.055);
+    border:1px solid rgba(198,40,40,.25);border-radius:11px}
+  .ans.open .ans-body{display:block;animation:lift .28s ease both}
+  @keyframes lift{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
+  .ans-key{color:var(--red);font-weight:800;font-size:15px;margin-bottom:6px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .ans-key .lab{font-size:11px;font-weight:700;color:#fff;background:var(--red);padding:2px 8px;border-radius:6px;letter-spacing:1px}
+  .explain{color:#7a2a26;font-size:14px;line-height:1.68}
+  .explain b{color:var(--red)}
+
+  .selfmark{display:flex;gap:8px;margin-top:11px}
+  .selfmark button{
+    flex:1;border:1.5px solid var(--line);background:var(--paper);border-radius:9px;
+    padding:8px;font-weight:800;font-size:13.5px;cursor:pointer;font-family:inherit;color:var(--ink-faint)
+  }
+  .selfmark button.got{color:var(--green)}
+  .selfmark button.got.on{background:var(--green);color:#fff;border-color:var(--green)}
+  .selfmark button.miss{color:var(--red)}
+  .selfmark button.miss.on{background:var(--red);color:#fff;border-color:var(--red)}
+
+  .empty{text-align:center;color:var(--ink-faint);padding:40px 10px;font-size:14px}
+  footer{text-align:center;color:var(--ink-faint);font-size:11.5px;padding:24px 10px 6px;line-height:1.7}
+  @media (max-width:420px){
+    .brand h1{font-size:19px}
+    .tab{font-size:13px}
+    .stem{font-size:15px}
+  }
 </style>
 </head>
 <body>
 <header>
-  <div class="eyebrow">高中生物・段考複習</div>
-  <h1>把生物<span class="squig">學會</span></h1>
-  <p class="subtitle">先讀題幹和選項想一想,再點開看「重點 + 詳解」</p>
-  <div class="counter">
-    <span><b id="cUnits">0</b> 個主題</span>
-    <span><b id="cQs">0</b> 道題目</span>
-    <span>點卡片 <b>看解答</b></span>
+  <div class="wrap">
+    <div class="brand">
+      <h1><span class="r">紅</span><span class="b">藍</span>筆生物</h1>
+      <span class="sub">中山女中 · 114-2 高一生物</span>
+    </div>
+    <div class="legend">
+      <span><u class="ur">紅線</u>＝題目在問什麼</span>
+      <span><u class="ub">藍線</u>＝關鍵字</span>
+      <span class="lg-r">🔴 點膠片翻答案</span>
+    </div>
+    <div class="tabs" id="tabs"></div>
+    <div class="controls">
+      <div class="film-toggle" id="filmToggle" title="蓋上/掀開全部答案">
+        <span class="switch"></span><span id="filmLabel">紅膠片：蓋著</span>
+      </div>
+      <div class="spacer"></div>
+      <div class="score" id="score"></div>
+      <div class="filters">
+        <button class="mini on" data-f="all">全部</button>
+        <button class="mini" data-f="todo">未作答</button>
+        <button class="mini" data-f="wrong">答錯的</button>
+        <button class="mini" data-f="reset">重設本卷</button>
+      </div>
+      <div class="bar"><i id="prog"></i></div>
+    </div>
   </div>
 </header>
-<div class="tips"><div class="tips-card"><h3>🔑 萬用口訣(先記這幾條)</h3><ul id="tipsList"></ul></div></div>
-<div class="controls"><div class="controls-inner">
-  <div class="search-row">
-    <div class="search-box">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
-      <input id="search" type="text" placeholder="搜尋關鍵字…例如:抗藥性、限制酶、DNA、達爾文">
-    </div>
-    <button class="clear-btn" id="clearBtn">清除</button>
-  </div>
-  <div class="toolbar">
-    <button class="mini-btn" id="expandAll">全部展開</button>
-    <button class="mini-btn" id="collapseAll">全部收合</button>
-    <span class="spacer"></span>
-  </div>
-  <div class="chips" id="chips"></div>
-</div></div>
-<main id="main"></main>
-<button class="totop" id="totop" aria-label="回到頂端">↑</button>
-<footer>看不懂的題目把題號告訴我,我換個比喻再講一次 <span class="heart">♥</span></footer>
+
+<main class="wrap" id="main"></main>
+<footer>紅藍筆讀題法：<u class="ur">紅底線</u>看清楚題目在問什麼、<u class="ub">藍底線</u>抓關鍵字，先自己想，再點紅膠片對答案 ✏️<br>底線由系統自動標記，資料整理自三份段考詳解，如有出入以老師公布答案為準。</footer>
 
 <script>
-const DATA = [{"unit": "卷5 遺傳物質", "uid": "u5", "color": "rose", "questions": [{"no": "1", "ans": "A", "stem": "真核生物以何種物質作為遺傳訊息?", "options": ["(A) 去氧核糖核酸", "(B) 核糖核酸", "(C) 去氧核糖核苷酸", "(D) 核糖核苷酸", "(E) 含氮鹼基"], "key": "正本「使用說明書」是 DNA;RNA 是影印本、核苷酸是字母、含氮鹼基是字母的一小部分。", "detail": "• (A) 去氧核糖核酸=DNA ✅<br>• (B) RNA ❌ 影印本<br>• (C)(D) 核苷酸 ❌ 一個字母,單獨看不懂<br>• (E) 含氮鹼基 ❌ 字母的一小部分"}, {"no": "2", "ans": "C", "stem": "生命世界以 DNA 作為遺傳訊息,最有可能的原因為何?", "options": ["(A) 同時具有酵素功能,可催化許多化學反應", "(B) 無法發生突變,可將祖先的遺傳訊息完全遺傳給後代", "(C) 經由複製所製造的兩條 DNA 產物幾乎相同,可確保後代具有相同的遺傳特性", "(D) 只出現在細胞核內,受到完善保護,不會受環境影響", "(E) 是單股結構,每條 DNA 攜帶一個基因"], "key": "DNA 會複製出兩份幾乎一樣的,爸媽印給小孩,後代就有相同特徵。", "detail": "• (A) DNA 不具酵素功能 ❌<br>• (B) DNA 存在突變的可能 ❌<br>• (C) 複製出兩份幾乎相同→後代有相同特徵 ✅<br>• (D) DNA 也在粒線體、葉綠體 ❌<br>• (E) DNA 是雙股,一條有許多基因 ❌"}, {"no": "3", "ans": "B", "stem": "將細胞內的核酸進行分解,在完全分解到最小以前停止,可能會發現什麼物質?各物質的種類為何?", "options": ["(A) 4 種核苷酸,4 種含氮鹼基,2 種五碳醣,1 種磷酸", "(B) 8 種核苷酸,5 種含氮鹼基,2 種五碳醣,1 種磷酸", "(C) 10 種核苷酸,5 種含氮鹼基,1 種五碳醣,2 種磷酸", "(D) 10 種核苷酸,5 種含氮鹼基,1 種五碳醣,2 種磷酸", "(E) 8 種核苷酸,4 種含氮鹼基,2 種五碳醣,1 種磷酸"], "key": "核酸含 DNA+RNA。核苷酸 4+4=8、含氮鹼基 ATGCU=5、五碳醣 2、磷酸 1。", "detail": "核酸包含 DNA 與 RNA。<br>• 核苷酸:DNA 4+RNA 4=<b>8 種</b><br>• 含氮鹼基:A、T、G、C、U=<b>5 種</b><br>• 五碳醣:去氧核糖、核糖=<b>2 種</b><br>• 磷酸=<b>1 種</b><br>選 (B)。"}, {"no": "4", "ans": "C", "stem": "基因表現的過程中,與下列哪一個物質或過程最無關?", "options": ["(A) RNA 聚合酶", "(B) 轉錄", "(C) DNA 聚合酶", "(D) 轉譯", "(E) 核糖體"], "key": "DNA 聚合酶只在「DNA 複製」時上工,不參與基因表現。", "detail": "基因表現需要轉錄、轉譯、RNA 聚合酶、核糖體。<br>• (C) DNA 聚合酶 ❌ 只參與 DNA 複製<br>選 (C)。"}, {"no": "5", "ans": "A", "stem": "北方墨點法可偵測 RNA 量,顏色愈深表示 RNA 量愈多,右圖為人類胰臟癌細胞及正常細胞 EGF RNA 量的結果(7S RNA 為細胞均會表現的 RNA)。從右圖可推測,胰臟癌細胞和正常細胞的差異為何?", "options": ["(A) 胰臟癌細胞表現較多的 EGF RNA", "(B) 胰臟癌細胞表現較多的 7S RNA", "(C) 正常細胞 DNA 上的 EGF 基因比較少", "(D) 正常細胞表現的 EGF 蛋白質比較少", "(E) EGF 的突變為正常細胞癌化的主要原因"], "key": "顏色愈深 RNA 愈多,癌細胞 EGF 那排較深 → 癌細胞 EGF RNA 較多。", "detail": "顏色愈深=RNA 愈多。<br>• (A) 癌細胞 EGF 較深→EGF RNA 較多 ✅<br>(7S 兩邊差不多,是對照用。)選 (A)。"}, {"no": "6", "ans": "D", "stem": "有關本實驗的實驗設計,下列敘述何者正確?", "options": ["(A) 胰臟癌細胞組為對照組", "(B) 細胞的癌化與否為應變變因", "(C) EGF RNA 的量為操縱變因", "(D) 7S RNA 的量為控制變因,代表放入的總 RNA 量類似", "(E) 預期結果為 7S RNA 的表現量在正常細胞組與胰臟癌細胞組有差異"], "key": "操縱變因=癌化與否;應變變因=EGF RNA 量;控制變因=放入的總 RNA 量。", "detail": "• (A) 正常細胞組才是對照組 ❌<br>• (B) 癌化與否是操縱變因 ❌<br>• (C) EGF RNA 量是應變變因 ❌<br>• (D) 7S 量=控制變因 ✅<br>• (E) 7S 預期兩組沒差異 ❌"}]}, {"unit": "卷6 基因轉殖", "uid": "u6", "color": "amber", "questions": [{"no": "1", "ans": "A", "stem": "有關甲、乙和丙三個酵素的敘述,下列何者正確?", "options": ["(A) 甲和乙為相同酵素", "(B) 乙可連接 DNA 序列", "(C) 丙可辨認特定 DNA 序列並進行切割", "(D) 甲、乙、丙三個酵素僅能在細菌體內作用", "(E) 甲、乙在人類細胞內也可找到"], "key": "甲乙都是「剪刀」(剪不同段)、丙是「膠水」(連接)。", "detail": "• (A) 甲乙是相同酵素 ✅<br>• (B) 乙是剪刀不是膠水 ❌<br>• (C) 丙是膠水不是剪刀 ❌<br>• (D) 試管也能用 ❌<br>• (E) 這是細菌的工具 ❌"}, {"no": "2", "ans": "B", "stem": "丁被稱為下列何者?", "options": ["(A) 目標基因", "(B) 重組 DNA", "(C) 質體", "(D) 載體", "(E) 染色體"], "key": "目標基因 + 載體 黏在一起後形成的新繩子,就叫重組 DNA。", "detail": "丁=把目標基因黏進載體後的產物。把兩段繩子黏成新的一條→<b>重組DNA</b>,選 (B)。"}, {"no": "3", "ans": "C", "stem": "下列有關丁和己的比較,何者正確?", "options": ["(A) 丁比己的分子量大", "(B) 丁會插入己之後才能表現", "(C) 丁會利用細胞中的酵素及核糖體進行基因表現", "(D) 丁進入細胞後,己會消失", "(E) 丁為環狀,己為線狀"], "key": "丁=重組DNA(小)、己=染色體(大);丁進細菌後借用細菌的酵素、核糖體做東西;兩者皆環狀。", "detail": "• (A) 丁比己小 ❌<br>• (B) 丁不插入己即可表現 ❌<br>• (C) 丁利用細胞的酵素及核糖體 ✅<br>• (D) 己不會消失 ❌<br>• (E) 兩者皆為環狀 ❌"}, {"no": "4", "ans": "C", "stem": "下列有關戊細胞的敘述,何者正確?", "options": ["(A) 轉殖過程中,每個戊均可成功得到丁", "(B) 丁上若有分解抗生素的基因,則可將戊殺死", "(C) 題圖中戊為原核細胞,但丁亦可轉殖到真核生物中", "(D) 需要高基氏體修飾的蛋白質最適合用戊來做基因表現", "(E) 進行轉殖後的戊可以任意棄置,不會影響環境"], "key": "戊是原核細胞,但重組DNA也可轉殖到真核生物;細菌沒高基氏體,不適合做需修飾的蛋白。", "detail": "• (A) 不是每隻戊都拿到丁 ❌<br>• (B) 抗生素分解基因是讓戊不怕,不是殺死 ❌<br>• (C) 丁也可轉殖到真核生物 ✅<br>• (D) 細菌沒高基氏體 ❌<br>• (E) 不能隨便棄置 ❌"}, {"no": "5", "ans": "D", "stem": "在基因轉殖的操作過程中,會將目標基因由 A 生物移轉至 B 生物體內,並使 B 生物產生目標基因的產物。B 生物可以正確製造出產物的原因與下列哪一描述最相關?", "options": ["(A) 所有生物都有細胞核", "(B) 所有生物都以蛋白質記錄遺傳訊息", "(C) 所有 DNA 複製過程都是半保留複製", "(D) 所有生物都執行分子生物學的中心法則", "(E) 所有生物都具有核糖體"], "key": "所有生物都用同一套規則(中心法則:DNA→RNA→蛋白質),食譜給別人也能做出一樣的東西。", "detail": "• (A) 細菌沒細胞核 ❌<br>• (B) 用 DNA 記錄 ❌<br>• (C) 跟複製方式無關 ❌<br>• (D) 都執行中心法則 ✅<br>• (E) 雖都有核糖體,但非關鍵原因"}, {"no": "6", "ans": "A", "stem": "欲使作物具有抗蟲能力,可轉殖下列何種蛋白來達到目的?", "options": ["(A) 蘇力菌的毒蛋白", "(B) 胡蘿蔔素基因", "(C) 水母螢光基因", "(D) 抗殺草劑基因", "(E) 人類凝血因子基因"], "key": "蘇力菌的毒蛋白只毒蟲蟲,蟲吃了會死,作物就不怕被咬。", "detail": "• (A) 蘇力菌毒蛋白 ✅ 只毒昆蟲<br>• (B) 胡蘿蔔素 ❌ 提高營養<br>• (C) 水母螢光 ❌ 發光<br>• (D) 抗殺草劑 ❌<br>• (E) 人類凝血因子 ❌ 治療藥物"}, {"no": "7", "ans": "C", "stem": "承上題,此作物可能造成何種負面影響?", "options": ["(A) 食用此基因轉殖作物會使人類腸道崩解", "(B) 可減少農藥使用", "(C) 此基因轉殖作物的花粉落在其他植物上,造成取食此植物的昆蟲也受到影響", "(D) 此蛋白會使基因轉殖作物生長速度加快", "(E) 不會有任何負面影響"], "key": "花粉飄到別的植物上,讓吃那株植物的昆蟲也被毒到。", "detail": "• (A) 只影響昆蟲腸道,不影響人 ❌<br>• (B) 這是正面影響 ❌<br>• (C) 花粉落他處,取食昆蟲受影響 ✅<br>• (D) 不會使生長加快 ❌<br>• (E) 仍可能有負面影響 ❌"}, {"no": "8", "ans": "E", "stem": "基因轉殖生物的貢獻不含下列何者?", "options": ["(A) 加速動物生長,增加肉品產量", "(B) 利用微生物製造人類胰島素", "(C) 減緩農作物成熟腐壞速度,增加食物倉儲時間", "(D) 減少病蟲害,增加農作物產量", "(E) 保存原生物種遺傳多樣性,並增加物種多樣性"], "key": "基改生物跟原本同一種,不會增加物種多樣性。題目問「不含」,選這個錯的。", "detail": "(A)~(D) 都是貢獻。<br>• (E) 基改生物與原有生物同種,不會增加物種多樣性 ❌<br>題目問「不含」,選 (E)。"}, {"no": "9", "ans": "E", "stem": "研究單位創造出人類凝血因子基因轉殖山羊:寶鈺。創造寶鈺時會經過哪個過程?", "options": ["(A) 將人類凝血因子蛋白質送入寶鈺的細胞內", "(B) 將寶鈺的凝血因子 DNA 轉殖到人類 DNA", "(C) 將人類凝血因子的 RNA 轉殖到寶鈺的 DNA", "(D) 將寶鈺的凝血因子 RNA 轉殖到人類 DNA", "(E) 將人類的凝血因子 DNA 轉殖到寶鈺的 DNA"], "key": "寶鈺是有人類凝血因子基因的羊,所以把人類凝血因子 DNA 放進寶鈺的 DNA。方向人類→寶鈺,放的是 DNA。", "detail": "寶鈺擁有人類凝血因子基因,所以把人類凝血因子 <b>DNA</b> 轉殖給寶鈺。方向人類→寶鈺,選 (E)。"}, {"no": "10", "ans": "B", "stem": "基因改造鮭魚含太平洋帝王鮭生長激素基因及大洋鱈魚啟動子序列,讓鮭魚全年無休生長。下列有關本文的敘述,何者正確?", "options": ["(A) 現在所吃的鮭魚均為基因轉殖鮭魚", "(B) 基因轉殖的鮭魚會產生太平洋帝王鮭的生長激素", "(C) 野生鮭魚具大洋鱈魚的啟動子序列", "(D) 基因轉殖鮭魚的生長期具季節性", "(E) FDA 為基因轉殖鮭魚的研發者"], "key": "基改鮭魚放了帝王鮭的生長激素基因,所以會產生帝王鮭生長激素;全年無休(無季節性)。", "detail": "• (A) 文章沒提 ❌<br>• (B) 會產生帝王鮭生長激素 ✅<br>• (C) 是基改才有鱈魚啟動子 ❌<br>• (D) 全年無休,無季節性 ❌<br>• (E) FDA 是批准單位,非研發者 ❌"}, {"no": "11", "ans": "D", "stem": "下圖為基因轉殖鮭魚與正常鮭魚的生長情形比較圖,下列有關此圖的敘述,何者正確?", "options": ["(A) 基因轉殖鮭魚出生時就較正常鮭魚大", "(B) 基因轉殖鮭魚一生的大小都比正常鮭魚大", "(C) 正常鮭魚養兩年即可達到可販售大小", "(D) 基因轉殖鮭魚成長到可販售大小的時間較短", "(E) 基因轉殖鮭魚成長最快的時間點為 0~1.5 年左右"], "key": "基改鮭魚前面長得快,較早達到可販售大小;約 3.5 年後反而比正常的小。", "detail": "• (A) 第 0 年差不多 ❌<br>• (B) 約 3.5 年後反而較小 ❌<br>• (C) 正常需約 2.5 年 ❌<br>• (D) 達販售大小時間較短 ✅<br>• (E) 成長最快是 1.5~2.5 年 ❌"}, {"no": "12", "ans": "C", "stem": "有關以上生長情形比較的實驗,下列敘述何者正確?", "options": ["(A) 操縱變因為重量", "(B) 應變變因為年齡", "(C) 控制變因為養殖的水質及食物來源等", "(D) 基因轉殖鮭魚為對照組", "(E) 本實驗僅需飼養一隻基因轉殖鮭魚及一隻正常鮭魚即可得到可信的實驗數據"], "key": "操縱變因=是否基因轉殖;應變變因=重量;控制變因=水質、食物來源。", "detail": "• (A) 操縱變因為基因轉殖與否 ❌<br>• (B) 應變變因為重量 ❌<br>• (C) 控制變因為水質及食物來源 ✅<br>• (D) 正常鮭魚為對照組 ❌<br>• (E) 至少重複三次 ❌"}]}, {"unit": "DNA複製・核酸(多選)", "uid": "udup", "color": "rose", "questions": [{"no": "1", "ans": "A、D", "stem": "DNA 複製時,新形成的兩條 DNA 完全相同,下列有關 DNA 複製的敘述,哪些正確?(應選 2 項)", "options": ["(A) 以半保留方式複製,雙股會分開,以舊的一股合成新的", "(B) 以全保留方式複製,舊有雙股不分開,合成一條全新的雙股 DNA", "(C) 以散置方式複製,整條 DNA 隨機斷裂、分散,新合成的雙股中有部分新部分舊", "(D) DNA 雙股存在鹼基配對的現象,只要能確定其中一股含氮鹼基順序,就能推定另一股", "(E) DNA 雙股鹼基順序相同,4 種含氮鹼基都只跟自己配對互補"], "key": "DNA 是半保留複製(雙股拉開各配一條新的);A配T、G配C,看一股就能推另一股。", "detail": "梅舍生與史塔爾已證實為半保留複製。<br>• (A) 半保留,用舊的一股合成新的 ✅<br>• (D) 知道一股就能推另一股 ✅<br>• (B)(C) ❌<br>• (E) A與T、G與C互補,非自己配自己 ❌"}, {"no": "2", "ans": "B、D", "stem": "關於核酸中 DNA 與 RNA 的比較,下列關於 RNA 的描述哪些正確?(應選 2 項)", "options": ["(A) 使用去氧核糖與磷酸為骨架,以雙股的形式存在", "(B) 以核糖與磷酸為骨架,使用的含氮鹼基通常不包含胸腺嘧啶", "(C) 使用 DNA 聚合酶,將 DNA 上的訊息複製成 RNA", "(D) DNA 上的訊息必須被轉錄成 RNA 後,才能被轉譯成蛋白質", "(E) 大部分的生物使用 RNA 作為遺傳物質"], "key": "RNA:核糖+磷酸、單股、用 U 不用 T;DNA 訊息要先轉錄成 RNA 才能轉譯。", "detail": "• (A) 去氧核糖、雙股是 DNA 的特徵 ❌<br>• (B) 核糖+磷酸,不含 T ✅<br>• (C) DNA 聚合酶只能做 DNA ❌<br>• (D) DNA→RNA→蛋白質 ✅<br>• (E) 大部分生物用 DNA ❌"}]}, {"unit": "DNA萃取・梅舍生實驗", "uid": "uext", "color": "rose", "questions": [{"no": "7", "ans": "C", "stem": "以奇異果作 DNA 粗萃取。甲:加高濃度食鹽水;乙:加嫩精或木瓜酵素;丙:果肉加水磨碎;丁:加適量清潔劑;戊:加冷凍 95% 酒精。最適當的順序為何?", "options": ["(A) 甲乙丙丁戊", "(B) 乙丙丁戊甲", "(C) 丙丁乙甲戊", "(D) 丁甲戊乙丙", "(E) 戊丁丙甲乙"], "key": "丙(磨碎)→丁(清潔劑)→乙(酵素)→甲(食鹽水)→戊(酒精)。", "detail": "1.<b>丙</b>磨碎→2.<b>丁</b>清潔劑(溶外套)→3.<b>乙</b>酵素(拆蛋白)→4.<b>甲</b>食鹽水(溶出DNA)→5.<b>戊</b>酒精(DNA結團)。選 (C)。"}, {"no": "8", "ans": "B", "stem": "承上題,關於各步驟的原理,下列敘述何者正確?", "options": ["(A) 甲:使 DNA 脫水凝集", "(B) 乙:分解蛋白質", "(C) 丙:將所有膜狀胞器搗碎破裂", "(D) 丁:去除細胞壁上累積的脂質", "(E) 戊:使蛋白質變性沉澱"], "key": "乙(嫩精/木瓜酵素)的作用是分解蛋白質。", "detail": "• (A) 甲使 DNA 溶於食鹽水 ❌<br>• (B) 乙分解蛋白質 ✅<br>• (C) 丙打破細胞壁 ❌<br>• (D) 丁破壞細胞膜與核膜 ❌<br>• (E) 戊使 DNA 凝結 ❌"}, {"no": "9", "ans": "B", "stem": "梅舍生史塔爾將大腸桿菌養於含 ¹⁵N 培養基使雙股均含 ¹⁵N,再轉到含 ¹⁴N 培養基分裂一代。右圖甲~戊何者可能為第一次分裂後的 DNA 離心結果?", "options": ["(A) 甲", "(B) 乙", "(C) 丙", "(D) 丁", "(E) 戊"], "key": "半保留複製,第一次分裂後每條 DNA 都是「一半重(¹⁵N)+一半輕(¹⁴N)」=中間帶。", "detail": "新股以 ¹⁴N 合成,半保留複製,兩個新雙股均為 ¹⁴N¹⁵N,只有一個中間條帶。圖上乙=中間,選 (B)。"}, {"no": "10", "ans": "E", "stem": "若以細線段代表 ¹⁵N、粗線段代表 ¹⁴N,則下列何者可能是第一代大腸桿菌雙股 DNA 的組成方式?", "options": ["(A) (圖A)", "(B) (圖B)", "(C) (圖C)", "(D) (圖D)", "(E) (圖E)一條細線+一條粗線纏繞"], "key": "第一代:舊股=細線(¹⁵N重)、新股=粗線(¹⁴N輕),每條雙股=一細線+一粗線。", "detail": "雙股打開,以舊股(細線)為模版複製新股(粗線),兩個雙股螺旋皆由一細線+一粗線組成。選 (E)。"}]}, {"unit": "基因轉殖(多選)", "uid": "ugmo", "color": "amber", "questions": [{"no": "1", "ans": "A、B、D", "stem": "下列有關基因轉殖生物及其功能的配對,哪些正確?(應選 3 項)", "options": ["(A) 基因轉殖細菌清除海上漏油造成的汙染", "(B) 轉殖抗殺草劑基因的玉米不會被除草劑殺死", "(C) 黃金米轉殖葉黃素基因而呈黃色", "(D) 轉殖生長激素基因的鮭魚生長快速", "(E) 組織培養的蘭花保有美麗的花色"], "key": "細菌清漏油、抗殺草劑玉米、生長激素鮭魚都對;黃金米是胡蘿蔔素、組織培養是無性生殖。", "detail": "• (A) 清漏油 ✅<br>• (B) 抗殺草劑玉米 ✅<br>• (C) 黃金米是胡蘿蔔素基因呈黃,非葉黃素 ❌<br>• (D) 生長激素鮭魚 ✅<br>• (E) 組織培養=無性生殖,非基因轉殖 ❌"}, {"no": "2", "ans": "A、E", "stem": "基因轉殖生物可製造人類需要的蛋白質,是因為哪些條件?(應選 2 項)", "options": ["(A) 該生物也遵守分子生物學的中心法則,進行轉錄、轉譯", "(B) 該生物可以直接將 DNA 用於轉譯", "(C) 該生物必為真核細胞,所以轉錄、轉譯方式與人類相同", "(D) 該生物轉錄時,鹼基配對的方式與人類的不同", "(E) 該生物轉譯時,RNA 訊息對應的胺基酸與人類相同"], "key": "大家都遵守中心法則、用同一套翻譯表(遺傳密碼)。", "detail": "• (A) 遵守中心法則 ✅<br>• (B) 沒生物直接把 DNA 轉譯 ❌<br>• (C) 原核生物也可 ❌<br>• (D) 配對方式不同就做不出產物 ❌<br>• (E) 對應胺基酸與人類相同 ✅"}, {"no": "3", "ans": "B、D、E", "stem": "下列有關載體的敘述,哪些正確?(應選 3 項)", "options": ["(A) 又稱為質體", "(B) 病毒基因體可作為載體", "(C) 成分可為蛋白質", "(D) 可攜帶目標基因", "(E) 常攜帶可供選殖的基因"], "key": "載體=載運目標基因的工具;質體只是其中一種,載體≠質體;成分是 DNA 或 RNA。", "detail": "• (A) 質體是一種載體,載體≠質體 ❌<br>• (B) 病毒基因體可作載體 ✅<br>• (C) 成分為 DNA 或 RNA ❌<br>• (D) 可攜帶目標基因 ✅<br>• (E) 常攜帶可供選殖的基因 ✅"}]}, {"unit": "限制酶", "uid": "ure", "color": "amber", "questions": [{"no": "4", "ans": "B、E", "stem": "下列有關限制酶本文的敘述,哪些正確?(應選 2 項)", "options": ["(A) 一種限制酶可以辨識多種 DNA 序列並進行切割", "(B) 限制酶可利用在遺傳工程上", "(C) 細菌的 DNA 上不會出現限制酶辨認的序列", "(D) 細菌的 DNA 序列也可能會被限制酶切斷", "(E) 細菌 DNA 上的切割位置具有甲基化"], "key": "限制酶可用於遺傳工程;細菌靠 DNA 上的甲基化保護自己不被切斷。", "detail": "• (A) 一種限制酶只辨識單種序列 ❌<br>• (B) 可用於遺傳工程 ✅<br>• (C) 細菌 DNA 上會出現辨認序列 ❌<br>• (D) 細菌 DNA 不會被切斷(甲基化保護)❌<br>• (E) 切割位置具甲基化 ✅"}, {"no": "5", "ans": "C、E", "stem": "EcoRI 認知序列為 GAATTC,從 GA 之間切開(上股 GAATTC、下股 CTTAAG)。露出的序列為何?共露出幾個鹼基?", "options": ["(A) GAATTC", "(B) CTTA", "(C) AATT", "(D) 5 個", "(E) 4 個"], "key": "從 G|A 之間切開後,中間露出 AATT,一邊露出 4 個鹼基。", "detail": "從上股 G|A、下股對稱位置切開,中間露出 <b>AATT</b>,共 <b>4 個</b>鹼基。序列選 (C)、數量選 (E)。"}, {"no": "6", "ans": "A、C、E", "stem": "限制酶 BamHI,依命名規則,下列哪些正確?(應選 3 項)", "options": ["(A) 來自澱粉芽孢桿菌 B. amyloliquefaciens", "(B) 來自大腸桿菌 E.coli", "(C) 來自於 H 菌株", "(D) 來自於 HI 菌株", "(E) 是此菌株中第一個被發現的限制酶"], "key": "Bam=澱粉芽孢桿菌、H=H菌株、I=第一個被發現。", "detail": "拆解 BamHI:Bam(細菌)+H(菌株)+I(第幾個)。<br>• (A) 澱粉芽孢桿菌 ✅<br>• (B) 若來自大腸桿菌應叫 Eco ❌<br>• (C) H 菌株 ✅<br>• (D) I 是第一個,非菌株名 ❌<br>• (E) 第一個被發現 ✅"}]}, {"unit": "DNA放大(PCR)素養題", "uid": "upcr", "color": "sky", "questions": [{"no": "1", "ans": "C", "stem": "由短文可知,可使 DNA「特定片段」放大的主要原因為何?", "options": ["(A) DNA 半保留複製", "(B) 鹼基的配對存在專一性", "(C) 引子設計的專一性", "(D) DNA 帶有負電", "(E) RNA 聚合酶的轉錄"], "key": "引子是專門設計的,只貼在你要的那段兩端,把中間框起來(像書籤)。", "detail": "• (C) 引子設計的專一性 ✅ 像書籤精準標範圍<br>• (A) 半保留 ❌ (B) 鹼基配對有關但非關鍵<br>• (D) 帶負電 ❌ (E) RNA轉錄 ❌"}, {"no": "2", "ans": "A、C、E", "stem": "利用你對 DNA 放大的了解,下列哪些可能是對引子專一性的直接應用?(應選 3 項)", "options": ["(A) 針對基改作物的外源基因設計引子,檢查農產品原料中是否摻雜基改作物", "(B) 利用引子將目標基因切下進行基因轉殖", "(C) 設計引子將兩個人的 DNA 分別放大,確認親緣關係", "(D) 利用引子進行專一性蛋白質的合成", "(E) 針對保育類動物 DNA 設計引子,檢查盜獵者的肉品是否含保育類動物"], "key": "引子能精準認出某段 DNA → 拿來「檢查有沒有那段」。", "detail": "• (A) 檢查農產品有沒有混基改 ✅<br>• (C) 放大兩人DNA確認親緣 ✅<br>• (E) 檢查盜獵肉裡有沒有保育類 ✅<br>• (B) 引子不是剪刀 ❌<br>• (D) 引子不合成蛋白質 ❌"}, {"no": "3", "ans": "B、C", "stem": "此技術對於重組 DNA 有何助益?(應選 2 項)", "options": ["(A) 可將載體數目變多", "(B) 可將目標基因變多,增加重組 DNA 成功的機率", "(C) 可用來確認轉殖細菌是否成功帶有重組 DNA", "(D) 可用來繁殖轉殖成功的細菌", "(E) 可用來萃取轉殖基因細菌表現的蛋白質"], "key": "PCR 把目標基因多印幾份(較易黏成功),也能檢查細菌有沒有成功帶重組DNA。", "detail": "• (B) 目標基因變多,增加成功率 ✅<br>• (C) 確認轉殖細菌是否帶重組DNA ✅<br>• (A) 載體變多 ❌<br>• (D) 繁殖細菌要靠培養 ❌<br>• (E) PCR 處理 DNA 非蛋白質 ❌"}, {"no": "4", "ans": "450 個", "stem": "右圖電泳圖左側為 DNA 標準品。右側為一經 DNA 放大後的樣品,請問右側的 DNA 大小約為幾個鹼基對?", "options": ["(這題為填充題,無 A~E 選項)"], "key": "電泳像賽跑:DNA 越小跑越快(跑越遠)。右側未知落在 500 和 400 之間 → 約 450 個鹼基對。", "detail": "右側 DNA 片段介於 500 與 400 鹼基之間,約 <b>450 個鹼基對</b>。"}, {"no": "5", "ans": "D", "stem": "承上題,有關此電泳圖,下列敘述何者正確?", "options": ["(A) 右側的樣品為單股 DNA", "(B) 從此圖可判斷 DNA 序列", "(C) 從此圖可判斷 DNA 的結構為雙股螺旋", "(D) 此電泳圖的上方連接負極,下方連接正極", "(E) 右側未知的 DNA 約含有 112 個腺嘌呤"], "key": "DNA 帶負電,從負極(上)往正極(下)跑;電泳圖只能看長度,看不出序列、結構、鹼基數。", "detail": "• (A) PCR 放大是雙股 ❌<br>• (B)(C) 只能看長度 ❌<br>• (D) 上接負極、下接正極 ✅<br>• (E) 圖看不出有幾個 A ❌"}]}, {"unit": "DNA結構・中心法則素養題", "uid": "ucentral", "color": "violet", "questions": [{"no": "圖1-10", "ans": "A、B", "stem": "右圖為 DNA 的結構(甲=去氧核糖+磷酸,中間為鹼基)。下列敘述哪些正確?(應選 2 項)", "options": ["(A) 甲由去氧核糖和磷酸基所組成", "(B) 乙為腺嘌呤", "(C) 丙為共價鍵", "(D) DNA 雙股分開時是將丁處打斷", "(E) 戊為胞嘧啶"], "key": "甲=去氧核糖+磷酸(柱子);乙對面配 T 故為 A;丙是氫鍵(分開時打斷的是它);戊是 G。", "detail": "• (A) 甲=去氧核糖+磷酸 ✅<br>• (B) 乙為腺嘌呤 A ✅(對面配 T)<br>• (C) 丙為氫鍵,非共價鍵 ❌<br>• (D) 分開時打斷丙(氫鍵)非丁 ❌<br>• (E) 戊為鳥糞嘌呤 G ❌"}, {"no": "題組1", "ans": "UAAGGCAUUGCCUGG", "stem": "DNA 序列為 ATTCCGTAACGGACC,轉錄出的 RNA 序列為何?", "options": ["(這題為填充題,無 A~E 選項)"], "key": "轉錄規則:A配U、T配A、C配G、G配C。", "detail": "<code>DNA: A T T C C G T A A C G G A C C</code><br><code>RNA: U A A G G C A U U G C C U G G</code>"}, {"no": "題組2", "ans": "B (5個)", "stem": "承上題,RNA 上連續三個鹼基對應一個胺基酸,此 RNA 最多可轉譯出由幾個胺基酸組成的多肽?", "options": ["(A) 1 個", "(B) 5 個", "(C) 15 個", "(D) 30 個", "(E) 45 個"], "key": "連續 3 個鹼基=1 個胺基酸。RNA 共 15 鹼基 → 15÷3=5 個。", "detail": "RNA 共 15 個鹼基,三個對應一個胺基酸,15÷3=<b>5 個</b>胺基酸,選 (B)。"}, {"no": "CRISPR-3", "ans": "D、E", "stem": "細菌把感染過的病毒 DNA 記在 CRISPR 上,Cas9 是剪刀酵素,與 CRISPR 轉錄的 RNA 結合後剪斷入侵者。關於文章內容,下列何者正確?(應選 2 項)", "options": ["(A) 僅需單一實驗即足夠完成後天免疫機制的新理論", "(B) 大腸桿菌會被潛伏自身的噬菌體消滅", "(C) 大腸桿菌 DNA 內最多只有一種噬菌體的基因片段", "(D) Cas9 必須與特定 RNA 片段結合才能切斷特定的 DNA 片段", "(E) 人類使用的基因編輯工具其實是大腸桿菌對抗噬菌體的後天免疫機制應用"], "key": "Cas9 要跟 CRISPR 抄出的 RNA 合作才能剪;人類基因編輯工具是借用細菌的後天免疫。", "detail": "• (D) Cas9 須與特定 RNA 結合才能切 ✅<br>• (E) 是細菌後天免疫機制的應用 ✅<br>• (A) 非單一實驗 ❌<br>• (B) 不會被自身噬菌體消滅 ❌<br>• (C) 可有多種 ❌"}, {"no": "CRISPR-4", "ans": "DNA / 蛋白質", "stem": "請寫出下列物質的組成成分(DNA、RNA 或蛋白質):(1) CRISPR (2) Cas9", "options": ["(這題為填充題,無 A~E 選項)"], "key": "CRISPR 記錄病毒片段→DNA;Cas9 是酵素→蛋白質。", "detail": "• (1) CRISPR:<b>DNA</b>(可記錄曾感染的噬菌體片段)<br>• (2) Cas9:<b>蛋白質</b>(為酵素,由多肽組成)"}]}, {"unit": "基因表現(多選)", "uid": "ugexp", "color": "violet", "questions": [{"no": "4", "ans": "B、D", "stem": "關於中心法則中的反應與其根據的物質與產物的配對(反應/模版/產物),下列哪些正確?(應選 2 項)", "options": ["(A) 複製 / 去氧核糖核苷酸 / DNA", "(B) 複製 / DNA / DNA", "(C) 轉錄 / DNA / 核糖核苷酸", "(D) 轉錄 / DNA / RNA", "(E) 轉譯 / DNA / 蛋白質"], "key": "複製:DNA→DNA;轉錄:DNA→RNA;轉譯:RNA→蛋白質。", "detail": "• (B) 複製/DNA/DNA ✅<br>• (D) 轉錄/DNA/RNA ✅<br>• (A) 模版應寫 DNA ❌<br>• (C) 產物應是 RNA ❌<br>• (E) 轉譯模版應是 RNA ❌"}, {"no": "5", "ans": "B、D、E", "stem": "關於真核細胞轉錄過程的描述,下列哪些正確?(應選 3 項)", "options": ["(A) 轉錄是將 RNA 的訊息轉至 DNA", "(B) 轉錄時需要 RNA 聚合酶參與", "(C) DNA 雙股解開後,雙股都可為模版,產出兩條單股 RNA", "(D) 某基因片段只能根據一股 DNA 作為模版,合成一段單股 RNA", "(E) 轉錄過程主要發生在細胞核內"], "key": "轉錄=DNA→RNA;需 RNA 聚合酶;基因片段只用其中一股當模版;主要在細胞核。", "detail": "• (A) 轉錄是 DNA→RNA ❌<br>• (B) 需 RNA 聚合酶 ✅<br>• (C) 只有一股可被轉錄 ❌<br>• (D) 只用一股當模版 ✅<br>• (E) 主要在細胞核內 ✅"}, {"no": "6", "ans": "C、D", "stem": "右圖為基因表現中的某個過程(甲=長帶子、乙=大球、丙=珠珠串)。下列相關敘述,哪些正確?(應選 2 項)", "options": ["(A) 甲為 DNA", "(B) 乙為粒線體", "(C) 丙為多肽", "(D) 此過程發生在細胞質中", "(E) 此過程稱為轉錄"], "key": "甲=RNA、乙=核糖體、丙=多肽,這是「轉譯」,發生在細胞質。", "detail": "• (A) 甲為 RNA ❌<br>• (B) 乙為核糖體 ❌<br>• (C) 丙為多肽 ✅<br>• (D) 發生在細胞質 ✅<br>• (E) 此過程稱為轉譯 ❌"}, {"no": "7", "ans": "A、D、E", "stem": "比較同個體中的胰腺細胞及口腔皮膜細胞,下列哪些正確?(應選 3 項)", "options": ["(A) 胰腺細胞的 DNA 和口腔皮膜細胞相同", "(B) 胰腺細胞表現的 RNA 和口腔細胞相同", "(C) 胰腺細胞表現的蛋白質和口腔皮膜細胞相同", "(D) 胰腺細胞和口腔皮膜細胞的功能不同", "(E) 胰腺細胞和口腔皮膜細胞的外型不同"], "key": "同一個人每個細胞 DNA 都一樣,但唸的頁數不同,所以 RNA、蛋白質、功能、外型不同。", "detail": "• (A) 兩細胞 DNA 相同 ✅<br>• (D) 功能不同 ✅<br>• (E) 外型不同 ✅<br>• (B) RNA 不同 ❌<br>• (C) 蛋白質不同 ❌"}, {"no": "8", "ans": "B、C、D", "stem": "單股 DNA 共 500 個核苷酸,有 150 個腺嘌呤、120 個胸腺嘧啶、150 個鳥糞嘌呤。下列哪些正確?(應選 3 項)", "options": ["(A) 此單股 DNA 有 150 個胞嘧啶", "(B) 此單股 DNA 共有 500 個磷酸基", "(C) 此單股 DNA 轉錄出來的 RNA 有 150 個尿嘧啶", "(D) 若將此單股 DNA 互補為雙股,則雙股共有 270 個腺嘌呤", "(E) 此單股 DNA 的腺嘌呤和鳥糞嘌呤的數量相同,代表可以互補"], "key": "先算 C:500−150−120−150=80。RNA 的 U 對著 A(150);雙股 A=120+150=270。", "detail": "• (A) 胞嘧啶=80 不是 150 ❌<br>• (B) 500 核苷酸=500 磷酸 ✅<br>• (C) RNA 的 U 對著 150 個 A,共 150 個 U ✅<br>• (D) 互補股 A=原 T(120),120+150=270 ✅<br>• (E) 數量同≠能互補 ❌"}]}, {"unit": "卷7 演化觀念的發展", "uid": "u7", "color": "emerald", "questions": [{"no": "1", "ans": "C", "stem": "下列何者不符合創造論的概念?", "options": ["(A) 生物體的構造相當複雜,所以是被創造出來的", "(B) 生物均被造物主創造而產生", "(C) 演化可能使生物由簡單變得複雜", "(D) 地層中有生物化石,是因為災變所造成", "(E) 生物同時被創造,不會進行演化"], "key": "創造論:生物被造物主一次造好,不會再演化。", "detail": "• (C) 演化使生物由簡單變複雜 ❌ 這是演化論,不符合創造論<br>其他都符合創造論。題目問「不符合」,選 (C)。"}, {"no": "2", "ans": "D", "stem": "達爾文雀鳥喙厚度/長度比值 30 年一直在改變,關於此結果的解釋,下列何者正確?", "options": ["(A) 成鳥每年都會更換鳥喙,造成比值經常改變", "(B) 達爾文雀的遷徙能力很好,每年大規模遷徙造成數據變動", "(C) 不同物種的達爾文雀時常雜交,所以比值經常改變", "(D) 此處環境不停變動,使不同鳥喙個體的存活率不同", "(E) 鳥喙是由基因決定,不會改變,觀察結果的變動是採樣誤差"], "key": "環境(食物)一直變,不同鳥喙形狀的鳥存活率不同,族群平均比值跟著變。", "detail": "• (A) 成鳥鳥喙固定,無法更換 ❌<br>• (B) 通常不遷徙 ❌<br>• (C) 不同種不會雜交 ❌<br>• (D) 環境變動使不同個體存活率不同 ✅<br>• (E) 是族群平均,會受環境影響,非採樣誤差 ❌"}, {"no": "3", "ans": "E", "stem": "下列關於拉馬克的敘述,何者正確?", "options": ["(A) 拉馬克相信生物會演變,但遵守造物者給予的規則", "(B) 拉馬克相信生物會演變,方式是透過天擇保留適合生存的個體", "(C) 拉馬克對生物形態特徵演變的想法,對現代演化論沒有貢獻", "(D) 拉馬克的理論符合人類社會中個人發展的概念,所以廣受認同", "(E) 拉馬克認為生物改變來自環境影響而引起,而且獲得的特徵可以延續給下一代"], "key": "拉馬克:用進廢退,後天特徵可傳給下一代(伸脖子→脖子變長→生出長脖子小孩)。", "detail": "• (A) 拉馬克相信生物依意願演變 ❌<br>• (B) 透過天擇是達爾文 ❌<br>• (C) 對現代演化論有貢獻 ❌<br>• (D) 當時想法沒受重視 ❌<br>• (E) 來自環境影響,獲得特徵可延續 ✅"}, {"no": "4", "ans": "A", "stem": "下列關於拉馬克理論與達爾文理論的比較,何者正確?", "options": ["(A) 生物是否會演化:拉馬克→是,達爾文→是", "(B) 共同祖先:拉馬克→有,達爾文→無", "(C) 生物如何演化:拉馬克→個體有差異而被環境所篩選,達爾文→獲得性遺傳", "(D) 生物為何消失:拉馬克→因為災變而滅絕,達爾文→滅絕或演化成現代生物", "(E) 演化方向:拉馬克→由環境決定,達爾文→由生物自己決定"], "key": "兩人都認為生物會演化(A 對);共祖只出現在達爾文理論;C、E 寫反了。", "detail": "• (A) 兩人都認為生物會演化 ✅<br>• (B) 共祖只在達爾文理論 ❌<br>• (C)(E) 兩人描述寫反了 ❌<br>• (D) 拉馬克認為生物不滅絕,而是演化成現代生物 ❌"}, {"no": "5", "ans": "B", "stem": "下列何者與達爾文提出演化論無關?", "options": ["(A) 萊爾的均變說", "(B) 居維業對創造論的堅持", "(C) 馬爾薩斯的人口論", "(D) 在小獵犬號的考察", "(E) 華萊士相同想法的支持"], "key": "達爾文不接受創造論,居維業對創造論的堅持與他提演化論無關。", "detail": "有關的:萊爾均變說、馬爾薩斯人口論、小獵犬號、華萊士。<br>• (B) 達爾文並不接受創造論 ❌<br>題目問「無關」,選 (B)。"}, {"no": "6", "ans": "A", "stem": "下列何種狀況適合使用抗生素?", "options": ["(A) 被細菌感染的鼻竇炎", "(B) 新冠肺炎", "(C) B 型肝炎", "(D) 將癌細胞殺死", "(E) 流行性感冒"], "key": "抗生素只對細菌感染有效。", "detail": "• (A) 被細菌感染的鼻竇炎 ✅<br>• (B) 新冠=病毒 ❌<br>• (C) B肝=病毒 ❌<br>• (D) 癌細胞為真核細胞,非作用對象 ❌<br>• (E) 流感=病毒 ❌"}, {"no": "7", "ans": "C", "stem": "有關抗藥性出現的原因,下列敘述何者正確?", "options": ["(A) 細菌將抗生素攝入細胞內產生抗藥性", "(B) 細菌為了存活而產生抗藥性", "(C) 原本即有抗藥性細菌存在,經抗生素篩選,將沒有抗藥性的細菌殺死,留下有抗藥性細菌", "(D) 人類受抗生素刺激產生抗藥性", "(E) 抗生素刺激細菌突變成多種細菌,有些種具抗藥性"], "key": "抗藥性本來就有少數細菌帶著,抗生素把沒抗藥性的殺光,有抗藥性的活下來變多(天擇)。", "detail": "• (A) 抗藥性是基因控制,非攝入後出現 ❌<br>• (B) 演化沒有目的 ❌<br>• (C) 原本就有,經篩選留下有抗藥性的 ✅<br>• (D) 產生抗藥性的是細菌非人類 ❌<br>• (E) 同種細菌本就有抗/不抗,非刺激演化成更多種 ❌"}, {"no": "8", "ans": "D", "stem": "關於達爾文的天擇說,下列何者正確?", "options": ["(A) 達爾文寫下天擇說時已經能清楚交代變異的遺傳方式", "(B) 隨時間演進生物會改變,而那些改變來自生物的意願", "(C) 只要生物努力存活,就可以獲得新的構造", "(D) 天擇說的重點在解釋環境的選擇造成生物演化結果", "(E) 在天擇說中,即便表徵不存在差異,演化仍會發生"], "key": "天擇說重點:環境的選擇造成演化結果;一定要先有個體間的差異。", "detail": "• (A) 當時無法解釋遺傳變異 ❌<br>• (B)(C) 來自意願/努力是拉馬克 ❌<br>• (D) 環境選擇造成演化結果 ✅<br>• (E) 必須先有個體差異 ❌"}, {"no": "9", "ans": "E", "stem": "深色蛾比例從沒人注意到 1895 年占 98%。如何解釋上述為天擇的結果?", "options": ["(A) 深色蛾與淺色蛾是不同種,因深色蛾將食物吃完,使淺色蛾族群量下降", "(B) 深色蛾是 1811 年後才出現的顯性突變,雜交後使淺色基因較少表現", "(C) 野外採集者對深色蛾的偏好,造成數據的偏頗", "(D) 蛾的顏色來自食物,與基因無關,1811 年後深色食物較多", "(E) 1811 年後森林植被顏色變深,使淺色蛾易被捕食,造成存活率上的差異,使深色蛾比例變高"], "key": "樹幹變黑→深色蛾躲黑樹幹不易被吃,淺色蛾顯眼易被吃→深色蛾活下來變多。", "detail": "• (E) 淺色蛾易被捕食,存活率差異使深色蛾比例變高 ✅<br>• (A) 物種競爭 ❌ (B) 顯隱性 ❌ (C) 採樣誤差 ❌ (D) 生理推論 ❌ 皆非天擇"}]}, {"unit": "卷7 多選題", "uid": "u7m", "color": "emerald", "questions": [{"no": "1", "ans": "A、C", "stem": "達爾文的天擇說可用來解釋或回答下列哪些問題?(應選 2 項)", "options": ["(A) 達爾文的天擇說可用來解釋現在生活在不同環境下的生物有這麼多差異", "(B) 為何生物沒有共同祖先", "(C) 人與黑猩猩具有較近代的共同祖先", "(D) 演化接下來會往什麼方向走", "(E) 基因為什麼會突變"], "key": "天擇能解釋現存差異與共同祖先;無法預測未來方向,也不解釋突變原因。", "detail": "• (A) 解釋不同環境生物的差異 ✅<br>• (C) 人與黑猩猩有較近代共祖 ✅<br>• (B) 天擇認為有共祖 ❌<br>• (D) 無法預期未來 ❌<br>• (E) 天擇無涉突變 ❌"}, {"no": "2", "ans": "A、B、E", "stem": "分別用拉馬克與達爾文理論解釋指猴手指細長的現象(拉馬克/達爾文),下列哪些正確?(應選 3 項)", "options": ["(A) 一開始就有指猴,指頭沒這麼細長 / 一開始只有很原始的狐猴,以蟬蛹幼蟲為食", "(B) 為了獲得更多食物,後代手指愈來愈細 / 一開始只有些細有些粗", "(C) 手指變細發生在後代的多樣性,而非發育過程 / 一開始差異不大,族群可累積變異", "(D) 手指細的特徵不能直接傳給所有後代 / 手指細的優勢可以傳給所有後代", "(E) 代代相傳後,指猴的手指都很細 / 優勢造成後代數量差異,指頭細的個體數增加"], "key": "格式「拉馬克/達爾文」。A、B、E 對;C 拉馬克沒認知後代多樣性,D 拉馬克認為獲得性可遺傳。", "detail": "• (A) ✅<br>• (B) ✅<br>• (E) ✅<br>• (C) 拉馬克未認知後代多樣性 ❌<br>• (D) 拉馬克認為獲得性特徵可遺傳 ❌"}, {"no": "3", "ans": "C、E", "stem": "後人利用孟德爾的理論來補足天擇說中遺傳變異的來源,下列哪些正確?(應選 2 項)", "options": ["(A) 突變僅產生不利於適應環境的基因", "(B) 突變出現的等位基因要影響演化都需要很久的時間", "(C) 較適應環境的等位基因在族群中所占的比例較高", "(D) 顯性的等位基因較適應環境", "(E) 若受到環境的影響,則後代的表現型比例會偏離孟德爾遺傳法則的理論值"], "key": "突變是中性的;適應環境的等位基因比例較高;環境影響會使後代比例偏離理論值。", "detail": "• (C) 較適應環境的等位基因比例較高 ✅<br>• (E) 受環境影響會偏離孟德爾理論值 ✅<br>• (A) 突變中性,好壞都有可能 ❌<br>• (B) 有時演化很短 ❌<br>• (D) 適應與顯隱性無關 ❌"}, {"no": "4", "ans": "B、D", "stem": "達爾文把對生物演化的想法編撰為物種起源,關於他的想法發展歷程,下列哪些正確?(應選 2 項)", "options": ["(A) 寫書的當下只知道天擇,並不知道人擇或性擇可能影響生物外觀", "(B) 在小獵犬號旅程後,已有天擇說的雛形,但知道理論會受攻擊,所以持續收集證據", "(C) 與孟德爾通信多時,對遺傳方式十分熟稔,也了解變異來源", "(D) 了解個體間存在差異,當選擇未發生時,差異很大的個體仍可同時存在", "(E) 透過環境選擇,天擇很容易觀察到,達爾文在世就證實自己理論正確"], "key": "小獵犬號後已有天擇雛形且持續收證據;了解個體差異。A、C、E 皆有誤。", "detail": "• (B) 有天擇雛形且持續收集證據 ✅<br>• (D) 了解個體差異 ✅<br>• (A) 寫書時已知人擇性擇 ❌<br>• (C) 與孟德爾沒聯繫上 ❌<br>• (E) 演化過程很難被觀察 ❌"}, {"no": "5", "ans": "B、D", "stem": "如果你相信達爾文的天擇說,在觀察長頸鹿時,下列哪些推論正確?(應選 2 項)", "options": ["(A) 演變的動力來自於個體,努力可使脖子變長", "(B) 演變的關鍵不在於變或不變,而是自然環境的選擇機制", "(C) 演變持續進行且代代相傳,因此短時間就可以演化出差異極大的物種", "(D) 變異的發生隨機且緩慢,經長時間累積,同世代不同個體之間會有很大差異", "(E) 生物遇到災難時才發生改變"], "key": "天擇關鍵=自然環境的選擇機制;變異隨機緩慢、長時間累積。A、C 是拉馬克,E 是災變說。", "detail": "• (B) 關鍵在自然環境的選擇機制 ✅<br>• (D) 變異隨機緩慢、長時間累積 ✅<br>• (A)(C) 拉馬克的想法 ❌<br>• (E) 災變說內容 ❌"}, {"no": "6", "ans": "D、E", "stem": "右圖代表食物數量及人口數量隨時間的變化(馬爾薩斯人口論),下列哪些正確?(應選 2 項)", "options": ["(A) 甲為食物生產的速度,乙為人口數量", "(B) 當糧食生產的速度大於人口增長的速度時,會發生爭奪", "(C) 此理論提供達爾文「性狀變異是天擇的前提」的想法", "(D) 依天擇說而言,即為「資源有限,生存競爭」的概念", "(E) 依達爾文的觀點,因食物不足,對環境適應力較強者才可存活下來"], "key": "人口成長(甲)超過糧食生產(乙)→資源有限、生存競爭→適應力強者存活。", "detail": "• (A) 甲為人口、乙為食物,寫反了 ❌<br>• (B) 人口大於糧食才爭奪 ❌<br>• (C) 與性狀變異無關 ❌<br>• (D) 資源有限、生存競爭 ✅<br>• (E) 適應力較強者才存活 ✅"}]}, {"unit": "卷8 演化與分類", "uid": "u8", "color": "teal", "questions": [{"no": "1", "ans": "E", "stem": "林奈以形態分類生物,為何後人還需要重建分類階層?", "options": ["(A) 林奈的觀察有諸多錯誤", "(B) 生物在林奈分類之後又出現許多的變異", "(C) 發現許多新物種需要加入分類", "(D) 顯微鏡的進步使科學家發現更多特徵上的不同", "(E) 形態特徵的分類學並無遵守物種間的親緣關係"], "key": "林奈只看「長得像不像」,不一定反映真正的親緣關係,所以要重建親緣關係樹。", "detail": "林奈的形態分類不符合現代「分類須能解釋親緣關係」的觀念。<br>• (E) 形態分類沒遵守物種間的親緣關係 ✅"}, {"no": "2", "ans": "B", "stem": "判斷親緣關係的遠近要有適當證據,下列哪一證據無法證明兩生物間的親緣關係?", "options": ["(A) 同源構造", "(B) 同功構造", "(C) 痕跡構造", "(D) RNA 序列", "(E) 胚胎發育"], "key": "同功構造可能是住同環境造成的結果,不代表有相近親緣關係。", "detail": "• (B) 同功構造可能是生活在同環境造成,不代表有相近親緣關係 ❌(無法證明)<br>題目問「無法證明」,選 (B)。"}, {"no": "3", "ans": "B", "stem": "下列有關化石可提供的演化證據,何者錯誤?", "options": ["(A) 該化石生物曾經存在於地球", "(B) 對化石的知識與詮釋不會改變", "(C) 化石所在的地層透過同位素定年,可以確定該化石生物存在的可能年代", "(D) 將相似的化石生物依地質年代整理,可推論演化的歷程", "(E) 根據排遺、巢穴、腳印、齒痕等生痕化石,可以推測化石生物的行為"], "key": "對化石的知識與詮釋會隨時代改變(如偷蛋龍,後來發現是孵自己的蛋)。", "detail": "• (B) 對化石的知識與詮釋可能隨時代改變 ❌(如偷蛋龍)<br>題目問「錯誤」,選 (B)。其他都對。"}, {"no": "4", "ans": "A", "stem": "在確認物種間親緣關係時,下列何種物質無法作為分子生物學證據?", "options": ["(A) 葡萄糖", "(B) RNA", "(C) DNA", "(D) 蛋白質", "(E) 血紅素"], "key": "所有生物的葡萄糖都一樣,無法用來比較誰跟誰是親戚。", "detail": "• (A) 所有生物體內的葡萄糖都一樣,是一種有機物,無法作為親緣關係的證明 ❌<br>其他因生物不同而有差異,可作證據。選 (A)。"}, {"no": "5", "ans": "C", "stem": "將人類的核糖體蛋白質序列與其他生物比較,下列哪一種生物與人類最相近?", "options": ["(A) 狐猴", "(B) 大樹鼩", "(C) 大猩猩", "(D) 針鼴", "(E) 始祖鳥"], "key": "親緣由遠到近:始祖鳥→針鼴→大樹鼩→狐猴→大猩猩。大猩猩最近。", "detail": "與人類親緣由遠到近:始祖鳥→針鼴→大樹鼩→狐猴→大猩猩。<br>• (C) 大猩猩與人類核糖體蛋白質序列最相近 ✅"}, {"no": "6", "ans": "D", "stem": "下列關於病毒致病及傳染的方式,何者錯誤?", "options": ["(A) 蛋白質殼體或套膜上的蛋白質會與宿主細胞受體結合,造成專一性感染", "(B) 無法獨立生存,必須在感染宿主細胞後才能表現繁殖的現象", "(C) 病毒與宿主細胞的專一性與演化有關,有些病毒可感染多種具親緣關係的生物", "(D) 可獨立生存在自然環境,不須寄生於宿主中", "(E) 用肥皂洗手可破壞具有套膜的病毒"], "key": "病毒無法獨立生存,離開宿主就無法表現任何生命現象。", "detail": "• (D) 病毒無法獨自生存在環境中,不在宿主細胞內時無法表現任何生命現象 ❌<br>題目問「錯誤」,選 (D)。"}, {"no": "7", "ans": "E", "stem": "下列關於病毒的構造與組成,何者正確?", "options": ["(A) 具有酵素系統", "(B) 具有雙層磷脂的套膜", "(C) 單一病毒可對所有種類生物造成傷害", "(D) 用一般光學顯微鏡就可以觀察", "(E) 套膜外的醣蛋白可幫助病毒進入細胞"], "key": "套膜外的醣蛋白幫助病毒進入細胞;病毒沒有酵素系統,要用電子顯微鏡觀察。", "detail": "• (A) 病毒不具酵素系統 ❌<br>• (B) 有些病毒有套膜,有些沒有 ❌<br>• (C) 病毒與宿主有專一性 ❌<br>• (D) 須用電子顯微鏡 ❌<br>• (E) 套膜外醣蛋白幫助進入細胞 ✅"}, {"no": "8", "ans": "D", "stem": "1990 年三域系統被提出,根據核糖體 RNA 序列可繪製出三域生物親緣關係圖,下列何者正確?", "options": ["(A) 真核生物-真細菌-古細菌(分支關係 A)", "(B) 真核生物-古細菌-真細菌(分支關係 B)", "(C) 古細菌-真細菌-真核生物(分支關係 C)", "(D) 真細菌-古細菌-真核生物(古細菌與真核生物較近)", "(E) 古細菌-真核生物-真細菌(分支關係 E)"], "key": "古細菌和真核生物較親、和真細菌較遠,所以真細菌先分出去。", "detail": "古細菌域與真核生物域親緣較近,古細菌與真細菌較遠,真細菌先分出去。選 (D)。"}, {"no": "9", "ans": "B", "stem": "下列有關生物多樣性的敘述,何者正確?", "options": ["(A) 組織培養的蘭花遺傳多樣性高", "(B) 熱帶雨林生態具有許多不同的動、植物,其物種多樣性高", "(C) 臺灣本島的生態系多樣性較離島小琉球為低", "(D) 維多利亞湖中具有很多種慈鯛,其遺傳多樣性高", "(E) 森林的生物多樣性低於沙漠"], "key": "熱帶雨林物種多樣性高;組織培養是無性生殖(遺傳多樣性低)。", "detail": "• (A) 組織培養=無性生殖,遺傳多樣性低 ❌<br>• (B) 熱帶雨林物種多樣性高 ✅<br>• (C) 臺灣本島較高 ❌<br>• (D) 應為物種多樣性高 ❌<br>• (E) 森林高於沙漠 ❌"}]}, {"unit": "卷8 多選題", "uid": "u8m", "color": "teal", "questions": [{"no": "1", "ans": "A、B、C", "stem": "下列哪些證據可以支持某些恐龍的後代仍存活到今日,只是演化成現在的鳥類?(應選 3 項)", "options": ["(A) 在許多國家發現始祖鳥、近鳥龍等小型有羽毛的恐龍化石", "(B) 有科學家在恐龍腿骨遺骸中發現蛋白質,且結構與鳥類的蛋白質相似", "(C) 恐爪龍的骨骼中發現與鳥類相似的叉骨", "(D) 現生爬蟲類的心臟主要是兩心房一心室,而鳥類是兩心房兩心室", "(E) 爬蟲類大部分都是外溫動物,而鳥類主要是內溫動物"], "key": "有羽毛恐龍化石、相似蛋白質、相似叉骨都支持;心臟差異過大、體溫調節不同則不支持。", "detail": "• (A) 有羽毛恐龍化石 ✅<br>• (B) 相似蛋白質 ✅<br>• (C) 相似叉骨 ✅<br>• (D) 特徵差異過大 ❌<br>• (E) 體溫調節方式不同,不支持親緣 ❌"}, {"no": "2", "ans": "B、C、E", "stem": "以胚胎學的證據判斷下列哪些生物的親緣關係和鳥類較接近?(應選 3 項)", "options": ["(A) 渦蟲", "(B) 青蛙", "(C) 蛇", "(D) 昆蟲", "(E) 猴"], "key": "胚胎學證據支持脊椎動物較近,選出脊椎動物即可。", "detail": "胚胎學證據支持脊椎動物間親緣較接近,渦蟲及昆蟲非脊椎動物。<br>• (B) 青蛙 ✅ (C) 蛇 ✅ (E) 猴 ✅<br>• (A) 渦蟲 ❌ (D) 昆蟲 ❌"}, {"no": "3", "ans": "A、E", "stem": "下列有關分類系統的敘述,哪些正確?(應選 2 項)", "options": ["(A) 二界分類系統將生物分為動物界和植物界", "(B) 科學家將不具細胞構造的生物歸為原核生物界", "(C) 五界分類系統將具細胞壁且自營的生物皆歸為植物界", "(D) 六界分類系統以粒線體的有無,將原核生物界區分為真細菌界和古細菌界", "(E) 以核糖體 RNA 序列的差異劃分的三域分類系統,分為古細菌、真細菌和真核生物三域"], "key": "二界=動物+植物;三域用核糖體 RNA 序列差異劃分。", "detail": "• (A) 二界=動物界+植物界 ✅<br>• (B) 不具細胞構造的並非生物(如病毒)❌<br>• (C) 具細胞壁且自營也可能歸原生生物界 ❌<br>• (D) 六界以核糖體 RNA 序列分 ❌<br>• (E) 三域以核糖體 RNA 序列差異劃分 ✅"}]}, {"unit": "演化素養題(陸龜・湖泊魚・原型論)", "uid": "uevo1", "color": "lime", "questions": [{"no": "歐文-1", "ans": "A", "stem": "歐文提出的原型論支持的是哪一種論述?(歐文宣稱身體藍圖只存在上帝的腦裡,上帝以它創造複雜形態)", "options": ["(A) 創造論", "(B) 天擇說", "(C) 用進廢退說", "(D) 人擇說", "(E) 生源說"], "key": "歐文認為上帝用身體藍圖創造複雜形態→創造論。", "detail": "歐文認為身體藍圖只存在上帝腦裡、上帝用它創造形態→<b>創造論</b>,選 (A)。"}, {"no": "歐文-2", "ans": "B、D", "stem": "從上文可以發現生物學的科學進展過程可能發生哪些現象?(應選 2 項)", "options": ["(A) 一個觀察的發表就可以推翻或證實一個論點", "(B) 證據支持哪一論點,端看詮釋的角度", "(C) 與自己論點相反的人,他的觀點一定是錯的", "(D) 達爾文的天擇說只是一個觀念,可以解釋很多的觀察證據", "(E) 同源構造的觀察方法是天擇說之後才發展出來的"], "key": "同樣的證據不同人有不同解讀;天擇說是能解釋很多觀察的觀念。", "detail": "• (B) 證據支持哪一論點端看詮釋角度 ✅<br>• (D) 天擇說可解釋很多觀察證據 ✅<br>• (A) 一個觀察不能直接推翻 ❌<br>• (C) 相反不一定錯 ❌<br>• (E) ❌"}, {"no": "歐文-3", "ans": "否;有共同祖先", "stem": "人類是否是由黑猩猩演化而來?黑猩猩和人類為何有許多相似之處?", "options": ["(這題為填充/問答題,無 A~E 選項)"], "key": "人不是從黑猩猩變來的;兩者很像是因為有「共同祖先」。", "detail": "<b>否</b>。人類不是由黑猩猩演化而來。黑猩猩和人類<b>具有共同祖先</b>,所以有許多相似之處(像表兄弟有共同的爺爺)。"}, {"no": "陸龜-7", "ans": "A、C", "stem": "達爾文發表理論時無法說明遺傳變異的來源,此觀念由後代遺傳學補足。下列哪些為造成遺傳變異的原因?(應選 2 項)", "options": ["(A) 有性生殖", "(B) 無性生殖", "(C) 突變", "(D) 獲得性遺傳", "(E) 適者生存"], "key": "有性生殖(基因重組)和突變會製造變異;獲得性遺傳是拉馬克錯誤想法,適者生存是篩選。", "detail": "• (A) 有性生殖→基因重組產生變異 ✅<br>• (C) 突變→產生新變異 ✅<br>• (B) 無性生殖 ❌<br>• (D) 獲得性遺傳是拉馬克 ❌<br>• (E) 適者生存是篩選,非製造變異 ❌"}, {"no": "陸龜-8", "ans": "A、B", "stem": "右圖為加拉巴哥群島上三種陸龜,下列哪些正確?(應選 2 項)", "options": ["(A) 此三種陸龜可能具有共同祖先", "(B) 此三種陸龜因為取食的食物類型不同,長時間累積變異形成不同種的陸龜", "(C) 此三種陸龜因為人類的特意挑選而形成不同的品種", "(D) 此三種陸龜可證明達爾文天擇說中的遺傳變異", "(E) 此三種陸龜應具有各自不同的祖先"], "key": "三種陸龜可能有共同祖先;因取食食物不同累積變異形成不同種。", "detail": "• (A) 可能有共同祖先 ✅<br>• (B) 取食不同累積變異形成不同種 ✅<br>• (C) 是適應環境而出現,非人類挑選 ❌<br>• (D) 是演化結果,非同種間遺傳變異 ❌<br>• (E) 是共同祖先 ❌"}, {"no": "湖泊-4", "ans": "丙 / 甲", "stem": "三個湖各有不同掠食者,以被捕獲魚隻平均體重與代數關係表示(甲線上升、丙線下降)。具有掠食大型魚之掠食者的是哪個湖?具有掠食小型魚之掠食者的是哪個湖?", "options": ["(這題為填充題,無 A~E 選項)"], "key": "掠食大型魚→大魚被吃光剩小魚→平均體重變小(丙下降);掠食小型魚→剩大魚→平均體重變大(甲上升)。", "detail": "• 具有掠食<b>大型魚</b>之掠食者的湖泊:<b>丙</b>(平均體重下降)<br>• 具有掠食<b>小型魚</b>之掠食者的湖泊:<b>甲</b>(平均體重上升)"}, {"no": "湖泊-5", "ans": "甲 > 乙 > 丙", "stem": "若掠食者繼續捕食下去,可預期未來甲、乙、丙三湖中此魚的平均體重由大到小排列為何?", "options": ["(這題為填充題,無 A~E 選項)"], "key": "看圖趨勢:甲最高、乙中間、丙最低。", "detail": "依圖趨勢,平均體重由大到小:<b>甲 > 乙 > 丙</b>。"}, {"no": "湖泊-6", "ans": "C", "stem": "影響此種魚大小的演化原因為何種演化力?", "options": ["(A) 人擇", "(B) 性擇", "(C) 天擇", "(D) 遺傳變異", "(E) 以上皆非"], "key": "掠食者吃掉某種大小的魚=自然環境在篩選=天擇。", "detail": "掠食者選擇性捕食=自然環境篩選=<b>天擇</b>,選 (C)。"}]}, {"unit": "演化素養題(新環境・分類・病毒)", "uid": "uevo2", "color": "lime", "questions": [{"no": "4", "ans": "A、D、E", "stem": "當一群生物踏入空缺的新環境,新物種可能快速演化出不同形態與功能。下列哪些案例符合?(應選 3 項)", "options": ["(A) 加拉巴哥群島不同島上的鶯鳥演化出適應該島的特殊嘴喙,後被確認為具相同祖先的不同物種", "(B) 隨人類遷移,美洲蟑螂擴散到世界各地有人居住的地方,且適應良好", "(C) 在沙漠環境,景天科、馬齒莧科、大戟科、仙人掌科等不同科植物都演化成多肉外型", "(D) 前肢短細、後肢長、適合跳躍的袋鼠,在新幾內亞卻演化出前肢強壯、後肢短擅長爬樹的樹袋鼠", "(E) 熊從赤道到北極都有分布,演化出懶熊、貓熊、黑熊、棕熊、北極熊等"], "key": "踏入新環境演化出不同物種:鶯鳥嘴喙、樹袋鼠、各種熊;蟑螂沒新物種、沙漠多肉是趨同演化。", "detail": "• (A) 鶯鳥演化出不同物種 ✅<br>• (D) 樹袋鼠 ✅<br>• (E) 各種熊 ✅<br>• (B) 沒有新物種出現 ❌<br>• (C) 是趨同演化 ❌"}, {"no": "5", "ans": "B、E", "stem": "下列哪些生物在分類上屬於古細菌?(應選 2 項)", "options": ["(A) 大腸桿菌", "(B) 極端嗜熱菌", "(C) 根瘤菌", "(D) 藍綠菌", "(E) 甲烷菌"], "key": "古細菌偏好極端環境:甲烷菌、極端嗜熱菌、極端嗜鹽菌等。", "detail": "古細菌偏好生活在特定的極端環境。<br>• (B) 極端嗜熱菌 ✅ (E) 甲烷菌 ✅<br>• (A) 大腸桿菌 ❌ (C) 根瘤菌 ❌ (D) 藍綠菌 ❌"}, {"no": "6", "ans": "B、C", "stem": "解剖學和比較生物學提供演化上關於同源構造的證據,下列哪些屬於此類證據?(應選 2 項)", "options": ["(A) 鯨的鰭和吳郭魚的鰭", "(B) 人的手和鯨的前肢", "(C) 蝙蝠的前肢和貓的前肢", "(D) 蛾的翅膀和鳥的翅膀", "(E) 蜻蜓的眼睛和人的眼睛"], "key": "同源構造=來源相同、骨頭結構相同(功能可不同)。", "detail": "• (B) 人的手和鯨的前肢 ✅<br>• (C) 蝙蝠和貓的前肢 ✅<br>• (A) 鯨鰭與吳郭魚鰭骨頭結構不同 ❌<br>• (D) 蛾翅由鱗片、鳥翅由骨頭 ❌<br>• (E) 複眼 vs 單眼 ❌"}, {"no": "7", "ans": "A、B、D", "stem": "下列有關於痕跡構造的敘述,哪些正確?(應選 3 項)", "options": ["(A) 經過突變和環境篩選而漸漸形成,使較少使用的構造漸退化", "(B) 鯨豚的後肢骨為一種痕跡構造", "(C) 所有動物的盲腸均為痕跡構造", "(D) 屬於解剖學的證據", "(E) 不可作為演化的證據"], "key": "痕跡構造=退化、用不太到的構造;但草食動物的盲腸有用,不是痕跡。", "detail": "• (A) 突變和環境篩選使少用構造退化 ✅<br>• (B) 鯨豚後肢骨是痕跡構造 ✅<br>• (D) 屬解剖學證據 ✅<br>• (C) 草食動物盲腸有用,非痕跡 ❌<br>• (E) 可作為演化證據 ❌"}, {"no": "8", "ans": "A、C、E", "stem": "下列哪些是支持「病毒不屬於生物」的理由?(應選 3 項)", "options": ["(A) 病毒不具細胞構造", "(B) 病毒不具有細胞核", "(C) 病毒缺乏完整酵素系統,無法在宿主細胞外執行代謝作用", "(D) 病毒感染宿主細胞具有專一性", "(E) 病毒離開宿主細胞便無法繁殖"], "key": "生物定義:有生命現象+由細胞組成。病毒不具細胞構造、無法獨立代謝/繁殖。", "detail": "• (A) 不具細胞構造 ✅<br>• (C) 缺酵素系統,宿主外無法代謝 ✅<br>• (E) 離開宿主無法繁殖 ✅<br>• (B) 有無細胞核非細胞學說重點 ❌<br>• (D) 與生物定義無關 ❌"}, {"no": "9", "ans": "C、D、E", "stem": "在生物累積多樣性的同時,某些災難性變化導致短時間大量物種滅絕,稱為大滅絕。下列哪些正確?(應選 3 項)", "options": ["(A) 大滅絕直接導致生物多樣性提高", "(B) 大滅絕後生物多樣性可再恢復,且生物群集會和之前相同", "(C) 中生代末的大滅絕造成恐龍消失", "(D) 人類因素造成生物多樣性破壞,可能導致生物的大滅絕", "(E) 生物多樣性的保育能夠減緩人類導致的生態系崩解危機"], "key": "中生代末大滅絕→恐龍消失;人類可能導致大滅絕;保育能減緩崩解。", "detail": "• (C) 中生代末大滅絕造成恐龍消失 ✅<br>• (D) 人類因素可能導致大滅絕 ✅<br>• (E) 保育能減緩崩解 ✅<br>• (A) 大滅絕導致多樣性降低 ❌<br>• (B) 恢復後不會和之前相同 ❌"}, {"no": "10", "ans": "C、E", "stem": "2022 年「全球多樣性框架」目標為 2030 年前將 30% 陸域或水域納入保護,下列哪些保護方式符合此目標?(應選 2 項)", "options": ["(A) 引入外來種增加生物多樣性", "(B) 增加土地開發,讓人類容易親近大自然", "(C) 設立國家公園及保護區,減少生物棲息地的破壞", "(D) 製造基因轉殖生物,提高物種的遺傳多樣性", "(E) 以生態工法進行適度的環境開發,減少對當地生物之影響"], "key": "設保護區、生態工法符合;引入外來種、增加開發、基改生物都會傷害原生種。", "detail": "• (C) 設立國家公園及保護區 ✅<br>• (E) 生態工法適度開發 ✅<br>• (A) 外來種影響原生種 ❌<br>• (B) 開發破壞棲地 ❌<br>• (D) 基改影響原生種遺傳多樣性 ❌"}]}, {"unit": "演化素養題(HIV・親緣關係樹)", "uid": "uevo3", "color": "cyan", "questions": [{"no": "HIV-1", "ans": "沒有受體", "stem": "鼠疫桿菌與 HIV 都藉由辨認輔助 T 細胞的受體入侵人體。請提出合理推論解釋為何有些人不會被 HIV 感染?", "options": ["(這題為問答題,無 A~E 選項)"], "key": "有些人天生輔助 T 細胞上沒有那個受體(門把),HIV 找不到門把就進不去。", "detail": "部分人天生<b>輔助 T 細胞上沒有那個受體</b>,因此 HIV 無法辨識攻擊,不會被感染。"}, {"no": "HIV-2", "ans": "A", "stem": "右圖為 HIV 結構示意圖,下列何者為 HIV 用來辨認輔助 T 細胞受體的「醣蛋白」?(甲在病毒最外面突出)", "options": ["(A) 甲", "(B) 乙", "(C) 丙", "(D) 丁", "(E) 以上皆可幫助辨認"], "key": "HIV 靠最外面突出的醣蛋白去認受體(像鑰匙),即甲。", "detail": "HIV 用最外面突出的醣蛋白(甲)辨認輔助 T 細胞的受體,選 (A)。"}, {"no": "HIV-3", "ans": "B", "stem": "關於文中提及的演化結果,下列敘述何者正確?", "options": ["(A) 能不被 HIV 感染的突變只出現在北歐", "(B) 現在的人類也在演化,有可能出現其他較不易感染 HIV 的基因變異", "(C) 鼠疫的發生刺激對 HIV 有抵抗能力的突變產生", "(D) 將現今出現於北歐可對抗 HIV 的基因複製到所有人身上,是最好解決 HIV 的方式", "(E) 對鼠疫的免疫與對 HIV 的免疫是不同的突變事件,只是剛好同時發生"], "key": "人類也在演化,可能出現其他較不易感染 HIV 的基因變異。", "detail": "• (B) 現在人類也在演化,可能出現其他較不易感染 HIV 的基因變異 ✅<br>• (A) 不只北歐 ❌ (C) 突變非被刺激產生 ❌ (D) ❌ (E) 是同一受體,非剛好同時發生 ❌"}, {"no": "樹-4", "ans": "甲盲鰻 乙鯊魚 丙金魚 丁鯨魚", "stem": "小翰用 DNA 片段做分子時鐘,得到演化樹。樣本有盲鰻(無上下顎)、鯊魚(軟骨魚)、金魚(硬骨魚)、鯨魚(哺乳動物)。請完成親緣關係樹,甲~丁需填何物種?", "options": ["(這題為填充題,無 A~E 選項)"], "key": "依演化先後:文昌魚最早→甲盲鰻(最原始)→乙鯊魚→丙金魚→丁鯨魚(最晚)。", "detail": "甲:<b>盲鰻</b>(無上下顎,最原始)、乙:<b>鯊魚</b>(軟骨魚)、丙:<b>金魚</b>(硬骨魚)、丁:<b>鯨魚</b>(哺乳動物,最晚)。"}, {"no": "樹-5", "ans": "B、E", "stem": "根據完成的親緣關係樹,下列敘述哪些正確?(應選 2 項)", "options": ["(A) 現生的盲鰻、鯊魚、金魚、鯨魚都是由現生的文昌魚依序演化出", "(B) 愈早期演化出的類群,在類群內的遺傳多樣性通常會愈高", "(C) 改變只發生在共祖形成時(交會點),之後的生物都不再演變", "(D) 只有在下方的線段上才可能有新分支出現", "(E) 每條線的每個點都可能有新種誕生,新分支不一定延續到現在"], "key": "愈早期演化出的類群遺傳多樣性愈高;每條線每點都可能有新種,新分支不一定延續到現在。", "detail": "• (B) 愈早期類群遺傳多樣性愈高 ✅<br>• (E) 每點都可能有新種,新分支不一定延續 ✅<br>• (A) 非由現生文昌魚依序演化 ❌<br>• (C) 之後仍會演變 ❌<br>• (D) 每條線都可能 ❌"}]}];
-const TIPS = ["DNA = 正本說明書,RNA = 影印本,蛋白質 = 做出來的成品", "A配T、G配C(DNA);RNA 把 T 換成 U", "演化沒有「目的」,也不是「努力就能改變」(那是拉馬克的錯誤想法)", "抗藥性、深色蛾:本來就有少數帶著,環境篩選後活下來變多(這才是天擇)", "同源構造看「骨頭結構」、同功構造看「功能」"];
+/* ============ 題庫 ============ */
+/* type: 'single' 單選 / 'multi' 多選 / 'fill' 非選/計算（只掀答案）*/
+const EXAMS = {
+  e1:{ name:"第一次段考", sub:"細胞・能量・分裂", questions:[
+    {no:1,type:"single",stem:"下列哪一種構造在人體細胞及大腸桿菌中皆可發現？",o:{A:"質體",B:"高基氏體",C:"核糖體",D:"溶體"},a:["C"],ex:"所有生物都具有染色體與核糖體。"},
+    {no:2,type:"single",stem:"大腸桿菌的大小（直徑）和下列哪一個構造最接近？",o:{A:"核糖體",B:"蛋白質",C:"病毒",D:"粒線體"},a:["D"],ex:"依內共生假說，粒線體與葉綠體的前身都是細菌，尺寸與大腸桿菌相近。"},
+    {no:3,type:"single",stem:"關於大腸桿菌分泌的維生素，下列敘述何者正確？",o:{A:"是人體無法自行合成的無機物",B:"是能供應能量的有機物",C:"是不須消化即可吸收的有機小分子",D:"維生素B主要在鞏固骨骼與牙齒的結構"},a:["C"],ex:"(A)維生素是有機物；(B)供能的是醣類、脂質、蛋白質；(D)鞏固骨骼與牙齒主要靠鈣質。大腸不具消化功能，故維生素不須消化即可吸收。"},
+    {no:4,type:"single",stem:"一份麻辣鴨血臭豆腐中，含量最高的主要營養物質是哪一類（不含調味料）？",o:{A:"醣類",B:"脂質",C:"纖維素",D:"蛋白質"},a:["D"],ex:"奶、蛋、魚、肉、豆屬於蛋白質類營養物質。"},
+    {no:5,type:"single",stem:"（細胞膜構造圖）有辦法分辨細胞膜的外側或內側嗎？根據什麼判斷？",o:{A:"無法分辨",B:"可以，根據甲所在的位置",C:"可以，根據乙所在的位置",D:"可以，根據丙的方向"},a:["C"],ex:"細胞膜一側凸起的鏈狀構造為醣類（乙），醣分子出現在細胞膜外側供免疫系統辨識。"},
+    {no:6,type:"single",stem:"圖中丙為磷脂雙層膜，下列哪一種真核細胞構造的膜層數與另3者不同？",o:{A:"細胞膜",B:"細胞核",C:"葉綠體",D:"粒線體"},a:["A"],ex:"細胞核、葉綠體、粒線體皆為雙層膜，僅細胞膜為單層膜。"},
+    {no:7,type:"single",stem:"細胞膜上的甲乙丙丁不含下列哪一種有機物質？",o:{A:"醣類",B:"蛋白質",C:"脂質",D:"核酸"},a:["D"],ex:"膜狀構造含醣類、脂質、蛋白質三大類，不含核酸。"},
+    {no:8,type:"single",stem:"普通小麥體細胞有42條染色體。有絲分裂前期，染色體的量詞敘述何者正確？",o:{A:"DNA 42、染色體42、二分體42、無姊妹染色分體",B:"DNA 84、染色體42、二分體42、姊妹染色分體84",C:"DNA 84、染色體84、二分體84、姊妹染色分體84",D:"DNA 42、染色體84、二分體42、姊妹染色分體42"},a:["B"],ex:"複製後未分離前仍算同一條→染色體數與二分體數不變＝42；每條二分體含2條姊妹染色分體＝84；DNA分子數＝84。"},
+    {no:9,type:"single",stem:"小麥細胞進行減數分裂，第一次分裂前期最多可形成多少個四分體？",o:{A:"21",B:"42",C:"84",D:"168"},a:["A"],ex:"42÷2＝21對同源染色體，故形成21個四分體。"},
+    {no:10,type:"single",stem:"某細胞2n=6，進行減數分裂至第二次分裂末期時，每一子細胞的染色體數與DNA分子數分別為？",o:{A:"3，3",B:"3，6",C:"6，6",D:"6，3"},a:["A"],ex:"減二末期染色體剩單套n、姊妹染色分體已分離，故染色體數與DNA數皆為 n＝3。"},
+    {no:11,type:"single",stem:"巴拉刈在光合作用中攔截原本要傳給其他分子的電子。下列敘述何者正確？",o:{A:"植物即便在陽光下，也無法合成出足夠的ATP與NADH",B:"只抑制光反應，不會影響固碳反應",C:"主要抑制水的氧化，使光反應無法開始",D:"被噴灑的植物將無法有效進行醣類的合成"},a:["D"],ex:"(A)光反應產物應為NADPH（用詞錯）；(B)固碳需光反應能量，故也受影響；(C)它不破壞葉綠素，而是阻礙電子傳遞。故(D)正確。"},
+    {no:12,type:"single",stem:"邦克列酸抑制ANT，使ATP無法離開粒線體基質。下列何者正確？",o:{A:"因ATP合酶被破壞而無法產生ATP",B:"肌肉收縮、神經傳導、蛋白質合成等高耗能機制受影響最嚴重",C:"直接影響電子傳遞鏈",D:"ATP不論動植物細胞都只由粒線體生成"},a:["B"],ex:"邦克列酸作用對象是ANT（非ATP合酶、非電子傳遞鏈）；細胞質糖解也能產ATP。高耗能細胞受影響最嚴重。"},
+    {no:13,type:"single",stem:"下列有關粒線體呼吸作用的敘述，何者『錯誤』？",o:{A:"原核生物無法透過粒線體行呼吸作用",B:"糖解作用是所有細胞共同具有的代謝途徑",C:"粒線體內膜為有氧呼吸的關鍵構造",D:"因O₂參與糖解作用，故稱有氧呼吸"},a:["D"],ex:"O₂參與的是粒線體中丙酮酸分解為CO₂的過程，並非糖解作用，故(D)敘述錯誤。"},
+    {no:14,type:"single",stem:"碳奈米管植入葉綠體提升光合效率。下列敘述何者正確？",o:{A:"可取代類囊體上的光合色素，擴大可吸收光譜",B:"使類囊體膜上的電子傳遞效率提升，產生更多ATP",C:"光反應只能白天、固碳反應主要於夜晚進行",D:"擴大吸收光譜可提高紫外線耐受性"},a:["B"],ex:"文中只說「擴大」吸收光譜而非「取代」；固碳需光反應能量、非夜間；擴大光譜是為利用能量而非增加耐受性。"},
+    {no:15,type:"single",stem:"（承上）飽和光照下比較一般葉綠體與植入碳奈米管葉綠體在不同CO₂濃度下的表現，何者最正確？",o:{A:"CO₂濃度極低時，兩者光合速率會趨於一致",B:"因電子傳遞加快，固碳反應不再需要酵素",C:"電子流增加49%會使產生的氧氣量下降",D:"無可見光但有近紅外光時仍可合成葡萄糖"},a:["A"],ex:"代謝幾乎都需酵素；(C)(D)文中無此描述。CO₂極低時受固碳限制，兩者速率會趨於一致。"},
+    /* 多選 */
+    {no:16,type:"multi",sec:"多選題",stem:"甲、乙為與能量轉換有關的胞器，圖甲B為堆疊扁囊。下列哪些正確？",o:{A:"甲乙兩胞器均可合成ATP",B:"原核生物因沒有乙胞器，所以無法行有氧呼吸",C:"B的膜上具有光合色素",D:"乙中進行有氧呼吸可產生水分子",E:"原核生物因沒有甲胞器，所以無法行光合作用"},a:["A","C","D"],ex:"(B)(E)原核生物可利用細胞膜行有氧呼吸，同理也能行光合作用（如藍綠菌）。"},
+    {no:17,type:"multi",stem:"下列關於生物各種構造不同尺度的描述，哪些正確？",o:{A:"表面積：一個人類紅血球 ＞ 一隻藍綠菌",B:"數量：中心體 ＞ 粒線體",C:"體積：一個人類精子 ＜ 一個人類卵",D:"直徑：核糖體 ＞ 葉綠體",E:"質量：一個細菌的染色體 ＞ 一個細菌的質體"},a:["A","C","E"],ex:"(B)中心體最多兩顆，粒線體可達數百上千個；(D)膜狀構造（葉綠體）遠大於無膜的核糖體。"},
+    {no:18,type:"multi",stem:"光合作用速率與環境因子關係圖（曲線①②），下列推論哪些正確？",o:{A:"X軸為光強度時，①②可代表同株植物在不同CO₂濃度下的速率",B:"X軸為光強度時，②在高光下有較高的最大光合速率",C:"縱軸可用「單位時間內氧氣的消耗量」衡量",D:"X軸為CO₂濃度、濃度a時，光強度可能為限制因子",E:"X軸為CO₂濃度時，只要CO₂足夠，溫度越高越有助於光合速率"},a:["A","B","D"],ex:"(C)應以CO₂消耗量或氧氣「生成量」衡量；(E)過高溫度會破壞酵素、降低反應。"},
+    {no:19,type:"multi",stem:"下列有關光合作用的敘述哪些『錯誤』？",o:{A:"光反應在類囊體膜進行，固碳反應發生於類囊體基質中",B:"光反應將光能轉為化學能",C:"CO₂的碳被固定合成醣類，CO₂的氧則以O₂形式釋出",D:"其他有機物如蛋白質與脂質仍需透過根部吸收",E:"類囊體膜含葉綠素、葉黃素、類胡蘿蔔素等光合色素"},a:["A","C","D"],ex:"錯誤者：(A)固碳在「葉綠體」基質；(C)釋出的O₂來自水的分解；(D)蛋白質與脂質由醣類轉化而來。"},
+    {no:20,type:"multi",stem:"下列關於細胞週期的敘述，哪些正確？",o:{A:"分裂期總時間較間期長",B:"分裂期總時間較間期短",C:"細胞的分裂含細菌分裂與體細胞分裂，不含減數分裂",D:"濃縮的染色體出現在DNA複製後的分裂期前期",E:"細胞週期是細胞從分裂後到凋亡的過程"},a:["B","D"],ex:"(A)間期遠大於分裂期；(C)三者都屬細胞分裂；(E)細胞週期是分裂後到下次分裂的歷程。"},
+    {no:21,type:"multi",stem:"關於動物減數分裂及配子形成，下列敘述哪些正確？",o:{A:"精子與卵的形成都須經過兩次細胞分裂",B:"每一對同源染色體都必須分離到不同子細胞",C:"初級精母或初級卵母細胞其一的染色體數為4n",D:"人類卵形成產生一個大卵與3個小極體",E:"人類在睪丸與卵巢中完成兩次減數分裂"},a:["A","B"],ex:"(C)兩者皆為2n；(D)人類卵只產生兩個極體；(E)雌性以次級卵母細胞排卵，受精後才行第二次減數分裂。"},
+    {no:22,type:"multi",stem:"有關顯微鏡與細胞學說發展史，下列敘述哪些正確？",o:{A:"虎克發明顯微鏡並將軟木栓樣本命名為細胞",B:"雷文霍克用更高倍率顯微鏡觀察到細菌等微生物",C:"許旺與許來登提出「生物體都由細胞組成」學說",D:"虎克對波以耳定律與虎克定律均有貢獻",E:"魏修在1930年代發明電子顯微鏡"},a:["B","C","D"],ex:"(A)虎克是改良而非發明顯微鏡；(E)電子顯微鏡並非魏修發明。"},
+    {no:23,type:"multi",stem:"以下哪些構造『無法』用學校的光學顯微鏡觀察到（可染色）？",o:{A:"冠狀病毒",B:"葉綠體",C:"核糖體",D:"紡錘體",E:"細胞膜的磷脂分子"},a:["A","C","E"],ex:"分子層次或過小的構造無法以光學顯微鏡觀察，如病毒、核糖體、磷脂分子。"},
+    /* 閱讀題 */
+    {no:24,type:"single",sec:"閱讀題",pass:"題組一〈細胞內的遠古房客〉：內共生學說主張真核細胞某些胞器起源於被吞噬的原核生物。附表比較粒線體/葉綠體、真核細胞、細菌的核糖體沉降係數、抗生素敏感性、分裂方式、染色體形狀。",stem:"下列哪一項特徵最能作為粒線體起源於原核生物的有力證據？",o:{A:"具有單層膜構造",B:"具有細胞壁成分",C:"具有多條線型DNA",D:"具有自己的核糖體"},a:["D"],ex:"粒線體有自己的核糖體，且成分與細菌較為相似。"},
+    {no:25,type:"single",stem:"「基因水平轉移」發生在粒線體演化成胞器時，下列推論何者最合理？",o:{A:"早期粒線體仍具合成細胞壁的所有酵素",B:"粒線體在宿主外獨立生存的能力提升",C:"宿主細胞可透過核基因調節粒線體的代謝",D:"宿主細胞DNA總量會因轉移而逐漸減少"},a:["C"],ex:"粒線體不具細胞壁；獨立生存能力逐步下降；宿主DNA因基因轉入而漸增。"},
+    {no:26,type:"single",stem:"比較「色素體」與「葉綠體」，下列敘述何者最正確？",o:{A:"兩者皆具有兩層膜",B:"兩者皆起源於紫細菌",C:"兩者皆不含任何DNA",D:"兩者皆含有肽聚醣成分"},a:["A"],ex:"兩者皆起源於藍綠菌、皆含獨立DNA、皆不具細胞壁（肽聚醣）。"},
+    {no:27,type:"single",stem:"演化歷程中，下列事件先後順序何者最符合共識？甲：吞噬好氧細菌 乙：產生核膜與內質網 丙：吞噬藍綠菌",o:{A:"甲→乙→丙",B:"乙→甲→丙",C:"乙→丙→甲",D:"丙→乙→甲"},a:["B"],ex:"先形成真核細胞（乙），再吞噬好氧細菌（甲）成粒線體，之後吞噬藍綠菌（丙）成葉綠體。"},
+    {no:28,type:"single",pass:"題組二〈發酵作用〉：高濃度單一糖時發酵速率 果糖＞蔗糖＞葡萄糖；糖濃度低於某值時 葡萄糖＞蔗糖＞果糖。同時含多糖時酵母菌優先利用葡萄糖（分解代謝物抑制）。",stem:"關於單一碳源對酵母菌發酵速率的影響，下列何者正確？",o:{A:"無論糖濃度高低，葡萄糖始終最快",B:"糖重量百分比4.55%時，速率為 果糖＞蔗糖＞葡萄糖",C:"蔗糖分子較大，所有濃度下皆最慢",D:"糖濃度低於0.71%時，果糖效率會顯著超越葡萄糖"},a:["B"],ex:"0.25g以上濃度果糖較快；蔗糖始終居中；0.71%以下時反而葡萄糖高於果糖。"},
+    {no:29,type:"single",stem:"關於「分解代謝物抑制」，下列推論何者最合理？",o:{A:"同時存在多糖時，酵母菌優先利用能最快產能的葡萄糖",B:"優先利用路徑最短的果糖",C:"為了同時分解所有糖類以獲取最大能量",D:"僅發生在極高濃度糖類環境"},a:["A"],ex:"符合文章敘述：多糖並存時優先利用葡萄糖。"},
+    {no:30,type:"single",pass:"題組三〈乳酸菌〉：乳酸菌分解乳糖產乳酸使pH下降、酪蛋白凝集。保加利亞桿菌難在大腸長期駐紮。",stem:"根據上述對乳酸菌的敘述，何者正確？",o:{A:"牛奶變酸使酪蛋白帶正電而凝固",B:"喝優酪乳不腹瀉，是因乳酸菌把乳糖轉成酪蛋白",C:"乳酸使pH下降並抑制其他細菌，改變腸道菌相",D:"保加利亞桿菌雖是好菌，但在消化道僅是過客難久留"},a:["D"],ex:"酸度增加使酪蛋白失去負電荷而凝集；乳酸菌是把乳糖轉成乳酸；(C)文中未提及。"},
+    {no:31,type:"single",stem:"針對「乳酸發酵」，下列生化反應敘述何者最正確？",o:{A:"分解乳糖產能，過程中不需經過糖解作用",B:"有氧環境下會轉行有氧呼吸產生更多乳酸",C:"乳酸發酵與有氧呼吸皆能產生CO₂",D:"肌肉細胞在缺氧時也會進行乳酸發酵"},a:["D"],ex:"醣類產能都會經糖解；乳酸發酵發生於低氧；乳酸發酵不產CO₂（酒精發酵才會）。"},
+    /* 混合題（非選）*/
+    {no:32,type:"fill",sec:"混合題（非選）",stem:"寫出細胞結構圖中 A～E 的胞器名稱。",atext:"A：中央液胞　B：粒線體　C：葉綠體　D：內質網　E：高基氏體",ex:""},
+    {no:33,type:"fill",stem:"呼吸作用示意圖：寫出甲乙丙丁的作用名稱與 V W X Y Z 的物質名稱。",atext:"甲 糖解作用｜乙 有氧呼吸｜丙 酒精發酵｜丁 乳酸發酵。V 丙酮酸｜W 酒精｜X CO₂｜Y H₂O｜Z 乳酸",ex:""},
+    {no:34,type:"fill",stem:"（顯微照片）這是動物還是植物？正在進行何種分裂？",atext:"植物、有絲分裂",ex:""},
+    {no:35,type:"fill",stem:"以 B 圖為起點，排出 A、C、D、E 的先後順序。",atext:"B → A → C → E → D",ex:""},
+  ]},
 
-</script>
-<script>
-  const main=document.getElementById('main'), chipsBox=document.getElementById('chips'),
-        searchInput=document.getElementById('search'), tipsList=document.getElementById('tipsList');
-  let activeUnit='all', keyword='';
-  document.getElementById('cUnits').textContent=DATA.length;
-  document.getElementById('cQs').textContent=DATA.reduce((s,u)=>s+u.questions.length,0);
-  TIPS.forEach(t=>{const li=document.createElement('li');li.textContent=t;tipsList.appendChild(li);});
+  e2:{ name:"第二次段考", sub:"遺傳・玻片・染色體", questions:[
+    {no:1,type:"single",stem:"（實驗室規範）以下描述何者最正確？",o:{A:"嚴禁攜帶手機進入實驗室場域",B:"帶食物進實驗室情有可原，放抽屜就好",C:"手搖飲不健康，應自備飲水放實驗桌",D:"為避免不必要的干擾，最好將過肩長髮束起"},a:["D"],ex:"過肩長髮應束起以免沾染藥品或被酒精燈引燃；實驗室嚴禁飲食、桌上禁放飲水。"},
+    {no:2,type:"single",stem:"想觀察馬鈴薯芽體或發綠延伸到塊莖內部的範圍，用何種玻片製作方式最佳？",o:{A:"徒手切片法",B:"折撕法",C:"壓片法",D:"抹片法"},a:["A"],ex:"壓片、抹片會破壞細胞排列，折撕僅適用表皮，觀察塊莖內部以徒手切片最佳。"},
+    {no:3,type:"single",stem:"塊莖大小受三個基因調控且顯性等位基因具累加性，下列何者與 AABbcc 重量相同？",o:{A:"AaBbCc",B:"AaBbcc",C:"AABBCC",D:"AABBcc"},a:["A"],ex:"顯性等位基因數相同即表現相同。AABbcc有3個顯性基因，AaBbCc同為3個。"},
+    {no:4,type:"single",stem:"各顯性等位基因貢獻量相等，aabbCc為9g、AABBCc為17g，問 AABbcc 應多重？",o:{A:"6g",B:"8g",C:"13g",D:"15g"},a:["C"],ex:"兩者差4個顯性基因、差8g→每個顯性＋2g。AABbcc比aabbCc多2個顯性＝9＋2×2＝13g。"},
+    {no:5,type:"single",stem:"AaBbCc 與 AaBBcc 雜交，子代有幾種表現型？",o:{A:"4種",B:"5種",C:"8種",D:"12種"},a:["B"],ex:"總顯性基因數最小1、最大5，可能為1~5，共5種表現型。"},
+    {no:6,type:"single",stem:"（承上）AaBbCc 與 AaBBcc 雜交，子代有幾種基因型？",o:{A:"4種",B:"5種",C:"8種",D:"12種"},a:["D"],ex:"A：AA/Aa/aa（3）× B：BB/Bb（2）× C：Cc/cc（2）＝12種。"},
+    {no:7,type:"single",stem:"關於玻片製作方式與注意事項，何者正確？",o:{A:"徒手切片切越大塊越有利觀察",B:"折撕法都是由上往下折再撕開",C:"壓片法用蓋玻片與載玻片夾住樣本施力壓扁",D:"血液抹片只能單方向推送，來回移動不利細胞分散"},a:["D"],ex:"切片應越薄越好；折撕應朝外折後斜向撕表皮；壓片宜墊濾紙均勻施壓，勿硬壓。"},
+    {no:8,type:"single",stem:"關於顯微鏡操作，何者正確？",o:{A:"切到400倍要先降載物台再轉入40倍物鏡以免壓破樣本",B:"高倍鏡亮度足但輪廓不清時，應將光圈調小",C:"不論倍率高低都應先用粗調節輪快速調整",D:"對焦應將載物台由最低處慢慢往高處調升"},a:["B"],ex:"光圈調小可增加對比與景深使輪廓清晰。切換高倍不需降載物台；高倍禁用粗調節輪；對焦由物鏡最低處往上調（或側看）。"},
+    {no:9,type:"single",stem:"關於遺傳學發展史，下列何者最符合史實？",o:{A:"孟德爾提出遺傳因子並認為其移動與染色體相似",B:"華生與克里克根據減數分裂提出染色體學說",C:"摩根透過科學方法實際證明遺傳因子就在染色體上",D:"薩登與包法利透過推論認定遺傳因子就在DNA上"},a:["C"],ex:"摩根以果蠅（性聯遺傳）證明基因位於染色體上；孟德爾時代未知染色體；染色體學說由薩登與包法利提出。"},
+    {no:10,type:"single",stem:"關於「遺傳的染色體學說」，下列敘述何者正確？",o:{A:"同源染色體在減數分裂的分離對應孟德爾分離律",B:"等位基因與染色體移動方式相同，所以是相同概念",C:"染色體由DNA纏繞於蛋白質上所形成",D:"所有性狀都符合染色體學說預測的獨立分配律"},a:["A"],ex:"同源染色體分離的行為與孟德爾分離律高度平行；(B)行為相似非相同概念；(C)屬化學組成非學說核心；(D)連鎖基因不符獨立分配。"},
+    {no:11,type:"single",stem:"分離律與獨立分配律分別對應到減數分裂的哪個時期？",o:{A:"分離律—第1階段；獨立分配律—第1階段",B:"分離律—第1階段；獨立分配律—第2階段",C:"分離律—第2階段；獨立分配律—第1階段",D:"分離律—第2階段；獨立分配律—第2階段"},a:["A"],ex:"兩者皆對應減數分裂第一階段（同源染色體分離、非同源染色體隨機排列）。"},
+    {no:12,type:"single",stem:"莫納皮拉韋結構模仿胞嘧啶或尿嘧啶，其模擬的結構佔人體含氮鹼基種類的幾分之幾？",o:{A:"2/4",B:"2/5",C:"2/6",D:"2/8"},a:["B"],ex:"人體含氮鹼基共5種（A、T、C、G、U）；模擬C與U兩種，故為 2/5。"},
+    {no:13,type:"single",stem:"關於溝鼠性狀與表徵的描述與推論，何者正確？",o:{A:"毛色為完全顯性，所以黑色相較褐色為顯性",B:"純品系捲毛與短毛雜交產生微捲毛子代，屬共顯性",C:"攻擊性屬多基因控制，所以攻擊性極強的個體只是少數",D:"毛色基因Agouti有四型，因此屬於多基因遺傳"},a:["C"],ex:"多基因遺傳呈常態分佈，極端表現個體佔少數。(A)需實驗證明；(B)中間型屬不完全顯性；(D)單基因座多型屬複等位基因。"},
+    {no:14,type:"single",stem:"關於 DNA 與 RNA 的比較，何者正確？",o:{A:"兩者區別只在含氮鹼基，一個T一個U",B:"DNA多為雙股螺旋，RNA必為單股螺旋",C:"兩者都由五碳醣直接組合而成",D:"構成RNA的其中一種基本單元可合成能量貨幣ATP"},a:["D"],ex:"腺嘌呤核糖核苷酸（AMP）可磷酸化成ATP。(A)五碳醣也不同；(B)RNA通常單股「線狀」；(C)基本單元是核苷酸。"},
+    {no:15,type:"single",stem:"選擇遺傳學實驗材料時應考慮何種條件？",o:{A:"最好是世代短、子代多、好飼養",B:"性狀變化多樣，有利找尋素材",C:"性狀具連續性且易於判讀",D:"自然狀態下異花授粉有利雜交"},a:["A"],ex:"性狀應對比明顯且穩定；孟德爾成功關鍵是選「不連續」性狀；自然自花授粉利於培育純品系。"},
+    {no:16,type:"single",stem:"個體基因型 AaBbCCDd，進行試交實驗，「雙親」總共能產生幾種配子？",o:{A:"6種",B:"7種",C:"8種",D:"9種"},a:["D"],ex:"待測親代3對異型合子→2×2×1×2＝8種；隱性純合子 aabbccdd→1種。合計8＋1＝9種。"},
+    {no:17,type:"single",stem:"鹼基名稱與英文簡寫的對應關係，何者正確？",o:{A:"A—胸腺嘧啶",B:"T—腺嘧啶",C:"C—胞嘧啶",D:"G—鳥糞嘧啶"},a:["C"],ex:"A是腺嘌呤、T是胸腺嘧啶、G是鳥嘌呤；C為胞嘧啶正確。"},
+    /* 多選 */
+    {no:18,type:"multi",sec:"多選題",stem:"家族性高膽固醇血症（FH）：同型合子LDL>400、異型合子約200、無FH<100。下列敘述哪些正確？",o:{A:"以LDL數值為指標，此遺傳模式為中間型遺傳",B:"以190mg/dL為高/低風險分界，可視為完全顯性遺傳",C:"LDL為連續分布，故推論為多基因遺傳",D:"以260mg/dL以上為超高風險，其出現機率接近隱性遺傳模式",E:"FH與LDL同時表現，故屬共顯性"},a:["A","B","D"],ex:"異型合子(200)介於兩同型合子之間→中間型；以190分界則異型與FH同型皆高風險→像完全顯性；260以上僅FH同型(約1/4)→似隱性。(C)為單一基因非多基因；(E)濃度中間化非共顯性。"},
+    {no:19,type:"multi",stem:"以下關於性狀與表徵的描述，哪些正確？",o:{A:"色盲是表徵",B:"膚色是性狀",C:"髮型是性狀",D:"美人尖是性狀",E:"身高是表徵"},a:["A","B"],ex:"性狀是大分類、表徵是具體表現。色盲是表徵、膚色是性狀。(C)髮型受後天影響；(D)有無美人尖才是性狀；(E)身高是性狀，「170cm」才是表徵。"},
+    {no:20,type:"multi",stem:"雞羽色 BB黑/BB'藍/B'B'白，雞冠 C豆冠(多)/c單冠。單冠白色母雞(ccB'B')生下小雞性狀比例1:1，公雞可能的表現型？",o:{A:"豆冠黑色",B:"豆冠白色",C:"單冠藍色",D:"單冠白色",E:"單冠黑色"},a:["A","B","C"],ex:"公雞基因型可能為 CcBB(豆冠黑)、CcB'B'(豆冠白)、ccB'B(單冠藍)、CCB'B(豆冠藍)。對應選項為豆冠黑、豆冠白、單冠藍。"},
+    {no:21,type:"multi",stem:"（承上）一窩小雞表現型接近 1:2:1，親代可能是哪些組合？",o:{A:"豆冠藍色 × 單冠藍色",B:"豆冠藍色 × 豆冠藍色",C:"單冠藍色 × 單冠藍色",D:"豆冠黑色 × 單冠白色",E:"豆冠黑色 × 單冠黑色"},a:["A","B","C"],ex:"1:2:1 來自羽色不完全顯性 BB'×BB' 且冠型須一致（豆×豆、豆×單、單×單皆可）。關鍵在雙親都是藍色即可，故A、B、C。"},
+    {no:22,type:"multi",stem:"以下關於遺傳物質的描述，哪些正確？",o:{A:"核酸中嘌呤數量對嘧啶數量都一樣",B:"所有核酸的A與T、C與G的量都接近一致",C:"核苷酸在人體中一共有8種",D:"人體核苷酸中的含氮鹼基一共只有5種",E:"五碳醣一共有2種"},a:["C","D","E"],ex:"(A)(B)僅適用雙股DNA，單股DNA或RNA不一定，且RNA無T。核苷酸8種、含氮鹼基5種、五碳醣2種皆正確。"},
+    {no:23,type:"multi",stem:"哪些學生有明顯理由可推論與父母其中一方沒有血緣關係？",o:{A:"雙眼皮的小強，雙親都是單眼皮",B:"O型血的安安，雙親都是A型血",C:"沒有美人尖的洋洋，父母都有美人尖",D:"皮膚白皙的小沈，雙親膚色都相當深",E:"小萬血型跟媽媽一樣是O型，爸爸卻是AB型"},a:["A","E"],ex:"雙親單眼皮(隱性)不可能生雙眼皮(顯性)；AB型爸爸子代必帶Iᴬ或Iᴮ不可能為O型。其餘皆有機會（父母帶隱性）。"},
+    {no:24,type:"multi",stem:"以下人類遺傳特徵中，哪些屬於體染色體遺傳？",o:{A:"血友病",B:"蠶豆症",C:"膚色",D:"捲髮",E:"紅綠色盲"},a:["C","D"],ex:"血友病、蠶豆症、紅綠色盲屬性聯遺傳；膚色、捲髮屬體染色體遺傳。"},
+    {no:25,type:"multi",stem:"以下哪些構造中可以穩定取得核酸成分？",o:{A:"細胞核",B:"葉綠體",C:"粒線體",D:"核糖體",E:"內質網"},a:["A","B","C","D"],ex:"細胞核、葉綠體、粒線體內都有自己的DNA；核糖體因含RNA而得名。內質網則否。"},
+    {no:26,type:"multi",stem:"4種等位基因在染色體上的排列如圖（A-D、B-B、C-c…），不考慮突變與互換、皆完全顯性，下列哪些正確？",o:{A:"形成配子時可產生4種不同配子",B:"進行試交會產生4種子代表現型",C:"形成配子時可產生8種不同配子",D:"進行試交會產生8種子代表現型",E:"進行自交會產生16種子代表現型"},a:["A","B"],ex:"同一條染色體上的等位基因會一起移動→配子4種（ADBC/ADBc/adBC/adBc）；試交子代表現型4種；自交子代基因型最多16種但表現型會重複，故非16。"},
+    {no:27,type:"multi",stem:"阿沁(色覺正常、單眼皮、有美人尖)與阿荳(色覺正常、雙眼皮、無美人尖，爸與外公色盲)，三性狀位於不同染色體。下列推論哪些正確？",o:{A:"兩人的女兒絕對不會是色盲",B:"若生下兒子，其色盲機率為1/4",C:"想要跟阿沁一樣的兒子，第一胎機率1/4",D:"想要跟阿荳一樣的女兒，第一胎機率1/4",E:"兩人生下色盲子代的機率是1/4"},a:["A","E"],ex:"女兒必從阿沁得到正常X→不色盲；生下色盲＝色盲兒子1/4＋色盲女兒0＝1/4。(B)兒子色盲機率1/2；(C)1/16；(D)1/8。"},
+    /* 閱讀題 */
+    {no:28,type:"multi",sec:"閱讀題〈桃園豬〉",pass:"控制毛色的E基因座：Eᴰ(顯性)→黑色、E⁺→棕黑相間野生色、ee→紅色。只要含一個Eᴰ即使異型合子也表現黑色。",stem:"上述豬毛色遺傳具有以下哪些遺傳形式的特徵？",o:{A:"完全顯性遺傳",B:"不完全顯性遺傳",C:"複等位基因遺傳",D:"共顯性遺傳",E:"多基因遺傳"},a:["A","C"],ex:"Eᴰ掩蓋隱性→完全顯性；Eᴰ、E⁺、e 三種等位基因（超過兩種）→複等位基因。"},
+    {no:29,type:"multi",stem:"根據文章對毛色的敘述，以下哪些推論正確？",o:{A:"E⁺異型合子皆為棕黑相間",B:"Eᴰ的同型合子為黑色",C:"e遇到E⁺與Eᴰ時都不表現",D:"當E⁺遇到Eᴰ時，E⁺特徵會優先表現",E:"E⁺的同型合子為棕色"},a:["B","C"],ex:"Eᴰ為顯性黑色，同型或異型皆黑；e為隱性遇顯性被掩蓋。(A)E⁺遇Eᴰ會是黑色；(D)Eᴰ優先；(E)E⁺是棕黑相間非純棕。"},
+    {no:30,type:"single",stem:"豬的『肌肉脂肪』厚度的遺傳形式為下列何者？（單選）",o:{A:"完全顯性遺傳",B:"不完全顯性遺傳",C:"複等位基因遺傳",D:"共顯性遺傳",E:"多基因遺傳"},a:["E"],ex:"雜交子代肌脂含量呈連續變異、受多對基因累加影響，是典型多基因遺傳。"},
+    {no:31,type:"single",stem:"豬的『背脂』厚度的遺傳形式為下列何者？（單選）",o:{A:"完全顯性遺傳",B:"不完全顯性遺傳",C:"複等位基因遺傳",D:"共顯性遺傳",E:"多基因遺傳"},a:["B"],ex:"只有厚、中、薄三種特徵，中間型對應異型合子，屬不完全顯性（中間型遺傳），與多基因的連續分布不同。"},
+    /* 混合 */
+    {no:32,type:"fill",sec:"混合題（非選）",stem:"（顯微測量）目鏡測微器100X下每格10微米，量得4小格＝載物台測微器5小格。求載物台測微器每小格大小。",atext:"4格×10微米＝40微米；40微米÷5格＝8微米 → 每小格 8 微米",ex:""},
+    {no:33,type:"fill",stem:"正常紅血球在100X的樣態，哪一個是200X底下的小血球個體？",atext:"（B）",ex:""},
+    {no:34,type:"fill",stem:"小俞×小文（地中海型貧血，簡化為單基因）：推算子代出現輕症與重症的機率。",atext:"輕症機率 1/2（50%）；重症機率 1/4（25%）",ex:""},
+    {no:35,type:"fill",sec:"混合題〈蝗蟲體色〉",stem:"純品系綠雄蟲與褐雌蟲分別能產生哪些配子？（雌蟲較雄蟲多一條染色體，G代表綠）",atext:"綠雄蟲：G（Xᴳ）、0（無性染色體）｜褐雌蟲：G′（Xᴳ′）",ex:""},
+    {no:36,type:"fill",stem:"用棋盤方格表示兩純品系親代產生第一子代的基因型並標示表現型。",atext:"G′×G → GG′（綠褐，雌）；G′×0 → G′（褐，雄）",ex:""},
+    {no:37,type:"fill",stem:"雌蟲的體色遺傳模式最可能是哪些？（中間型／多基因／複等位基因／共顯性）",atext:"中間型 & 共顯性",ex:""},
+    {no:38,type:"fill",sec:"混合題〈抗維生素D佝僂症〉",stem:"抗維生素D佝僂症屬於何種類型的遺傳疾病？",atext:"X染色體、顯性、性聯遺傳",ex:""},
+    {no:39,type:"fill",stem:"若爸爸帶有抗維生素D佝僂症致病等位基因，此等位基因一定會傳給誰？",atext:"女兒",ex:""},
+    {no:40,type:"fill",stem:"四個家族譜系圖中，何者最符合上述描述？",atext:"家族一",ex:""},
+  ]},
 
-  function chip(label,id){const b=document.createElement('button');b.className='chip'+(id==='all'?' active':'');b.textContent=label;b.dataset.id=id;
-    b.onclick=()=>{activeUnit=id;document.querySelectorAll('.chip').forEach(c=>c.classList.toggle('active',c.dataset.id===id));render();
-      if(id!=='all'){const el=document.getElementById('unit-'+id);if(el)el.scrollIntoView({behavior:'smooth',block:'start'});}else window.scrollTo({top:0,behavior:'smooth'});};
-    return b;}
-  function buildChips(){chipsBox.appendChild(chip('全部','all'));DATA.forEach(u=>chipsBox.appendChild(chip(u.unit,u.uid)));}
+  e3:{ name:"期末考", sub:"中心法則・演化・分類", questions:[
+    {no:1,type:"single",stem:"分子生物學中心法則的核心三大過程「不包含」以下哪一項？",o:{A:"轉型",B:"轉錄",C:"轉譯",D:"複製"},a:["A"],ex:"核心為複製、轉錄、轉譯。轉型（細菌吸收外源DNA）不屬於中心法則。"},
+    {no:2,type:"single",stem:"各種酵素與功能配對，何者正確？",o:{A:"DNA合成酶用來複製DNA",B:"蛋白酶主要負責合成蛋白質",C:"限制酶可以對DNA切出特定形狀",D:"DNA連接酶可將DNA的兩股結合在一起"},a:["C"],ex:"複製DNA用DNA聚合酶；蛋白酶是分解蛋白質、合成靠核糖體；DNA連接酶是連接兩「段」DNA而非兩「股」。限制酶切出特定形狀正確。"},
+    {no:3,type:"single",stem:"為什麼生物體內不同部位的細胞有不一樣的表現？",o:{A:"基因組成都一樣、但表現的基因不一樣",B:"基因組成都不一樣、表現的基因也不同",C:"基因組成、表現的基因與環境都會影響",D:"基因組成一樣、表現的基因相同但受環境影響"},a:["A"],ex:"體細胞來自有絲分裂，基因組成完全相同；在分化與區域環境下只表現部分基因，造成不同表現。"},
+    {no:4,type:"single",stem:"下列何者「不是」造成親代與子代遺傳差異的主要原因？",o:{A:"減數分裂",B:"受精作用",C:"DNA複製",D:"突變"},a:["C"],ex:"複製的目的是製造完全相同的DNA序列，正常情況不會產生差異。"},
+    {no:5,type:"single",stem:"喜瑪拉雅兔毛色受溫度影響，其機制為何？",o:{A:"高溫產生黑色素生成酶，夏天毛色變黑",B:"黑色素生成酶本來就會生成，但在低溫才活化、製造黑色素",C:"酶在極高溫與低溫皆被抑制而缺乏黑色素",D:"剃毛綁熱水袋後，新長毛色變黑"},a:["B"],ex:"酶在低溫被活化→低溫黑毛、高溫白毛。基因都會表現，差異來自溫度對酵素的影響。"},
+    {no:6,type:"single",stem:"關於基因轉殖技術的操作細節，何者正確？",o:{A:"將胰島素轉殖進細菌使其大量製造胰島素",B:"載體與目標DNA的切割應使用相同的限制酶",C:"基因轉殖後的主要產物是DNA",D:"篩選是挑出重組成功的DNA再移入生物體"},a:["B"],ex:"切口互補才能接合，故用相同限制酶。(A)應轉殖「胰島素基因」；(C)產物是蛋白質；(D)篩選是挑出轉殖成功的個體。"},
+    {no:7,type:"single",stem:"以下何者「不是」基因轉殖技術成功應用的案例？",o:{A:"利用細菌清除海上漏油",B:"超快速生長的脊椎動物",C:"不需使用殺蟲劑的玉米",D:"複製一樣的動物如桃莉羊"},a:["D"],ex:"桃莉羊是複製技術（細胞核移轉），沒有基因重組。"},
+    {no:8,type:"single",stem:"對於基因轉殖技術的認識或態度，何者正確？",o:{A:"可將DNA與蛋白質送入生物體者稱為載體",B:"基因轉殖百利無一害，應大力鼓勵",C:"轉殖技術已非常成熟，成功率接近100%",D:"轉殖的基因可能透過授粉機制進入野生植物"},a:["D"],ex:"載體是送入特定基因(DNA)，與蛋白質無關；工具本身中性有利有弊；成功率仍有限故需篩選。"},
+    {no:9,type:"single",stem:"中心法則配對（反應/模板/原料），何者正確？",o:{A:"複製/DNA/DNA",B:"轉錄/DNA/核糖核苷酸",C:"轉錄/DNA/RNA",D:"轉譯/RNA/蛋白質"},a:["B"],ex:"複製原料為dNTP；轉錄原料為NTP（核糖核苷酸）；轉譯原料為胺基酸。故(B)正確。"},
+    {no:10,type:"single",stem:"DNA粗萃取用在動物身上，相較植物實驗可省略哪個步驟？",o:{A:"加入清潔劑",B:"加入嫩精",C:"用雙層紗布過濾",D:"果汁機打破細胞壁"},a:["D"],ex:"動物沒有細胞壁，不需用果汁機打破細胞壁。"},
+    {no:11,type:"single",stem:"以奇異果為材料的DNA粗萃取，步驟順序應為？甲加食鹽水 乙加嫩精 丙磨碎果肉 丁加清潔劑 戊加冰酒精",o:{A:"丙丁乙甲戊",B:"甲乙丙丁戊",C:"乙丙丁戊甲",D:"丁甲戊乙丙"},a:["A"],ex:"由外而內：先磨碎破壁→清潔劑去膜→食鹽水分離→蛋白酶(嫩精)去蛋白→冰酒精析出DNA。"},
+    {no:12,type:"single",stem:"關於DNA粗萃取各步驟的原理，何者正確？",o:{A:"加入清潔劑可輔助溶解細胞壁",B:"高濃度食鹽水利用離子間引力破壞核膜",C:"木瓜酵素可以去除蛋白質",D:"冷凍過的酒精可使蛋白質變性沉澱"},a:["C"],ex:"木瓜酵素是蛋白酶可去蛋白質。清潔劑溶的是膜；冰酒精是讓DNA因溶解度下降而析出。"},
+    {no:13,type:"single",stem:"混合論對達爾文天擇理論造成什麼致命困境？",o:{A:"後天性狀直接混入子代，證明環境能主動創造有利變異",B:"有利變異在後代被放大，使天擇過快",C:"父母性狀混合產生全新物種，無法解釋種內變異來源",D:"性狀不斷混合會使個體差異逐漸被稀釋，讓天擇缺乏可累積的遺傳變異"},a:["D"],ex:"(A)是拉馬克後天獲得性遺傳；(B)混合論下變異被稀釋而非放大；(C)混合論使後代趨平均，困境是變異無法「維持」。"},
+    {no:14,type:"single",stem:"孟德爾遺傳學如何重新鞏固「變異」與「天擇」的關聯？",o:{A:"變異能以獨立單位在世代間保存與重新組合，使天擇有可持續作用的材料",B:"變異主要來自環境刺激，個體會產生符合需求的性狀再被保留",C:"天擇會直接改變個體基因，使生物一生逐漸產生更適合的特徵",D:"性狀在後代平均融合，使極端變異消失"},a:["A"],ex:"孟德爾指出變異來自基因組合與突變、隨機發生；(B)是拉馬克變形；(C)天擇篩選既有差異；(D)是舊混合論。"},
+    {no:15,type:"single",stem:"甲綠蠵龜與綠鬣蜥前肢；乙人手與海豚胸鰭；丙蜂鳥與泥壺蜂飛翅；丁獼猴與赤蛙血紅素；戊葉鼻蝠翅與哈士奇前腳。何者互為「趨異演化」依據？",o:{A:"甲丙丁",B:"甲乙戊",C:"乙丙戊",D:"乙丙丁",E:"丙丁戊"},a:["B"],ex:"趨異演化＝同源構造（外異內同）。四足類前肢甲乙戊皆是；丙為趨同演化；丁屬生化證據。"},
+    {no:16,type:"single",stem:"有關生物之間演化關係與證據，何者正確？",o:{A:"鯨魚前肢與人手因功能不同，不屬同源構造",B:"人與家兔盲腸闌尾產纖維素酶能力不同，故不可作演化證據",C:"鱷魚鱗片與鳥類羽毛皆來自體表角質化衍生物，可作演化證據",D:"鯨鯊與海豚身型皆流線，可判斷來自共同祖先",E:"加拉巴哥雀鳥喙形不同但外型相似，仍為同一物種"},a:["C"],ex:"(A)鯨魚與人前肢是同源構造；(B)盲腸是同源構造可作證據；(D)流線為同功構造；(E)已分化為不同物種。"},
+    {no:17,type:"single",stem:"有關林奈的自然系統與達爾文演化樹，何者正確？",o:{A:"林奈是最早有演化概念者，被尊稱演化學之父",B:"林奈認為生物具有共同祖先",C:"林奈的分類系統已有界門綱目科屬種7階層",D:"達爾文演化樹的每個分叉點代表演化分歧",E:"具共同祖先的不同物種成體必可找到所有基本構造"},a:["D"],ex:"林奈是神創論支持者、非演化學之父；林奈僅界綱目屬種5階層；胚胎學看的是胚胎階段而非成體。"},
+    {no:18,type:"single",stem:"親緣關係實例與證據類別配對（甲海鞘幼蟲有尾索…己始祖鳥兼具爬蟲與鳥特徵…），有幾項正確？",o:{A:"3",B:"4",C:"5",D:"6",E:"7"},a:["B"],ex:"錯誤三項：甲（幼體不屬胚胎學）、丙（奇異鳥現存尚未成化石）、己（始祖鳥應屬化石證據）。7項中4項正確。"},
+    {no:19,type:"single",stem:"病毒合成蛋白質時對酵素的需求，何者最正確？",o:{A:"不需酵素",B:"利用本身的酵素",C:"利用宿主的酵素",D:"利用宿主及本身的酵素",E:"利用進入病毒內的宿主酵素在病毒內合成"},a:["C"],ex:"病毒沒有完整酵素系統，須利用宿主的酵素完成基因表現。"},
+    {no:20,type:"single",stem:"下列關於「噬菌體」的敘述，何者『錯誤』？",o:{A:"能吞噬細菌",B:"不具有酵素系統",C:"大多為DNA病毒",D:"通常像蝌蚪有大頭與細長身體",E:"僅由核酸和蛋白質組成"},a:["A"],ex:"噬菌體遠小於細菌，不可能「吞噬」細菌，(A)敘述錯誤。"},
+    /* 多選 */
+    {no:21,type:"multi",sec:"多選題",stem:"關於中心法則的描述，哪些正確？",o:{A:"所有生物的轉錄都在細胞核中發生",B:"DNA複製時，兩股合成的方向剛好相反",C:"RNA轉錄時只針對DNA其中一股進行",D:"基因的表現主要由RNA執行功能",E:"基因表現時每次都要複製、轉錄與轉譯"},a:["B","C"],ex:"(A)原核生物轉錄在細胞質；(D)執行功能主要是蛋白質；(E)基因表現只含轉錄與轉譯，複製是分裂前才做。"},
+    {no:22,type:"multi",stem:"同卵雙胞胎來自同一受精卵，哪些條件可能造成其表徵不同？",o:{A:"環境條件的影響",B:"具有不一樣的等位基因",C:"具有不同的基因型",D:"基因發生突變",E:"一條DNA上有許多不同的基因"},a:["A","D"],ex:"同卵雙胞胎基因組成應一致，差異來自突變或環境；(B)(C)(E)不成立。"},
+    {no:23,type:"multi",stem:"以下哪些物質是基因轉殖技術中常被使用的載體？",o:{A:"細菌染色體",B:"細菌核糖體",C:"細菌質體",D:"細菌內質網",E:"病毒核酸"},a:["C","E"],ex:"細菌質體與病毒核酸是常見的基因轉殖載體。"},
+    {no:24,type:"multi",stem:"關於DNA粗萃取的描述，哪些正確？",o:{A:"嫩精是酵素，可溶解細胞讓染色體釋出",B:"即使各種純化，最終仍無法得到純DNA分子",C:"最終棉絮狀物質，每條絲便是一條DNA分子",D:"強大剪力可破壞細胞膜，故超高速果汁機可取代清潔劑",E:"DNA在冰酒精中析出，是因溶解度下降而聚集纏繞"},a:["B","E"],ex:"(A)嫩精是蛋白酶、分解蛋白質；(C)棉絮是大量DNA纏繞，單一DNA無法肉眼辨識；(D)去膜應用清潔劑，剪力過強會破壞DNA。"},
+    {no:25,type:"multi",stem:"鐮形血球（S′S′重症、SS正常、SS′輕微）在瘧疾流行區 S′比例明顯偏高，可能原因為何？",o:{A:"地理隔離導致S′比例提高",B:"瘧原蟲入侵後誘發正常人S基因突變為S′",C:"屬天擇結果，瘧疾扮演環境篩選角色",D:"瘧原蟲較易寄生正常紅血球，使SS個體因瘧疾增加死亡淘汰",E:"SS′帶因者紅血球攜氧能力低，以致不易被瘧原蟲感染"},a:["C","D"],ex:"文中未提地理隔離；一般環境不會刺激突變；(E)並非攜氧差異，而是帶因者對瘧疾抵抗較佳。屬天擇下的環境篩選。"},
+    {no:26,type:"multi",stem:"長頸鹿天擇模式圖（甲乙丙丁，虛線=天擇前、實線=天擇後），下列哪些正確？",o:{A:"圖甲表示天擇對身高沒有作用",B:"圖乙實線波峰右移，說明天擇對身高越高者有較高相對適應度",C:"圖丙平均值附近個體天擇後頻率大幅下降，顯示平均身高者反而較不具生存優勢",D:"圖丁顯示天擇後各身高頻率變得更平均",E:"圖甲最容易導致族群身高差異越來越大"},a:["B","C"],ex:"(A)甲淘汰兩極端，仍有作用；(D)極端值被淘汰應如甲，丁是對中間值加壓；(E)丙（作用在中間值）才會使差異變大。"},
+    {no:27,type:"multi",stem:"綠灌叢白砂島上、身體多色素的昆蟲，經長時間較可能觀察到？",o:{A:"為躲鳥類，昆蟲自主改變食性潛伏白砂食沙礫",B:"綠色突變個體因保護色存活率高，綠色基因個體比例增加",C:"長期啃食造成灌叢生存壓力，葉片含毒或堅硬的灌叢比例上升",D:"鳥類站在與自身體色相異的背景上有利捕食昆蟲",E:"透過用進廢退，鳥類視覺變得更敏銳"},a:["B","C"],ex:"(A)(E)是用進廢退說，應以天擇論述；(D)站相近背景色才較利捕獵。"},
+    {no:28,type:"multi",stem:"8種現代貓科動物演化樹（分節點1~6），下列哪些正確？",o:{A:"題圖顯示有9個共同祖先",B:"此8種動物皆來自於1個共同祖先",C:"細腰貓與美洲豹距今最近的共同祖先位於支點2",D:"老虎與雪豹的親緣關係較老虎與美洲豹近",E:"無法確認美洲豹與花豹的親緣關係較美洲豹與獅子遠"},a:["B","C","E"],ex:"共祖為1~6分支點前的枝條（6個）；老虎與美洲豹最近共祖在支點4、雪豹與老虎在支點3，故老虎與美洲豹較接近。"},
+    {no:29,type:"multi",stem:"下列有關親緣關係重建的敘述，哪些正確？",o:{A:"指標化石作為定年工具，其生存地史時間愈長則愈精準",B:"解剖構造比外觀及功能特性更容易保留祖先特徵",C:"人和雞只有胚胎期才出現的咽囊，可說明兩者間的同源現象",D:"碳水化合物與脂質常用於推斷物種間的親緣關係",E:"不同地史時代的水陸分布，可用於推測物種的演化過程"},a:["B","C","E"],ex:"(A)指標化石生存時間愈短、定年愈精準；(D)分子證據應採DNA、RNA或蛋白質胺基酸序列。"},
+    {no:30,type:"multi",stem:"四方形為目、圓形為科、三角形為屬，關於甲～己分類階層，哪些正確？",o:{A:"附圖中包含一目兩科三屬",B:"丙、己兩階層中的生物同目不同科",C:"丁階層中的生物是甲科乙屬",D:"臺灣獼猴若歸類在己階層，則臺灣山椒魚必定不在甲階層範圍內",E:"若丙階層某生物學名為 Saprolegnia diclina，則丁階層生物學名至少有一個拉丁字與其相同"},a:["A","B","D"],ex:"（依公布答案）A、B、D正確；同屬才有相同的拉丁屬名，故僅同一圈內才會相同。"},
+    {no:31,type:"multi",stem:"根據出土化石建立的恐龍及鳥類支序圖，下列哪些正確？",o:{A:"暴龍是具絨羽恐龍及鳥類的共同祖先",B:"支序圖反映化石出土順序：中華龍鳥→伶盜龍→尾羽鳥→始祖鳥",C:"現生鳥類和恐龍（鳥類以外的所有類群）具有共同祖先",D:"飛羽是始祖鳥和現生鳥類的同源構造",E:"支序圖可作為鳥類和爬蟲類應分成兩個不同類群的依據"},a:["C","D"],ex:"(A)應為「暴龍與有絨羽爬蟲類具共同祖先」；(B)出土順序與存在年代無直接關係；(E)支序圖反而支持鳥類隸屬爬蟲類分支。"},
+    {no:32,type:"multi",stem:"有關達爾文演化理論的孕育過程，下列哪些正確？",o:{A:"1831~1836小獵犬號環球考察後，回英國隨即發表《物種起源》",B:"馬爾薩斯的人口論是啟發達爾文『生存競爭』的重要著作",C:"天擇說參考林奈的分類架構，均認為生物有共同祖先",D:"達爾文從孟德爾遺傳法則得知繁殖會產生遺傳變異",E:"人們對家禽家畜農作物的育種（人擇）也啟發了達爾文的天擇想法"},a:["B","E"],ex:"(A)考察後多年、受華萊士來信刺激才共同發表；(C)林奈認為生物由上帝創造、無共同祖先；(D)達爾文未接受孟德爾遺傳法則，後人才連結。"},
+    {no:33,type:"multi",stem:"胡椒蛾翅色由T/t決定（TT、Tt褐色；tt黃色），十年調查如圖。下列判斷哪些正確？",o:{A:"等位基因T與t中，t為顯性",B:"基因型TT在族群中的比例逐年升高",C:"等位基因T與t並存於族群中",D:"褐色蛾在族群中的比例逐年降低",E:"此蛾族群大小因黃色蛾比率增加而變大"},a:["C","D"],ex:"大寫T才是顯性；黃色增加代表tt增加；圖僅呈相對比例，無法推測總族群大小。"},
+    {no:34,type:"multi",stem:"（B型肝炎短文）下列敘述哪些正確？",o:{A:"上述三種病毒都具有遺傳物質DNA",B:"上述三種病毒都需用電子顯微鏡才可觀察到",C:"基因重組B肝疫苗是以B肝病毒為載體",D:"基因重組B肝疫苗的成分是蛋白質",E:"偵測到對應B肝表面抗原的抗體，就代表曾被B肝病毒感染"},a:["B","D"],ex:"COVID是RNA疫苗（非皆DNA）；B肝病毒是人類病毒無法感染酵母菌（載體應另選）；疫苗也能誘發抗體，故有抗體不代表曾感染。"},
+    /* 題組一 密碼子 */
+    {no:35,type:"single",sec:"題組一〈密碼子〉",pass:"RNA密碼子由內而外讀取；AUU→Ile(I)，UAA=終止密碼，AUG=起始密碼。給定RNA：AUGUAUUUUGCUAUUUUAA。",stem:"有關密碼子對照表的描述，何者正確？",o:{A:"每一種胺基酸至少都有一種密碼子與其對應",B:"每一種編碼都能對應到其中一種胺基酸",C:"密碼子總共有20種，可對應到20種不同的胺基酸",D:"表中的AUCG是代表RNA上的胺基酸序列"},a:["A"],ex:"(B)終止密碼子UAA/UAG/UGA無對應胺基酸；(C)密碼子共64種；(D)AUCG是RNA鹼基非胺基酸。"},
+    {no:36,type:"single",stem:"轉錄出此RNA序列（AUGUAUUUUGCUAUUUUAA）的模板股DNA序列為？",o:{A:"AUGUAUUUUGCUAUUUUAA",B:"ATGTATTTTGCTATTTTAA",C:"TACATAAAACGATAAAATT",D:"UACAUAAAACGAUAAAAUU"},a:["C"],ex:"模板股與RNA互補：A↔T、U↔A、G↔C、C↔G，故為 TACATAAAACGATAAAATT。"},
+    {no:37,type:"single",stem:"此段RNA進行轉譯時，製作出的序列「最多」有幾個胺基酸？",o:{A:"5個",B:"6個",C:"7個",D:"10個"},a:["B"],ex:"共20個鹼基，三個一讀→6個胺基酸，並多出2個無法讀取的鹼基。"},
+    {no:38,type:"single",stem:"承上題，此段RNA對應到的胺基酸序列縮寫為？",o:{A:"MYFAIL",B:"YFAIL",C:"MYFAI",D:"FAIL"},a:["A"],ex:"AUG→M、UAU→Y、UUU→F、GCU→A、AUU→I、UUA→L，即 MYFAIL。"},
+    {no:39,type:"multi",stem:"上述基因表現過程中，會需要哪些蛋白質的參與？",o:{A:"DNA聚合酶",B:"核糖體",C:"RNA合成酶",D:"RNA聚合酶",E:"蛋白酶"},a:["B","D"],ex:"基因表現＝轉錄（需RNA聚合酶）＋轉譯（需核糖體）。DNA聚合酶用於複製；正確名稱為RNA聚合酶。"},
+    /* 題組二 密度離心 */
+    {no:40,type:"single",sec:"題組二〈DNA密度離心〉",pass:"試管三層分別代表 ¹⁴N¹⁴N、¹⁴N¹⁵N、¹⁵N¹⁵N，厚度反映相對含量。",stem:"深色=既存DNA、淺色=新合成DNA，何者為正確的DNA複製示意圖？",o:{A:"（A）",B:"（B）",C:"（C）"},a:["C"],ex:"半保留複製：結果應為雙股中一股深色、一股淺色，如圖(C)。"},
+    {no:41,type:"single",stem:"¹⁴N養菌移到¹⁵N培養，取原始、第一代、第二代離心分層，分別與哪幾根試管一致？",o:{A:"145",B:"247",C:"456",D:"478"},a:["B"],ex:"原始¹⁴N在上層(2)；第一代皆為¹⁴N¹⁵N中層(4)；第二代¹⁴N¹⁵N與¹⁵N¹⁵N居中層與下層(7)。"},
+    {no:42,type:"single",stem:"¹⁵N養菌移到¹⁴N培養，第5代 ¹⁴N¹⁴N ： ¹⁴N¹⁵N ： ¹⁵N¹⁵N 比例為何？",o:{A:"15:1:0",B:"0:1:15",C:"7:1:0",D:"0:1:7"},a:["A"],ex:"半保留複製第5代：輕15/16、中1/16、重0，即 15:1:0。"},
+    /* 題組三 拉馬克vs達爾文 */
+    {no:43,type:"single",sec:"題組三〈拉馬克 vs 達爾文〉",pass:"拉馬克主張『用進廢退』、物種只變化不滅絕；達爾文天擇由變異、遺傳、選擇、適應構成。1943 Luria-Delbrück實驗證實突變隨機自發。",stem:"兩者在「變異與環境」關係上的核心矛盾為何？",o:{A:"達爾文強調往高等前進的衝動；拉馬克強調變異遺傳與選擇",B:"達爾文認為演化不會導致滅絕；拉馬克認為不適應者必滅絕",C:"達爾文認為環境會主動誘發變異；拉馬克認為變異隨機產生",D:"達爾文認為變異先於環境選擇而存在；拉馬克認為變異是為了適應環境才產生"},a:["D"],ex:"(A)完全顛倒兩人理論；(B)滅絕觀點相反（達爾文承認滅絕）；(C)內容對調。"},
+    {no:44,type:"single",stem:"1943年Luria-Delbrück細菌實驗，為下列哪一演化觀點提供強力證據？",o:{A:"環境改變會直接決定突變的最終方向",B:"個體變異在環境選擇之前，就已隨機且自發地存在於族群中",C:"生物為適應環境壓力，會主動設計對應的突變方向",D:"後天獲得的性狀可透過基因甲基化遺傳給下一代"},a:["B"],ex:"環境可能刺激突變但無法決定方向；基因甲基化是後來研究的結論，非此實驗。"},
+  ]}
+};
 
-  function highlight(t,kw){if(!kw)return t;try{const re=new RegExp('('+kw.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')','gi');return t.replace(re,'<mark>$1</mark>');}catch(e){return t;}}
-  function matches(q,u){if(!keyword)return true;const hay=(u.unit+' '+q.no+' '+q.ans+' '+q.stem+' '+q.options.join(' ')+' '+q.key+' '+q.detail).toLowerCase();return hay.includes(keyword.toLowerCase());}
+/* ============ 狀態 ============ */
+let current="e1";
+let filmMode=true; // true=蓋著（隱藏答案）
+let filter="all";
+const state={}; // state[examKey][no] = {sel:[],revealed,graded,mark}
+for(const k in EXAMS){ state[k]={};
+  EXAMS[k].questions.forEach(q=>{ state[k][q.no]={sel:[],revealed:false,graded:false,mark:null}; });
+}
 
-  function render(){
-    main.innerHTML='';let shown=0;
-    const units=activeUnit==='all'?DATA:DATA.filter(u=>u.uid===activeUnit);
-    units.forEach(u=>{
-      const qs=u.questions.filter(q=>matches(q,u));if(qs.length===0)return;shown+=qs.length;
-      const sec=document.createElement('section');sec.className='unit color-'+u.color;sec.id='unit-'+u.uid;
-      const head=document.createElement('div');head.className='unit-head';
-      head.innerHTML='<span class="dot"></span><h2>'+u.unit+'</h2><span class="qn">'+qs.length+' 題</span>';
-      sec.appendChild(head);
-      if(u.intro){const intro=document.createElement('div');intro.className='intro';intro.innerHTML=u.intro;sec.appendChild(intro);}
-      const grid=document.createElement('div');grid.className='grid';
-      qs.forEach(q=>grid.appendChild(card(q)));sec.appendChild(grid);main.appendChild(sec);
+const eq=(a,b)=>a.length===b.length&&a.every(x=>b.includes(x));
+
+/* ---- 紅藍筆：紅=題目在問什麼／陷阱字，藍=關鍵字 ---- */
+const RED=["下列何者正確","下列何者錯誤","何者最正確","何者正確","何者錯誤","下列何者","何者","哪些正確","哪一項","哪一種","哪一個","哪幾根","哪幾","哪些","不是","不正確","不包含","不需要","不屬於","最正確","最合理","最佳","最適合","最接近","最可能","最符合","錯誤","正確","一定","必定","絕對","皆","僅有","僅","只有","只","幾分之幾","幾種","幾個","依序","分別","不含","除了"];
+const BLUE=["中心法則","轉型","轉錄","轉譯","複製","限制酶","DNA連接酶","DNA聚合酶","DNA合成酶","蛋白酶","核糖體","載體","質體","密碼子","起始密碼","終止密碼","模板股","去氧核糖核苷酸","核糖核苷酸","含氮鹼基","胺基酸","嘌呤","嘧啶","核苷酸","五碳醣","減數分裂","有絲分裂","同源染色體","姊妹染色分體","二分體","四分體","分離律","獨立分配律","染色體學說","等位基因","基因型","表現型","性狀","表徵","不完全顯性","共顯性","複等位基因","多基因遺傳","性聯遺傳","體染色體","顯性","隱性","中間型","累加性","試交","配子","天擇","突變","變異","趨異演化","趨同演化","同源構造","同功構造","共同祖先","內共生","化石證據","化石","胚胎學","比較解剖學","生物地理學","分子生物學","拉馬克","達爾文","孟德爾","林奈","用進廢退","混合論","光合作用","光反應","固碳反應","類囊體","葉綠體","粒線體","磷脂雙層膜","糖解作用","有氧呼吸","乳酸發酵","酒精發酵","基因轉殖","基因表現","載物台測微器","目鏡測微器","細胞壁","清潔劑","嫩精","木瓜酵素","冰酒精","高濃度食鹽水","噬菌體","大腸桿菌","藍綠菌","酵母菌","乳酸菌","病毒","喜瑪拉雅兔","鐮形血球","瘧疾","桃園豬","胡椒蛾","地中海性貧血","佝僂症","色盲","美人尖","雙眼皮","單眼皮"];
+const MARKS=[...RED.map(w=>[w,'ur']),...BLUE.map(w=>[w,'ub'])].sort((a,b)=>b[0].length-a[0].length);
+function mark(t){
+  if(!t) return t;
+  const store=[];
+  for(const [w,cls] of MARKS){
+    if(t.indexOf(w)<0) continue;
+    t=t.split(w).join('\u0001'+store.length+'\u0001');
+    store.push('<u class="'+cls+'">'+w+'</u>');
+  }
+  return t.replace(/\u0001(\d+)\u0001/g,(m,i)=>store[i]);
+}
+
+/* ============ 建立分頁 ============ */
+const tabsEl=document.getElementById('tabs');
+Object.keys(EXAMS).forEach(k=>{
+  const b=document.createElement('button');
+  b.className='tab'+(k===current?' on':'');
+  b.innerHTML=`${EXAMS[k].name}<small>${EXAMS[k].sub}</small>`;
+  b.onclick=()=>{ current=k; filter='all'; syncFilterBtns(); render(); document.querySelectorAll('.tab').forEach((t,i)=>t.classList.toggle('on',Object.keys(EXAMS)[i]===k)); window.scrollTo({top:0,behavior:'smooth'}); };
+  tabsEl.appendChild(b);
+});
+
+/* film toggle */
+const filmToggle=document.getElementById('filmToggle');
+const filmLabel=document.getElementById('filmLabel');
+function setFilm(v){
+  filmMode=v;
+  filmToggle.classList.toggle('off',!filmMode);
+  filmLabel.textContent=filmMode?'紅膠片：蓋著':'紅膠片：掀開';
+  // apply to all currently rendered answers (without changing graded state)
+  EXAMS[current].questions.forEach(q=>{
+    if(!filmMode) state[current][q.no].revealed=true;
+    else if(!state[current][q.no].graded) state[current][q.no].revealed=false;
+  });
+  render();
+}
+filmToggle.onclick=()=>setFilm(!filmMode);
+
+/* filters */
+function syncFilterBtns(){
+  document.querySelectorAll('.filters .mini').forEach(b=>{
+    if(b.dataset.f==='reset') return;
+    b.classList.toggle('on',b.dataset.f===filter);
+  });
+}
+document.querySelectorAll('.filters .mini').forEach(b=>{
+  b.onclick=()=>{
+    if(b.dataset.f==='reset'){
+      EXAMS[current].questions.forEach(q=>state[current][q.no]={sel:[],revealed:false,graded:false,mark:null});
+      filter='all'; syncFilterBtns(); if(!filmMode) setFilm(true); else render(); return;
+    }
+    filter=b.dataset.f; syncFilterBtns(); render();
+  };
+});
+
+/* ============ 渲染 ============ */
+const main=document.getElementById('main');
+function passVisible(q){
+  const st=state[current][q.no];
+  if(filter==='todo') return !st.graded && st.mark===null;
+  if(filter==='wrong') return st.mark==='miss' || (st.graded && st.result==='wrong');
+  return true;
+}
+
+function render(){
+  main.innerHTML='';
+  const qs=EXAMS[current].questions;
+  let lastSec=null, shown=0;
+  qs.forEach(q=>{
+    if(!passVisible(q)) return;
+    shown++;
+    if(q.sec && q.sec!==lastSec){
+      const h=document.createElement('div'); h.className='sec'; h.textContent=q.sec; main.appendChild(h); lastSec=q.sec;
+    } else if(q.sec){ lastSec=q.sec; }
+    if(q.pass){
+      const p=document.createElement('div'); p.className='passage'; p.innerHTML='📖 '+q.pass; main.appendChild(p);
+    }
+    main.appendChild(card(q));
+  });
+  if(shown===0){
+    const e=document.createElement('div'); e.className='empty';
+    e.textContent = filter==='wrong' ? '目前沒有答錯的題目 🎉' : (filter==='todo'?'這份都作答完了 👏':'沒有題目');
+    main.appendChild(e);
+  }
+  updateScore();
+  syncFilterBtns();
+}
+
+function card(q){
+  const st=state[current][q.no];
+  const el=document.createElement('div'); el.className='q';
+  const isMulti=q.type==='multi', isFill=q.type==='fill';
+  const tag = isFill?'非選':(isMulti?'多選':'單選');
+  el.innerHTML=`<div class="stem"><span class="no">${q.no}</span>${mark(q.stem)}<span class="tag ${isMulti?'multi':''}">${tag}</span></div>`;
+
+  // options
+  if(!isFill){
+    const wrap=document.createElement('div'); wrap.className='opts';
+    if(st.graded) wrap.classList.add('graded');
+    Object.entries(q.o).forEach(([k,txt])=>{
+      const o=document.createElement('button'); o.className='opt';
+      o.innerHTML=`<span class="k">${k}</span><span>${mark(txt)}</span>`;
+      if(st.graded){
+        if(q.a.includes(k)) o.classList.add('correct');
+        else if(st.sel.includes(k)) o.classList.add('badpick');
+      } else if(st.sel.includes(k)) o.classList.add('pick');
+      o.onclick=()=>{
+        if(st.graded) return;
+        if(isMulti){ st.sel.includes(k)?st.sel=st.sel.filter(x=>x!==k):st.sel.push(k); }
+        else { st.sel=[k]; }
+        render();
+      };
+      wrap.appendChild(o);
     });
-    if(shown===0)main.innerHTML='<div class="empty"><div class="big">找不到「'+keyword+'」</div><p>換個關鍵字,或點上面「全部」</p></div>';
+    el.appendChild(wrap);
   }
 
-  function card(q){
-    const c=document.createElement('div');c.className='card';
-    const isMulti=/、/.test(q.ans);
-    const hasOpts=!(q.options.length===1 && q.options[0].indexOf('無 A~E')>-1);
-    const optsHtml=hasOpts?'<ul class="opts">'+q.options.map(o=>'<li>'+highlight(o,keyword)+'</li>').join('')+'</ul>':'<ul class="opts"><li style="font-style:italic;opacity:.7;">'+q.options[0]+'</li></ul>';
-    c.innerHTML=
-      '<div class="qhead">'+
-        '<div class="qmeta"><span class="qbadge">'+q.no+'</span>'+(isMulti?'<span class="multi-tag">多選</span>':'')+'</div>'+
-        '<div class="stem">'+highlight(q.stem,keyword)+'</div>'+optsHtml+
-      '</div>'+
-      '<button class="reveal-btn"><span class="arr">▶</span><span class="txt"></span></button>'+
-      '<div class="body"><div class="body-in">'+
-        '<div class="ans-row"><span class="lbl">答案</span><span class="ans-pill">'+q.ans+'</span></div>'+
-        '<div class="block key"><span class="block-title">🔑 重點</span><div class="block-body">'+q.key+'</div></div>'+
-        '<div class="block detail"><span class="block-title">📖 詳解</span><div class="block-body">'+q.detail+'</div></div>'+
-      '</div></div>';
-    c.querySelector('.reveal-btn').onclick=()=>c.classList.toggle('open');
-    return c;
-  }
+  // reveal button
+  if(!st.revealed){
+    const btns=document.createElement('div'); btns.className='qbtns';
+    const r=document.createElement('button');
+    if(isFill){ r.className='reveal'; r.textContent='🔴 掀開答案'; }
+    else if(st.sel.length){ r.className='reveal'; r.textContent='對答案'; }
+    else { r.className='reveal small'; r.textContent='🔴 直接看答案'; }
+    r.onclick=()=>{
+      st.revealed=true;
+      if(!isFill && st.sel.length){ st.graded=true; st.result=eq(st.sel,q.a)?'correct':'wrong'; st.mark=st.result==='correct'?'got':'miss'; }
+      render();
+    };
+    btns.appendChild(r);
+    el.appendChild(btns);
+  } else {
+    // answer under film
+    const ans=document.createElement('div'); ans.className='ans'+((st.graded||!filmMode||st._open)?' open':'');
+    const keyTxt = isFill ? (q.atext||'') : q.a.join('、');
+    const lab = isFill?'參考答案':(st.graded?(st.result==='correct'?'答對':'答錯　正解'):'答案');
+    ans.innerHTML=`
+      <div class="film">🔴 紅膠片 · 點一下翻開 <small>（藍筆想完再看）</small></div>
+      <div class="ans-body">
+        <div class="ans-key"><span class="lab">${lab}</span>${keyTxt}</div>
+        ${q.ex?`<div class="explain">${q.ex}</div>`:''}
+      </div>`;
+    ans.querySelector('.film').onclick=()=>{ st._open=true; render(); };
+    el.appendChild(ans);
 
-  let t;searchInput.addEventListener('input',e=>{clearTimeout(t);t=setTimeout(()=>{keyword=e.target.value.trim();render();},180);});
-  document.getElementById('clearBtn').onclick=()=>{searchInput.value='';keyword='';render();searchInput.focus();};
-  document.getElementById('expandAll').onclick=()=>document.querySelectorAll('.card').forEach(c=>c.classList.add('open'));
-  document.getElementById('collapseAll').onclick=()=>document.querySelectorAll('.card').forEach(c=>c.classList.remove('open'));
-  const totop=document.getElementById('totop');
-  window.addEventListener('scroll',()=>totop.classList.toggle('show',window.scrollY>500));
-  totop.onclick=()=>window.scrollTo({top:0,behavior:'smooth'});
-  buildChips();render();
+    // self mark (for fill or ungraded reveals)
+    if(isFill || !st.graded){
+      const sm=document.createElement('div'); sm.className='selfmark';
+      const g=document.createElement('button'); g.className='got'+(st.mark==='got'?' on':''); g.textContent='我會了 ✓';
+      const m=document.createElement('button'); m.className='miss'+(st.mark==='miss'?' on':''); m.textContent='再複習 ✗';
+      g.onclick=()=>{ st.mark = st.mark==='got'?null:'got'; render(); };
+      m.onclick=()=>{ st.mark = st.mark==='miss'?null:'miss'; render(); };
+      sm.appendChild(g); sm.appendChild(m); el.appendChild(sm);
+    }
+  }
+  return el;
+}
+
+function updateScore(){
+  const qs=EXAMS[current].questions;
+  let done=0, got=0, miss=0;
+  qs.forEach(q=>{ const st=state[current][q.no];
+    if(st.mark==='got'){done++;got++;}
+    else if(st.mark==='miss'){done++;miss++;}
+    else if(st.graded){done++; st.result==='correct'?got++:miss++;}
+  });
+  document.getElementById('score').innerHTML = `作答 ${done}/${qs.length}　答對 <b>${got}</b>　待複習 <span class="w">${miss}</span>`;
+  document.getElementById('prog').style.width = (done/qs.length*100)+'%';
+}
+
+render();
 </script>
-</body></html>
+</body>
+</html>
